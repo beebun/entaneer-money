@@ -53,13 +53,16 @@
   <div class="row">
   <div style="padding:10px" class="col-md-12">
     <h2 style="float:left;margin-left:50px">Entaneer CMU Money Analysis</h2>
-    
+
     <div style="float:right;margin-top:25px">
-      <a href="./additem">Add item</a> |
-      <a href="./expenditure1">Edit Expenditure1</a> |
-      <a href="./expenditure2">Add Expenditure2</a> |
-      <a href="./constant">Edit Contant (SCCH, People Num)</a> |
-      <a href="./report">View Report</a>
+      {{ link_to('additem','Add Item') }} |
+      {{ link_to('expenditure1','Edit Expenditure1') }} |
+      {{ link_to('expenditure2','Edit Expenditure2') }} |
+      {{ link_to('constant','Constant (SCCH, People Num)') }} |
+
+      <a href="{{ route('report', array('semaster' => 1,  'year' => 2557)) }}">Report</a> |
+      <a href="{{ route('report-year', array('year' => 2557)) }}">Report year</a>
+
     </div>
     <div style="clear:both"></div>
     <hr>

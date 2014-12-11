@@ -106,20 +106,20 @@ Route::post('getAmount', function()
 });
 
 
-Route::get('report/{semaster?}/{year?}', function($semaster, $year) {
+Route::get('report/{semaster}/{year}',  array('as' => 'report', function($semaster, $year) {
 
 	$arr['semaster'] = $semaster;
 	$arr['year'] = $year;
 	// return View::make('view-report')->with('departments', $departments);
 	return View::make('report')->with('arr', $arr);
-});
+}));
 
-Route::get('report-year/{year?}', function($year) {
+Route::get('report-year/{year}', array('as' => 'report-year', function($year) {
 
 	$arr['year'] = $year;
 	// return View::make('view-report')->with('departments', $departments);
 	return View::make('report-year')->with('arr', $arr);
-});
+}));
 
 
 
