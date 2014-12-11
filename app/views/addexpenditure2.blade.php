@@ -4,31 +4,44 @@
 
     
 	<h4>Add Expenditure2</h4>
-	<form method="post" action="expenditure2">
+	<hr>
+	<form method="post" action="expenditure2" class="form-horizontal">
 
-		Department: 
-		<select name="Department">
-			@foreach($departments as $department)
-				<option value="{{ $department->id }}">{{ $department->name }}</option>
-			@endforeach
-		</select>
-		<br><br>
+		<div class="form-group">
+			<label for="Department" class="col-sm-2">ภาควิชา: </label>
+			<div class="col-md-10">
+				<select name="Department" class="form-control">
+					@foreach($departments as $department)
+						<option value="{{ $department->id }}">{{ $department->name }}</option>
+					@endforeach
+				</select>
+			</div>
+		</div>
 		
-		Years: 
-		<select name="Years">
-			<option value="2558">2558</option>
-			<option value="2557">2557</option>
-			<option value="2556">2556</option>
-			<option value="2555">2555</option>
-			<option value="2554">2554</option>
-			<option value="2553">2553</option>
-		</select>
-		<br><br>
-		
-		Amount: <input type="text" name="Amount" value="">
-		<br><br>
+		<div class="form-group">
+			<label for="Years" class="col-sm-2">ปีการศึกษา: </label>
+			<div class="col-md-10">
+				<select name="Years" class="form-control">
+					<option value="2558">2558</option>
+					<option value="2557">2557</option>
+					<option value="2556">2556</option>
+					<option value="2555">2555</option>
+					<option value="2554">2554</option>
+					<option value="2553">2553</option>
+				</select>
+			</div>
+		</div>
 
-		<input type="submit" name="submit" value="Submit">
+		<div class="form-group">
+			<label for="Amount" class="col-sm-2">ยอดเงิน: </label>
+			<div class="col-md-10"><input type="text" name="Amount" class="form-control" value=""></div>
+		</div>
+
+
+		<div class="form-group">
+			<div class="col-md-2"></div>
+			<div class="col-md-10"><input type="submit" class="btn btn-primary" name="submit" value="บันทึก"></div>
+		</div>
 	</form>
 @stop
 

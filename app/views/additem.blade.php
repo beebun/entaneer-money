@@ -4,25 +4,20 @@
 
     
 
- 
-
-
 	<h4>Add Item</h4>
-	<form method="post" action="additem" role="form" class="form-horizontal" style="width:500px">
-		<div class="form-group">
-			<label for="Course" class="col-sm-2">Course: </label>
-			<div class="col-sm-10">
-			<select name="Course" class="form form-control">
-				@foreach($courses as $course)
-					<option value="{{ $course->id }}">{{ $course->name }}</option>
-					<!--<p>{{ $course->id }}</p><p>{{ $course->name }}</p>-->
-				@endforeach
-			</select> 
-			</div>
-		</div>
+	<hr>
+	<form method="post" action="additem" role="form" class="form-horizontal" style="">
 		
 		<div class="form-group">
-			<label for="Input_Type" class="col-sm-2">Input Type: </label>
+			<label for="Detail" class="col-sm-2">รายละเอียด: </label>
+			  <div class="col-sm-10">
+			<input type="text" name="Detail" class="form-control" value="">
+			</div>
+		</div>
+
+
+		<div class="form-group">
+			<label for="Input_Type" class="col-sm-2">ประเภทรายรับ: </label>
 			  <div class="col-sm-10">
 			<select name="Input_Type" class="form-control">
 				@foreach($income_types as $income_type)
@@ -31,20 +26,10 @@
 			</select>
 			</div>
 		</div>
-		
+
+
 		<div class="form-group">
-			<label for="Department" class="col-sm-2">Department: </label>
-			  <div class="col-sm-10">
-			<select name="Department" class="form-control">
-				@foreach($departments as $department)
-					<option value="{{ $department->id }}">{{ $department->name }}</option>
-				@endforeach
-			</select>
-			</div>
-		</div>
-		
-		<div class="form-group">
-			<label for="Course" class="col-sm-2">Semaster: </label>
+			<label for="Course" class="col-sm-2">เทอมการศึกษา: </label>
 			  <div class="col-sm-10">
 			<select name="Semester" class="form-control">
 				<option value="1">1</option>
@@ -53,9 +38,10 @@
 			</select>
 			</div>
 		</div>
-		
+
+
 		<div class="form-group">
-			<label for="Years" class="col-sm-2">Year: </label>
+			<label for="Years" class="col-sm-2">ปีการศึกษา: </label>
 			  <div class="col-sm-10">
 			<select name="Years" class="form-control">
 				<option value="2558">2558</option>
@@ -68,23 +54,43 @@
 			</div>
 		</div>
 
+		<div class="form-group">
+			<label for="Course" class="col-sm-2">หลักสูตร: </label>
+			<div class="col-sm-10">
+			<select name="Course" class="form form-control">
+				<option value=""> ========== เลือก =========</option>
+				@foreach($courses as $course)
+					<option value="{{ $course->id }}">{{ $course->name }}</option>
+					<!--<p>{{ $course->id }}</p><p>{{ $course->name }}</p>-->
+				@endforeach
+			</select> 
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="Department" class="col-sm-2">ภาควิชา: </label>
+			  <div class="col-sm-10">
+			<select name="Department" class="form-control">
+				<option value=""> ========== เลือก =========</option>
+				@foreach($departments as $department)
+					<option value="{{ $department->id }}">{{ $department->name }}</option>
+				@endforeach
+			</select>
+			</div>
+		</div>
+
 
 		<div class="form-group">
-			<label for="Amount" class="col-sm-2">Amount: </label>
+			<label for="Amount" class="col-sm-2">ยอดเงิน: </label>
 			  <div class="col-sm-10">
 			<input type="text" name="Amount" class="form-control" value="">
 			</div>
 		</div>
+
 		
 		<div class="form-group">
-			<label for="Detail" class="col-sm-2">Detail: </label>
-			  <div class="col-sm-10">
-			<input type="text" name="Detail" class="form-control" value="">
-			</div>
-		</div>
-		
-		<div class="form-group">
-			<input type="submit" name="submit" class="btn btn-primary" value="Submit">
+			<div class="col-md-2"></div>
+			<div class="col-md-10"><input type="submit" name="submit" class="btn btn-primary" value="บันทึก"></div>
 		</div>
 	</form>
 @stop

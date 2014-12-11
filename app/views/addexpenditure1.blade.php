@@ -4,28 +4,50 @@
 
     
 	<h4>Add Expenditure1</h4>
-	<form method="post" action="expenditure1">
-		
-		Department: 
-		<select name="Department" id="Department" onchange="setAmount()">
-			@foreach($departments as $department)
-				<option value="{{ $department->id }}">{{ $department->name }}</option>
-			@endforeach
-		</select>
-		<br><br>
+	<hr>
+	<form method="post" action="expenditure1" class="form-horizontal">
+		<div class="form-group">
+			<label for="Department" class="col-sm-2">ภาควิชา: </label>
+			<div class="col-md-10">
+			<select name="Department" id="Department" onchange="setAmount()" class="form-control">
+				@foreach($departments as $department)
+					<option value="{{ $department->id }}">{{ $department->name }}</option>
+				@endforeach
+			</select>
+			</div>
+		</div>
 
-		Years: 
-		<select name="Years" id="Years" class="Years" onchange="setAmount()">
-			<option value="2558">2558</option>
-			<option value="2557">2557</option>
-			<option value="2556">2556</option>
-			<option value="2555">2555</option>
-			<option value="2554">2554</option>
-			<option value="2553">2553</option>
-		</select>
-		<br><br>
+		<div class="form-group">
+			<label for="Years" class="col-sm-2">ปีการศึกษา: </label>
+			<div class="col-md-10">
+				<select name="Years" id="Years" class="Years form-control" onchange="setAmount()">
+					<option value="2558">2558</option>
+					<option value="2557">2557</option>
+					<option value="2556">2556</option>
+					<option value="2555">2555</option>
+					<option value="2554">2554</option>
+					<option value="2553">2553</option>
+				</select>
+			</div>
+		</div>
 		
-		<script>
+
+
+		<div class="form-group">
+			<label for="Amount" class="col-sm-2">ยอดเงิน: </label>
+			<div class="col-md-10">
+				<input type="text" name="Amount" value="" class="form-control">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-2"></div>
+			<div class="col-md-10"><input type="submit" name="submit" class="btn btn-primary" value="บันทึก"></div>
+		</div>
+	</form>
+
+
+	<script>
 			function setAmount() {
 				var Years = document.getElementById("Years").value;
 				var Department = document.getElementById("Department").value;
@@ -61,13 +83,5 @@
 			});
 			
 		</script>
-
-
-		
-		Amount: <input type="text" name="Amount" value="">
-		<br><br>
-
-		<input type="submit" name="submit" value="Submit">
-	</form>
 @stop
 
