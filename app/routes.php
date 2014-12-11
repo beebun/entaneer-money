@@ -62,12 +62,28 @@ Route::get('expenditure1', function()
 Route::post('expenditure1', function()
 {
 	$expenditure1 = new Expenditure1;
-	$expenditure1->department   = Input::get('Department');
-	$expenditure1->year			= Input::get('Years');
-	$expenditure1->amount     	= Input::get('Amount');
+	$department   = Input::get('Department');
+	$year         = Input::get('Years');
+	$Amount = expenditure1::where('department', $department)->where('year', $year)->get();
+	if($Amount!="")
+	{
+		$Amount         = Input::get('Amount');
+		expenditure1::where('department', $department)->where('year', $year)->update(array(
+            'department'    =>  $department,
+            'year' =>  $year,
+            'amount'  => $Amount,
+        ));
+		//$affectedRows = expenditure1:::where('department', $department)->where('year', $year)->update(array('amount' => $Amount));
+	}
+	else
+	{
+		$expenditure1->department   = Input::get('Department');
+		$expenditure1->year			= Input::get('Years');
+		$expenditure1->amount     	= Input::get('Amount');
 
-	// save our duck
-	$expenditure1->save();
+		// save our duck
+		$expenditure1->save();
+	}
 	// redirect ----------------------------------------
 	// redirect our user back to the form so they can do it all over again
 	return Redirect::to('expenditure1');	

@@ -48,13 +48,7 @@
 
 
 	<script>
-			function setAmount() {
-				var Years = document.getElementById("Years").value;
-				var Department = document.getElementById("Department").value;
-				
 
-				//document.getElementById("demo").innerHTML = Years+Department;
-			}
 
 			function get_saved_amount(){
 				var Years = document.getElementById("Years").value;
