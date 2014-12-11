@@ -100,9 +100,10 @@ Route::post('getAmount', function()
 	
 	$department   = Input::get('Department');
 	$year         = Input::get('Years');
-	//$Amount = expenditure1::where('department', '=', $department)->where('year', '=', $year);
+	$Amount = expenditure1::where('department', $department)->where('year', $year)->get();
 	//$Amount = expenditure1::where('year', $year)->get('amount');
-	return $expenditure1;	
+	// return $expenditure1;
+	return $Amount;
 });
 
 

@@ -36,7 +36,7 @@
 		<div class="form-group">
 			<label for="Amount" class="col-sm-2">ยอดเงิน: </label>
 			<div class="col-md-10">
-				<input type="text" name="Amount" value="" class="form-control">
+				<input type="text" name="Amount" id="amount" value="" class="form-control">
 			</div>
 		</div>
 
@@ -55,16 +55,26 @@
 
 				//document.getElementById("demo").innerHTML = Years+Department;
 			}
-			
-			$( "select" ).change(function() {
+
+			function get_saved_amount(){
 				var Years = document.getElementById("Years").value;
 				var Department = document.getElementById("Department").value;
 				//alert( Years+" "+Department);
 				
 				$.post( "getAmount", { Years: Years, Department: Department }).done(function( data ) {
-					alert( "Data Loaded: " + data );
+					if(data.length > 0){
+						$('#amount').val(data[0].amount);
+					}else{
+						$('#amount').val(0);
+					}
 				});
+			}
+
+			get_saved_amount();
+			
+			$( "select" ).change(function() {
 				
+				get_saved_amount();	
 				/*var AmountValue = $.ajax({
 					url: "/laravel/MoneyAnalysis/public/test",
 					type: "POST",
