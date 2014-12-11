@@ -100,7 +100,7 @@ Route::post('getAmount', function()
 	
 	$department   = Input::get('Department');
 	$year         = Input::get('Years');
-	$Amount = expenditure1::where('department', $department)->where('year', $year)->get();
+	$Amount       = expenditure1::where('department', $department)->where('year', $year)->get();
 	//$Amount = expenditure1::where('year', $year)->get('amount');
 	// return $expenditure1;
 	return $Amount;
@@ -117,8 +117,21 @@ Route::get('report/{semaster}/{year}',  array('as' => 'report', function($semast
 
 Route::get('report-year/{year}', array('as' => 'report-year', function($year) {
 
-	$arr['year'] = $year;
-	// return View::make('view-report')->with('departments', $departments);
+	$arr['year']        = $year;
+	$arr['departments'] = department::all();
+	
+	foreach($arr['departments'] as $each){
+		
+		$temp           = expenditure1::where('department', $each->id)->where('year', $year)->first();
+		
+		if($temp['amount'] == "")
+			$val[$each->id] = 0;
+		else
+			$val[$each->id] = $temp['amount'];
+	}
+
+	$arr['val'] = $val ;
+
 	return View::make('report-year')->with('arr', $arr);
 }));
 
