@@ -57,7 +57,7 @@
     <div style="float:right;margin-top:25px">
       {{ link_to('additem','Add Item') }} |
       {{ link_to('expenditure1','Edit Expenditure1') }} |
-      {{ link_to('expenditure2','Edit Expenditure2') }} |
+      {{ link_to('expenditure2','Add Expenditure2') }} |
       {{ link_to('constant','Constant (SCCH, People Num)') }} |
 
       <a href="{{ route('report', array('semaster' => 1,  'year' => 2557)) }}">Report</a> |

@@ -3,7 +3,7 @@
 @section('content')
 
     
-	<h4>Add Expenditure1</h4>
+	<h4>Edit Expenditure1</h4>
 	<hr>
 	<form method="post" action="expenditure1" class="form-horizontal">
 		<div class="form-group">
