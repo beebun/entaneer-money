@@ -107,6 +107,10 @@ Route::post('getAmount', function()
 });
 
 
+
+
+
+
 Route::get('report/{semaster}/{year}',  array('as' => 'report', function($semaster, $year) {
 
 	$arr['semaster'] = $semaster;
@@ -115,22 +119,42 @@ Route::get('report/{semaster}/{year}',  array('as' => 'report', function($semast
 	return View::make('report')->with('arr', $arr);
 }));
 
+
+
+
+
+
+
 Route::get('report-year/{year}', array('as' => 'report-year', function($year) {
 
 	$arr['year']        = $year;
 	$arr['departments'] = department::all();
 	
 	foreach($arr['departments'] as $each){
-		
+
 		$temp           = expenditure1::where('department', $each->id)->where('year', $year)->first();
-		
+
 		if($temp['amount'] == "")
 			$val[$each->id] = 0;
 		else
 			$val[$each->id] = $temp['amount'];
 	}
 
-	$arr['val'] = $val ;
+	// $sum = DB::select("SELECT department, sum(amount) as sum from expenditure2 where year='".$year."' group by department");
+
+
+	foreach($arr['departments'] as $each){
+
+		$sum = DB::select("SELECT sum(amount) as sum from expenditure2 where year='".$year."' and department ='".$each->id."'");
+
+		if( is_null($sum[0]->sum) )
+			$val2[$each->id] = 0;
+		else
+			$val2[$each->id] = $sum[0]->sum;
+	}
+
+	$arr['val']  = $val ;
+	$arr['val2'] = $val2;
 
 	return View::make('report-year')->with('arr', $arr);
 }));

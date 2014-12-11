@@ -6,6 +6,7 @@
 		$year        = $arr['year'];
 		$departments = $arr['departments'];
 		$val         = $arr['val'];
+		$val2        = $arr['val2'];
 	?>    
 	
 	<h4>Report Year {{$year}}</h4>
@@ -33,7 +34,7 @@
 		<td></td>
 		<td></td>
 		<td></td>
-		<td></td>
+		<td>{{$val2[$i+1]}}</td>
 		<td></td>
 		<td></td>
 		<td></td>
