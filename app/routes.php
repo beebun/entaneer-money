@@ -64,8 +64,11 @@ Route::post('expenditure1', function()
 	$expenditure1 = new Expenditure1;
 	$department   = Input::get('Department');
 	$year         = Input::get('Years');
+
+
 	$Amount = expenditure1::where('department', $department)->where('year', $year)->get();
-	if($Amount!="")
+	
+	if(is_null($Amount))
 	{
 		$Amount         = Input::get('Amount');
 		expenditure1::where('department', $department)->where('year', $year)->update(array(
@@ -155,8 +158,6 @@ Route::get('report-year/{year}', array('as' => 'report-year', function($year) {
 		else
 			$val[$each->id] = $temp['amount'];
 	}
-
-	// $sum = DB::select("SELECT department, sum(amount) as sum from expenditure2 where year='".$year."' group by department");
 
 
 	foreach($arr['departments'] as $each){
