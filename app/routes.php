@@ -111,7 +111,14 @@ Route::get('report/{semaster?}/{year?}', function($semaster, $year) {
 	$arr['semaster'] = $semaster;
 	$arr['year'] = $year;
 	// return View::make('view-report')->with('departments', $departments);
-	return View::make('view-report')->with('arr', $arr);
+	return View::make('report')->with('arr', $arr);
+});
+
+Route::get('report-year/{year?}', function($year) {
+
+	$arr['year'] = $year;
+	// return View::make('view-report')->with('departments', $departments);
+	return View::make('report-year')->with('arr', $arr);
 });
 
 
