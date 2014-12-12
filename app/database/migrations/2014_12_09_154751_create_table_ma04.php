@@ -20,11 +20,13 @@ class CreateTableMa04 extends Migration {
 		
 		Schema::create('constant', function($table)
 		{
-			$table->increments('id');
-			$table->integer('course_id');
-			$table->integer('department_id');
+			$table->integer('course');
+			$table->integer('department_c');
+			$table->integer('semester');
+			$table->integer('year');
 			$table->double('scch_value');
 			$table->integer('student_amount');
+			$table->primary('course','department_c','semester','year');
 		});
 	}
 
