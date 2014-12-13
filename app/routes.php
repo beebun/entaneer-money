@@ -167,11 +167,71 @@ Route::get('report-year/{year}', array('as' => 'report-year', function($year) {
 
 Route::get('constant', function()
 {
-	$departments = department::all();
+	$departments = departmentc::all();
 	$courses = course::all();
 	
     return View::make('addconstant')->with('departments', $departments)->with('courses', $courses);
 });
 
+Route::post('constant', function()
+{
+	$constant = new constant;
+	/*
+	$course       	= Input::get('Course');
+	$department		= Input::get('Department');
+	$semester  		= Input::get('Semester');
+	$year         	= Input::get('Years');
+	$scch_value     = Input::get('Scch_value');
+	$student_amount = Input::get('Student_amount');
+	*/
+	$constant->course   		= Input::get('Course');
+	$constant->department_c		= Input::get('Department');
+	$constant->semester     	= Input::get('Semester');
+	$constant->year   			= Input::get('Years');
+	$constant->scch_value		= Input::get('Scch_value');
+	$constant->student_amount	= Input::get('Student_amount');
 
+	// save our duck
+	$constant->save();
+/*
+	$Amount = expenditure1::where('department', $department)->where('year', $year)->get();
+	
+	if(is_null($Amount))
+	{
+		$Amount         = Input::get('Amount');
+		expenditure1::where('department', $department)->where('year', $year)->update(array(
+            'department'    =>  $department,
+            'year' =>  $year,
+            'amount'  => $Amount,
+        ));
+		//$affectedRows = expenditure1:::where('department', $department)->where('year', $year)->update(array('amount' => $Amount));
+	}
+	else
+	{
+		$expenditure1->department   = Input::get('Department');
+		$expenditure1->year			= Input::get('Years');
+		$expenditure1->amount     	= Input::get('Amount');
+
+		// save our duck
+		$expenditure1->save();
+	}
+	// redirect ----------------------------------------
+	// redirect our user back to the form so they can do it all over again
+	*/
+	return Redirect::to('constant');	
+});
+
+Route::post('getValue', function()
+{
+	$constant = constant::all();
+	
+	$course       	= Input::get('Course');
+	$department		= Input::get('Department');
+	$semester  		= Input::get('Semester');
+	$year         	= Input::get('Years');
+	
+	$value     = constant::where('course', $course)->where('department_c', $department)->where('semester', $semester)->where('year', $year)->get();
+	
+	return $value;
+});
 

@@ -25,7 +25,8 @@ class CreateTableMa04 extends Migration {
 			$table->integer('semester');
 			$table->integer('year');
 			$table->double('scch_value');
-			$table->integer('student_amount');
+			$table->double('student_amount');
+			$table->timestamps();
 			$table->primary('course','department_c','semester','year');
 		});
 	}
