@@ -9,7 +9,7 @@
 		<div class="form-group">
 			<label for="Department" class="col-sm-2">ภาควิชา: </label>
 			<div class="col-md-10">
-			<select name="Department" id="Department" onchange="setAmount()" class="form-control">
+			<select name="Department" id="Department" class="form-control">
 				@foreach($departments as $department)
 					<option value="{{ $department->id }}">{{ $department->name }}</option>
 				@endforeach
@@ -20,7 +20,7 @@
 		<div class="form-group">
 			<label for="Years" class="col-sm-2">ปีการศึกษา: </label>
 			<div class="col-md-10">
-				<select name="Years" id="Years" class="Years form-control" onchange="setAmount()">
+				<select name="Years" id="Years" class="Years form-control" >
 					<option value="2558">2558</option>
 					<option value="2557">2557</option>
 					<option value="2556">2556</option>

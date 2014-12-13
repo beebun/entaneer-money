@@ -67,7 +67,7 @@ Route::post('expenditure1', function()
 
 	$Amount = expenditure1::where('department', $department)->where('year', $year)->get();
 	
-	if(is_null($Amount))
+	if(count($Amount)>0)
 	{
 		$Amount         = Input::get('Amount');
 		expenditure1::where('department', $department)->where('year', $year)->update(array(
@@ -181,7 +181,7 @@ Route::post('constant', function()
 	$year         	= Input::get('Years');
 
 	$value     = constant::where('course', $course)->where('department_c', $department)->where('semester', $semester)->where('year', $year)->get();
-	if(is_null($value))
+	if(count($value)>0)
 	{
 		$scch_value     = Input::get('Scch_value');
 		$student_amount = Input::get('Student_amount');
