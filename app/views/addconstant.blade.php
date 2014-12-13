@@ -89,14 +89,14 @@
 				var Department = document.getElementById("Department").value;
 				//alert( Years+" "+Department);
 				
-				$.post( "getAmount", { Course: Course, Semester: Semester, Years: Years, Department: Department }).done(function( data ) {
+				$.post( "getValue", { Course: Course, Semester: Semester, Years: Years, Department: Department }).done(function( data ) {
 					if(data.length > 0){
-					alert( data[0].scch_value+" "+data[0].course);
+						//console.log(data);
 						$('#Scch_value').val(data[0].scch_value);
 						$('#Student_amount').val(data[0].student_amount);
 					}else{
-						$('#Scch_value').val(0);
-						$('#Student_amount').val(0);
+						$('#Scch_value').val("");
+						$('#Student_amount').val("");
 					}
 				});
 			}

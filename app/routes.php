@@ -65,7 +65,6 @@ Route::post('expenditure1', function()
 	$department   = Input::get('Department');
 	$year         = Input::get('Years');
 
-
 	$Amount = expenditure1::where('department', $department)->where('year', $year)->get();
 	
 	if(is_null($Amount))
@@ -176,48 +175,41 @@ Route::get('constant', function()
 Route::post('constant', function()
 {
 	$constant = new constant;
-	/*
 	$course       	= Input::get('Course');
 	$department		= Input::get('Department');
 	$semester  		= Input::get('Semester');
 	$year         	= Input::get('Years');
-	$scch_value     = Input::get('Scch_value');
-	$student_amount = Input::get('Student_amount');
-	*/
-	$constant->course   		= Input::get('Course');
-	$constant->department_c		= Input::get('Department');
-	$constant->semester     	= Input::get('Semester');
-	$constant->year   			= Input::get('Years');
-	$constant->scch_value		= Input::get('Scch_value');
-	$constant->student_amount	= Input::get('Student_amount');
 
-	// save our duck
-	$constant->save();
-/*
-	$Amount = expenditure1::where('department', $department)->where('year', $year)->get();
-	
-	if(is_null($Amount))
+	$value     = constant::where('course', $course)->where('department_c', $department)->where('semester', $semester)->where('year', $year)->get();
+	if(is_null($value))
 	{
-		$Amount         = Input::get('Amount');
-		expenditure1::where('department', $department)->where('year', $year)->update(array(
-            'department'    =>  $department,
-            'year' =>  $year,
-            'amount'  => $Amount,
+		$scch_value     = Input::get('Scch_value');
+		$student_amount = Input::get('Student_amount');
+		constant::where('course', $course)->where('department_c', $department)->where('semester', $semester)->where('year', $year)->update(array(
+            'course'    		=>  $course,
+            'department_c' 		=>  $department,
+            'semester'  		=> 	$semester,            
+			'year'    			=>  $year,
+            'scch_value' 		=>  $scch_value,
+            'student_amount'  	=> 	$student_amount
         ));
 		//$affectedRows = expenditure1:::where('department', $department)->where('year', $year)->update(array('amount' => $Amount));
 	}
 	else
 	{
-		$expenditure1->department   = Input::get('Department');
-		$expenditure1->year			= Input::get('Years');
-		$expenditure1->amount     	= Input::get('Amount');
+		$constant->course   		= Input::get('Course');
+		$constant->department_c		= Input::get('Department');
+		$constant->semester     	= Input::get('Semester');
+		$constant->year   			= Input::get('Years');
+		$constant->scch_value		= Input::get('Scch_value');
+		$constant->student_amount	= Input::get('Student_amount');
 
 		// save our duck
-		$expenditure1->save();
+		$constant->save();
 	}
 	// redirect ----------------------------------------
 	// redirect our user back to the form so they can do it all over again
-	*/
+	
 	return Redirect::to('constant');	
 });
 
