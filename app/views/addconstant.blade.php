@@ -1,6 +1,67 @@
 @extends('layout')
 
 @section('content')
+<?php 
+	$year 	      = $arr['year'];
+	$semester  	  = $arr['semester'];
+	$table 	      = $arr['table'];
+	$table2  	  = $arr['table2'];
+	//var_dump($table);
+	//var_dump($table2);
+?> 
+
+	<h4>รายงาน <?php $dcount=0; echo $semester."/".$year ; ?></h4>
+	<hr>
+	<h5><strong>ค่า SCCH</strong></h5>
+	<table class="table table-bordered">
+		<thead>
+			<th>หลักสูตร</th>
+			@foreach($departments as $department)
+				<th>{{ $department->name }}</th><?php $dcount++;?>
+			@endforeach
+			<th>Eng-All</th>
+			<th>Total</th><?php $dcount=$dcount+2;?>
+		</thead>
+		<?php for($i=54;$i<60;$i++): ?>
+			<tr>
+				<td>{{ $courses[$i]->name }}</td>
+
+				<?php for($j=0;$j<$dcount-2;$j++) :?>
+					<td><?php echo $table[$j][$i-54] ; ?></td>
+				<?php endfor ?>
+								<td class="disabled"></td>
+				<td class="disabled"></td>
+			</tr>
+		<?php endfor ?>
+		
+	</table>
+
+
+	<h5><strong>จำนวนนักเรียน</strong></h5>
+	<table class="table table-bordered">
+		<thead>
+			<th>หลักสูตร</th>
+			@foreach($departments as $department)
+				<th>{{ $department->name }}</th>
+			@endforeach
+			<th>Eng-All</th>
+			<th>Total</th>
+		</thead>
+		<?php for($i=54;$i<60;$i++): ?>
+			<tr>
+				<td>{{ $courses[$i]->name }}</td>
+
+				<?php for($j=0;$j<$dcount-2;$j++) :?>
+					<td><?php echo $table2[$j][$i-54]; ?></td>
+				<?php endfor ?>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+			</tr>
+		<?php endfor ?>
+		
+
+	</table>
+	<br/>	
 
     
 	<h4>Edit constant</h4>

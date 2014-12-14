@@ -421,7 +421,7 @@ Route::get('report-year/{year}', array('as' => 'report-year', function($year) {
 
 
 
-
+/*
 Route::get('constant', function()
 {
 	$departments = departmentc::all();
@@ -429,7 +429,73 @@ Route::get('constant', function()
 	
     return View::make('addconstant')->with('departments', $departments)->with('courses', $courses);
 });
+*/
+Route::get('constant/{semester}/{year}',  array('as' => 'addconstant', function($semester, $year) 
+{
+	$arr['semester']     = $semester;
+	$arr['year']         = $year;
 
+	$table       = array();
+	$table2       = array();
+	$course_name = array();
+	
+	$departments = departmentc::all();
+	$courses     = course::all();
+	$k           = 0 ;
+	$k2           = 0 ;
+	
+	foreach($departments as $department){
+		$temp    = array();
+		$temp2    = array();
+		$is_null = true ;
+		$is_null2 = true ;
+
+		for($i=54;$i<60;$i++){//course
+			
+			$course = $i ;
+			$data = DB::select("SELECT scch_value, student_amount 
+								FROM constant  
+								WHERE course ='".$course."' 
+									and department_c='".$department->id."' 
+									and semester='".$semester."'
+									and year='".$year."'
+								");
+
+			if( isset ($data[0]->scch_value))  {
+				$temp[$i-54] = $data[0]->scch_value;
+			}
+			else{
+				$temp[$i-54] = 0 ;
+			}
+			
+			if( isset ($data[0]->student_amount) ) {
+				$temp2[$i-54] = $data[0]->student_amount;
+			}
+			else{
+				$temp2[$i-54] = 0 ;
+			}
+		}
+			$table[$k] = $temp ;
+			$k++;
+
+			$table2[$k2] = $temp2 ;
+			$k2++;
+
+	}
+
+	// var_dump($table);
+	// var_dump($course_name);
+	// echo "</pre>";
+	// die();
+	
+	$arr['table']       = $table ;
+	$arr['table2']       = $table2 ;
+	//$arr['course_name'] = $course_name ;
+
+
+	return View::make('addconstant')->with('arr', $arr)->with('departments', $departments)->with('courses', $courses);
+	
+}));
 
 
 
