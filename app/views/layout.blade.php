@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Entaneer CMU Money Analysis</title>
+    <title>ระบบเก็บข้อมูลการเงิน คณะวิศวกรรมศาสตร์ มหาวิทยาลัยเชียงใหม่</title>
 
     <!-- Bootstrap -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
@@ -60,7 +60,7 @@
 
   <div class="row">
   <div style="padding:10px" class="col-md-12">
-    <h4 style="float:left;margin-left:0px;margin-top:30px">Entaneer CMU Money Analysis</h4>
+    <h4 style="float:left;margin-left:0px;margin-top:30px">ระบบเก็บข้อมูลการเงิน คณะวิศวกรรมศาสตร์ มหาวิทยาลัยเชียงใหม่</h4>
 
     <div style="float:right;margin-top:25px">
 
@@ -72,7 +72,7 @@
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
         <li><a href="{{ route('additem') }}">เพิ่มรายรับ</a></li>
-        <li><a href="{{ route('additem2') }}">เพิ่มรายรับประเภท Service/OH</a></li> 
+        <li><a href="{{ route('additem2') }}">เพิ่มรายรับประเภท Service/OH/อื่น ๆ </a></li> 
       </ul>
     </div>
 
@@ -112,15 +112,15 @@
 
   <div class="row">
 
-        <div class="col-md-1">
-        </div>
+        <!-- <div class="col-md-1">
+        </div> -->
 
-        <div class="col-md-10">
+        <div class="col-md-12">
         @yield('content')
         </div>
 
-        <div class="col-md-1">
-        </div>
+<!--         <div class="col-md-1">
+        </div> -->
 
   </div>
 </div>

@@ -4,7 +4,7 @@
 
     
 
-	<h4>เพิ่มรายรับ</h4>
+	<h4>เพิ่มรายรับ (Service/OH/อื่น ๆ)</h4>
 	<hr>
 	<form method="post" action="additem" role="form" class="form-horizontal" style="">
 		
@@ -20,7 +20,7 @@
 			<label for="Input_Type" class="col-sm-2">ประเภทรายรับ: </label>
 			  <div class="col-sm-10">
 			<select name="Input_Type" class="form-control">
-				<?php for($i=0;$i<count($income_types)-3;$i++):?>
+				<?php for($i=6;$i<count($income_types);$i++):?>
 					<option value="{{ $income_types[$i]->id }}">{{ $income_types[$i]->name }}</option>
 				<?php endfor ?>
 			</select>
@@ -55,11 +55,11 @@
 		</div>
 
 		<div class="form-group">
-			<label for="Course" class="col-sm-2">หลักสูตร: </label>
+			<label for="Course" class="col-sm-2">ชื่อรายรับ: </label>
 			<div class="col-sm-10">
 			<select name="Course" class="form form-control">
-				<option value="0"> ========== เลือก =========</option>
-				<?php for($i=0;$i<count($courses)-5;$i++):?>
+				<option value="0"> ========== เลือก =========</option
+				<?php for($i=count($courses)-4;$i<count($courses);$i++):?>
 					<option value="{{ $courses[$i]->id }}">{{ $courses[$i]->name }}</option>
 				<?php endfor ?>
 			</select> 
