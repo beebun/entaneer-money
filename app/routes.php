@@ -506,7 +506,7 @@ Route::get('constant/{semester}/{year}',  array('as' => 'addconstant', function(
 
 
 
-Route::post('constant', function()
+Route::post('constant', array( "as"=>"post_add_constant" ,function()
 {
 	$constant = new constant;
 	$course       	= Input::get('Course');
@@ -544,8 +544,8 @@ Route::post('constant', function()
 	// redirect ----------------------------------------
 	// redirect our user back to the form so they can do it all over again
 	
-	return Redirect::to('constant');	
-});
+	return Redirect::to('constant/'.$semester.'/'.$year);	
+}));
 
 
 

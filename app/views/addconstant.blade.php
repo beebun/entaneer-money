@@ -67,7 +67,9 @@
 	<h4>Edit constant</h4>
 	<hr>
 	
-	<form method="post" action="constant" class="form-horizontal">
+	{{ Form::open(array('route' => 'post_add_constant','class'=>'form-horizontal')) }}
+
+	<!-- <form method="post" action="constant" class="form-horizontal"> -->
 	
 		<div class="form-group">
 			<label for="Course" class="col-sm-2">หลักสูตร: </label>
