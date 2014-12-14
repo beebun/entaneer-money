@@ -450,7 +450,7 @@ Route::get('constant/{semester}/{year}',  array('as' => 'addconstant', function(
 		$is_null = true ;
 		$is_null2 = true ;
 
-		for($i=54;$i<60;$i++){//course
+		for($i=54;$i<61;$i++){//course
 			
 			$course = $i ;
 			$data = DB::select("SELECT scch_value, student_amount 

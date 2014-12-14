@@ -22,9 +22,9 @@
 			<th>Eng-All</th>
 			<th>Total</th><?php $dcount=$dcount+2;?>
 		</thead>
-		<?php for($i=54;$i<60;$i++): ?>
+		<?php for($i=54;$i<61;$i++): ?>
 			<tr>
-				<td>{{ $courses[$i]->name }}</td>
+				<td>{{ $courses[$i-1]->name }}</td>
 
 				<?php for($j=0;$j<$dcount-2;$j++) :?>
 					<td><?php echo $table[$j][$i-54] ; ?></td>
@@ -47,9 +47,9 @@
 			<th>Eng-All</th>
 			<th>Total</th>
 		</thead>
-		<?php for($i=54;$i<60;$i++): ?>
+		<?php for($i=54;$i<61;$i++): ?>
 			<tr>
-				<td>{{ $courses[$i]->name }}</td>
+				<td>{{ $courses[$i-1]->name }}</td>
 
 				<?php for($j=0;$j<$dcount-2;$j++) :?>
 					<td><?php echo $table2[$j][$i-54]; ?></td>
