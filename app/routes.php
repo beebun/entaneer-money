@@ -17,6 +17,14 @@ Route::get('/', function()
 	return Redirect::to('additem');	
 });
 
+
+
+
+
+
+
+
+
 Route::get('users', function()
 {
     $users = User::all();
@@ -24,14 +32,42 @@ Route::get('users', function()
     return View::make('users')->with('users', $users);
 });
 
-Route::get('additem', function()
+
+
+
+
+
+
+
+
+
+Route::get('additem', array('as' => 'additem', function()
 {
 	$courses = course::all();
 	$departments = department::all();
 	$income_types = IncomeType::all();
 	
     return View::make('additem')->with('courses', $courses)->with('departments', $departments)->with('income_types', $income_types);
-});
+}));
+
+
+
+
+Route::get('additem2', array('as' => 'additem2', function()
+{
+	// $courses = course::all();
+	// $departments = department::all();
+	// $income_types = IncomeType::all();
+	
+ //    return View::make('additem')->with('courses', $courses)->with('departments', $departments)->with('income_types', $income_types);
+}));
+
+
+
+
+
+
+
 
 Route::post('additem', function()
 {
@@ -51,6 +87,14 @@ Route::post('additem', function()
 	return Redirect::to('additem');	
 });
 
+
+
+
+
+
+
+
+
 Route::get('expenditure1', function()
 {
 	$departments = department::all();
@@ -58,6 +102,14 @@ Route::get('expenditure1', function()
 	
     return View::make('addexpenditure1')->with('departments', $departments)->with('expenditure1', $expenditure1);
 });
+
+
+
+
+
+
+
+
 
 Route::post('expenditure1', function()
 {
@@ -91,12 +143,26 @@ Route::post('expenditure1', function()
 	return Redirect::to('expenditure1');	
 });
 
+
+
+
+
+
+
+
 Route::get('expenditure2', function()
 {
 	$departments = department::all();
 	
     return View::make('addexpenditure2')->with('departments', $departments);
 });
+
+
+
+
+
+
+
 
 Route::post('expenditure2', function()
 {
@@ -112,6 +178,13 @@ Route::post('expenditure2', function()
 	return Redirect::to('expenditure2');	
 });
 
+
+
+
+
+
+
+
 Route::post('getAmount', function()
 {
 	$expenditure1 = expenditure1::all();
@@ -124,13 +197,79 @@ Route::post('getAmount', function()
 	return $Amount;
 });
 
+
+
+
+
+
+
+
+
 Route::get('report/{semaster}/{year}',  array('as' => 'report', function($semaster, $year) {
 
-	$arr['semaster'] = $semaster;
-	$arr['year'] = $year;
-	// return View::make('view-report')->with('departments', $departments);
+	$arr['semaster']     = $semaster;
+	$arr['year']         = $year;
+	$arr['income_types'] = IncomeType::all();
+
+	// echo "<pre>";
+	
+	$table       = array();
+	$course_name = array();
+
+	$courses     = course::all();
+	$k           = 0 ;
+	
+	foreach($courses as $course){
+		$temp    = array();
+		$is_null = true ;
+
+		for($i=1;$i<=6;$i++){
+			
+			$income_type = $i ;
+
+			$data = DB::select("SELECT course, department, sum(amount) as result
+								FROM item  
+								WHERE income_type ='".$income_type."' 
+									and course='".$course->id."' 
+									and semester='".$semaster."'
+									and year='".$year."'
+								");
+
+			if( !is_null($data[0]->result) ) {
+				$is_null = false ;
+				$temp[$i-1] = $data[0]->result;
+			}
+			else{
+				$temp[$i-1] = 0 ;
+			}
+		}
+
+		if( !$is_null ) {
+			$course_name[$k] = $course->name ;
+			$table[$k] = $temp ;
+			$k++;
+		}
+	}
+
+	// var_dump($table);
+	// var_dump($course_name);
+	// echo "</pre>";
+	// die();
+	
+	$arr['table']       = $table ;
+	$arr['course_name'] = $course_name ;
+
+
 	return View::make('report')->with('arr', $arr);
 }));
+
+
+
+
+
+
+
+
 
 Route::get('report-year/{year}', array('as' => 'report-year', function($year) {
 
@@ -164,6 +303,16 @@ Route::get('report-year/{year}', array('as' => 'report-year', function($year) {
 	return View::make('report-year')->with('arr', $arr);
 }));
 
+
+
+
+
+
+
+
+
+
+
 Route::get('constant', function()
 {
 	$departments = departmentc::all();
@@ -171,6 +320,16 @@ Route::get('constant', function()
 	
     return View::make('addconstant')->with('departments', $departments)->with('courses', $courses);
 });
+
+
+
+
+
+
+
+
+
+
 
 Route::post('constant', function()
 {
@@ -212,6 +371,16 @@ Route::post('constant', function()
 	
 	return Redirect::to('constant');	
 });
+
+
+
+
+
+
+
+
+
+
 
 Route::post('getValue', function()
 {

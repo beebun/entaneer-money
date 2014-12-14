@@ -13,10 +13,10 @@
 			<div class="col-sm-10">
 			<select name="Course" id="Course" class="form form-control">
 				<option value=""> ========== เลือก =========</option>
-				@foreach($courses as $course)
-					<option value="{{ $course->id }}">{{ $course->name }}</option>
-					<!--<p>{{ $course->id }}</p><p>{{ $course->name }}</p>-->
-				@endforeach
+
+				<?php for($i=53;$i<60;$i++): ?>
+					<option value="{{ $courses[$i]->id }}">{{ $courses[$i]->name }}</option>
+				<?php endfor ?>
 			</select> 
 			</div>
 		</div>

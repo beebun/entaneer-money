@@ -58,7 +58,7 @@
 			<label for="Course" class="col-sm-2">หลักสูตร: </label>
 			<div class="col-sm-10">
 			<select name="Course" class="form form-control">
-				<option value=""> ========== เลือก =========</option>
+				<option value="0"> ========== เลือก =========</option>
 				@foreach($courses as $course)
 					<option value="{{ $course->id }}">{{ $course->name }}</option>
 					<!--<p>{{ $course->id }}</p><p>{{ $course->name }}</p>-->
@@ -71,7 +71,7 @@
 			<label for="Department" class="col-sm-2">ภาควิชา: </label>
 			  <div class="col-sm-10">
 			<select name="Department" class="form-control">
-				<option value=""> ========== เลือก =========</option>
+				<option value="0"> ========== เลือก =========</option>
 				@foreach($departments as $department)
 					<option value="{{ $department->id }}">{{ $department->name }}</option>
 				@endforeach

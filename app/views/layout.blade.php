@@ -38,6 +38,10 @@
       font-size: 32px;
       margin: 16px 0 0 0;
     }
+
+    .disabled{
+      background-color:#efefef;
+    }
   </style>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -48,6 +52,11 @@
   </head>
   <body>
 
+<?php 
+  $year = date("Y")+543;
+  $semester = 1 ;
+?>
+
 <div class="container">
 
   <div class="row">
@@ -55,13 +64,26 @@
     <h2 style="float:left;margin-left:50px">Entaneer CMU Money Analysis</h2>
 
     <div style="float:right;margin-top:25px">
+
+    <div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+    Add
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+    <li role="presentation"><a href="{{ route('additem') }}">Item</a></li>
+    <li role="presentation"><a href="{{ route('additem2') }}">Service/OH Item</a></li>
+  </ul>
+</div> |
+
+
       {{ link_to('additem','Add Item') }} |
       {{ link_to('expenditure1','Edit Expenditure1') }} |
       {{ link_to('expenditure2','Add Expenditure2') }} |
       {{ link_to('constant','Constant (SCCH, People Num)') }} |
 
-      <a href="{{ route('report', array('semaster' => 1,  'year' => 2557)) }}">Report</a> |
-      <a href="{{ route('report-year', array('year' => 2557)) }}">Report year</a>
+      <a href="{{ route('report', array('semaster' => $semester,  'year' => $year)) }}">Report</a> |
+      <a href="{{ route('report-year', array('year' => $year)) }}">Report year</a>
 
     </div>
     <div style="clear:both"></div>
