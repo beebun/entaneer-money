@@ -152,7 +152,7 @@
 				var Department = document.getElementById("Department").value;
 				//alert( Years+" "+Department);
 				
-				$.post( "getValue", { Course: Course, Semester: Semester, Years: Years, Department: Department }).done(function( data ) {
+				$.post( "../../getValue", { Course: Course, Semester: Semester, Years: Years, Department: Department }).done(function( data ) {
 					if(data.length > 0){
 						//console.log(data);
 						$('#Scch_value').val(data[0].scch_value);

@@ -101,7 +101,7 @@
     </div>
       
       
-      <button class="btn btn-default">{{ link_to('constant','เปลี่ยนแปลงค่า SCCH/จำนวนคน') }}</button>
+      <button class="btn btn-default"><a href="{{ route('addconstant', array('semester' => 1, 'year' => 2557)) }}">ค่าคงที่ (SCCH/Constant)</a></button>
     </div>
       
 
