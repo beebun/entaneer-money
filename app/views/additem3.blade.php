@@ -4,7 +4,7 @@
 
     
 
-	<h4>เพิ่มรายรับ</h4>
+	<h4>เพิ่มรายรับ (ค่าจัดสรรค่าธรรมเนียม)</h4>
 	<hr>
 	<form method="post" action="additem" role="form" class="form-horizontal" style="">
 		
@@ -20,9 +20,7 @@
 			<label for="Input_Type" class="col-sm-2">ประเภทรายรับ: </label>
 			  <div class="col-sm-10">
 			<select name="Input_Type" class="form-control">
-				<?php for($i=0;$i<count($income_types)-3;$i++):?>
-					<option value="{{ $income_types[$i]->id }}">{{ $income_types[$i]->name }}</option>
-				<?php endfor ?>
+				<option value="{{ $income_types[0]->id }}">{{ $income_types[0]->name }}</option>
 			</select>
 			</div>
 		</div>
@@ -55,13 +53,11 @@
 		</div>
 
 		<div class="form-group">
-			<label for="Course" class="col-sm-2">หลักสูตร: </label>
+			<label for="Course" class="col-sm-2">ชื่อรายรับ: </label>
 			<div class="col-sm-10">
 			<select name="Course" class="form form-control">
-				<option value="0"> ========== เลือก =========</option>
-				<?php for($i=0;$i<count($courses)-5;$i++):?>
-					<option value="{{ $courses[$i]->id }}">{{ $courses[$i]->name }}</option>
-				<?php endfor ?>
+				<option value="{{ $courses[60]->id }}">{{ $courses[60]->name }}</option>
+				<option value="{{ $courses[61]->id }}">{{ $courses[61]->name }}</option>
 			</select> 
 			</div>
 		</div>
@@ -70,7 +66,7 @@
 			<label for="Department" class="col-sm-2">ภาควิชา: </label>
 			  <div class="col-sm-10">
 			<select name="Department" class="form-control">
-				<option value="0"> Eng </option>
+				<option value="0"> Eng</option>
 				@foreach($departments as $department)
 					<option value="{{ $department->id }}">{{ $department->name }}</option>
 				@endforeach

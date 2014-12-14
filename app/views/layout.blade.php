@@ -72,7 +72,8 @@
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
         <li><a href="{{ route('additem') }}">เพิ่มรายรับ</a></li>
-        <li><a href="{{ route('additem2') }}">เพิ่มรายรับประเภท Service/OH/อื่น ๆ </a></li> 
+        <li><a href="{{ route('additem2') }}">เพิ่มรายรับประเภท /OH/อื่น ๆ </a></li> 
+        <li><a href="{{ route('additem3') }}">เพิ่มรายรับประเภท ค่าจัดสรรค่าธรรมเนียม </a></li> 
       </ul>
     </div>
 

@@ -39,8 +39,7 @@ Route::get('users', function()
 
 
 
-
-
+//Add รายรับแบบปกติ
 Route::get('additem', array('as' => 'additem', function()
 {
 	$courses = course::all();
@@ -53,6 +52,9 @@ Route::get('additem', array('as' => 'additem', function()
 
 
 
+
+
+//Add Service/OH/อื่นๆ
 Route::get('additem2', array('as' => 'additem2', function()
 {
 	$courses = course::all();
@@ -60,6 +62,21 @@ Route::get('additem2', array('as' => 'additem2', function()
 	$income_types = IncomeType::all();
 	
     return View::make('additem2')->with('courses', $courses)->with('departments', $departments)->with('income_types', $income_types);
+}));
+
+
+
+
+
+
+//Add ค่าจัดสรรค่าธรรมเนียม
+Route::get('additem3', array('as' => 'additem3', function()
+{
+	$courses = course::all();
+	$departments = department::all();
+	$income_types = IncomeType::all();
+	
+    return View::make('additem3')->with('courses', $courses)->with('departments', $departments)->with('income_types', $income_types);
 }));
 
 
@@ -257,12 +274,9 @@ Route::get('report/{semester}/{year}',  array('as' => 'report', function($semest
 	$k            = 0 ;
 
 	for($i=count($courses)-4;$i<count($courses);$i++){
-			
 
 		//Department from 0 (ENG) => 8
 		for($dep=0;$dep<=8;$dep++){
-
-
 			$temp       = array(0,0,0,0,0,0,0,0,0);
 			$department = 0 ;
 			$is_null    = true ;
@@ -298,9 +312,58 @@ Route::get('report/{semester}/{year}',  array('as' => 'report', function($semest
 	}
 
 
+
+
+
+
+
+
+	$course_name3 = array();
+	$table3       = array();
+	$k            = 0 ;
+
+	for($i=61;$i<=62;$i++){
+			
+		$course_id = $i ;
+
+		//Department from 0 (ENG) => 8
+		for($dep=0;$dep<=8;$dep++){
+			$temp        = array(0,0,0,0,0,0,0,0,0);
+			$department  = 0 ;
+			$is_null     = true ;
+			$income_type = 1 ;
+
+			$data = DB::select("SELECT  course, department, sum(amount) as result
+								FROM item  
+								WHERE income_type ='".$income_type."' 
+									and course='".$course_id."' 
+									and semester='".$semester."'
+									and year='".$year."'
+									and department = '".$dep."'
+								");
+
+			if( !is_null($data[0]->result) ) {
+				$is_null = false ;
+				$temp    = $data[0]->result;
+			}
+			else $temp = 0 ;
+
+			if( !$is_null ) {
+				$course_name3[$k][0] = $courses[$course_id-1]->name ;
+				$course_name3[$k][1] = $dep ;
+				$table3[$k]          = $temp ;
+				$k++;
+			}
+		}
+	}
+
+	// die();
+
+	$arr['table3']       = $table3;
+	$arr['course_name3'] = $course_name3;
+
 	$arr['table2']       = $table2;
 	$arr['course_name2'] = $course_name2;
-
 
 	$arr['table']        = $table ;
 	$arr['course_name']  = $course_name ;

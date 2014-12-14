@@ -31,10 +31,10 @@
 		<td>{{$departments[$i]->name}}</td>
 		<td></td>
 		<td></td>
-		<td>{{$val[$i+1]}}</td>
+		<td>{{$val[$i]}}</td>
 		<td></td>
 		<td></td>
-		<td>{{$val2[$i+1]}}</td>
+		<td>{{$val2[$i]}}</td>
 		<td></td>
 		<td></td>
 		<td></td>

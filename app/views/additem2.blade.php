@@ -58,8 +58,7 @@
 			<label for="Course" class="col-sm-2">ชื่อรายรับ: </label>
 			<div class="col-sm-10">
 			<select name="Course" class="form form-control">
-				<option value="0"> ========== เลือก =========</option
-				<?php for($i=count($courses)-4;$i<count($courses);$i++):?>
+				<?php for($i=count($courses)-3;$i<count($courses);$i++):?>
 					<option value="{{ $courses[$i]->id }}">{{ $courses[$i]->name }}</option>
 				<?php endfor ?>
 			</select> 
@@ -70,7 +69,7 @@
 			<label for="Department" class="col-sm-2">ภาควิชา: </label>
 			  <div class="col-sm-10">
 			<select name="Department" class="form-control">
-				<option value="0"> ========== เลือก =========</option>
+				<option value="0"> Eng</option>
 				@foreach($departments as $department)
 					<option value="{{ $department->id }}">{{ $department->name }}</option>
 				@endforeach
