@@ -7,7 +7,6 @@
     <title>Entaneer CMU Money Analysis</title>
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
 
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -61,29 +60,49 @@
 
   <div class="row">
   <div style="padding:10px" class="col-md-12">
-    <h2 style="float:left;margin-left:50px">Entaneer CMU Money Analysis</h2>
+    <h4 style="float:left;margin-left:0px;margin-top:30px">Entaneer CMU Money Analysis</h4>
 
     <div style="float:right;margin-top:25px">
 
-    <div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-    Add
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-    <li role="presentation"><a href="{{ route('additem') }}">Item</a></li>
-    <li role="presentation"><a href="{{ route('additem2') }}">Service/OH Item</a></li>
-  </ul>
-</div> |
+    <div class="btn-group">
+    <div class="dropdown btn-group">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+        รายรับ
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li><a href="{{ route('additem') }}">เพิ่มรายรับ</a></li>
+        <li><a href="{{ route('additem2') }}">เพิ่มรายรับประเภท Service/OH</a></li> 
+      </ul>
+    </div>
+
+    <div class="dropdown btn-group">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+        รายจ่าย
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li>{{ link_to('expenditure1','แก้ไขรายจ่ายประจำปี ตามภาควิชา') }}</li>
+        <li>{{ link_to('expenditure2','เพิ่มราย รับ(+) จ่าย(-) ประจำปี') }}</li> 
+      </ul>
+    </div>
 
 
-      {{ link_to('additem','Add Item') }} |
-      {{ link_to('expenditure1','Edit Expenditure1') }} |
-      {{ link_to('expenditure2','Add Expenditure2') }} |
-      {{ link_to('constant','Constant (SCCH, People Num)') }} |
-
-      <a href="{{ route('report', array('semaster' => $semester,  'year' => $year)) }}">Report</a> |
-      <a href="{{ route('report-year', array('year' => $year)) }}">Report year</a>
+      <div class="dropdown btn-group">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+        รายงาน
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li><a href="{{ route('report', array('semaster' => $semester,  'year' => $year)) }}">รายงานประจำเทอม/ปีการศึกษา</a></li>
+        <li><a href="{{ route('report-year', array('year' => $year)) }}">รายงานสรุปตามภาควิชา</a></li> 
+      </ul>
+    </div>
+      
+      
+      <button class="btn btn-default">{{ link_to('constant','เปลี่ยนแปลงค่า SCCH/จำนวนคน') }}</button>
+    </div>
+      
 
     </div>
     <div style="clear:both"></div>
@@ -109,6 +128,6 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
   </body>
 </html>

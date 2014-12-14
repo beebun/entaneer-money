@@ -205,9 +205,9 @@ Route::post('getAmount', function()
 
 
 
-Route::get('report/{semaster}/{year}',  array('as' => 'report', function($semaster, $year) {
+Route::get('report/{semester}/{year}',  array('as' => 'report', function($semester, $year) {
 
-	$arr['semaster']     = $semaster;
+	$arr['semester']     = $semester;
 	$arr['year']         = $year;
 	$arr['income_types'] = IncomeType::all();
 
@@ -231,7 +231,7 @@ Route::get('report/{semaster}/{year}',  array('as' => 'report', function($semast
 								FROM item  
 								WHERE income_type ='".$income_type."' 
 									and course='".$course->id."' 
-									and semester='".$semaster."'
+									and semester='".$semester."'
 									and year='".$year."'
 								");
 

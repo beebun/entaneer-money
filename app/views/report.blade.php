@@ -3,12 +3,16 @@
 @section('content')
 
 <?php 
+	$year 	      = $arr['year'];
+	$semester  	  = $arr['semester'];
 	$income_types = $arr['income_types'];
 	$table        = $arr['table'];
 	$course_name  = $arr['course_name'];
 ?>    
 
-	<h4>Report</h4>
+	<h4>รายงาน <?php echo $semester."/".$year ; ?></h4>
+	<hr>
+	<h5><strong>ตามหลักสูตร</strong></h5>
 	<table class="table table-bordered">
 		<thead>
 			<th>หลักสูตร</th>
@@ -31,10 +35,10 @@
 	</table>
 
 	<br/>
-	<h4>Report Sevice/OH/อื่น ๆ</h4>
+	<h5><strong>ตาม Sevice/OH/อื่น ๆ</strong></h5>
 	<table class="table table-bordered">
 		<thead>
-			<th>หลักสูตร</th>
+			<th>รายการ</th>
 			<?php for($j=0;$j<count($income_types);$j++) :?>
 				<th><?php echo $income_types[$j]->name; ?></th>
 			<?php endfor ?>
