@@ -28,7 +28,10 @@
 				<td>{{ $courses[$i-1]->name }}</td>
 
 				<?php for($j=0;$j<$dcount-2;$j++) :?>
-					<td><?php echo $table[$j][$i-54]; ?></td>
+					<td>
+						<?php //echo $table[$j][$i-54]; ?>
+						<input type="text" class="form-control" value="{{ $table[$j][$i-54] }}">
+					</td>
 					<?php 
 						$total=$total+$table[$j][$i-54];
 						if($j>8)
@@ -45,7 +48,7 @@
 	</table>
 
 
-	<h5><strong>จำนวนนักเรียน</strong></h5>
+	<h5><strong>จำนวนนักศึกษา</strong></h5>
 	<table class="table table-bordered">
 		<thead>
 			<th>หลักสูตร</th>

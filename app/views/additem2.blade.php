@@ -20,7 +20,7 @@
 			<label for="Input_Type" class="col-sm-2">ประเภทรายรับ: </label>
 			  <div class="col-sm-10">
 			<select name="Input_Type" class="form-control">
-				<?php for($i=6;$i<count($income_types);$i++):?>
+				<?php for($i=6;$i<count($income_types)-1;$i++):?>
 					<option value="{{ $income_types[$i]->id }}">{{ $income_types[$i]->name }}</option>
 				<?php endfor ?>
 			</select>
@@ -58,7 +58,7 @@
 			<label for="Course" class="col-sm-2">ชื่อรายรับ: </label>
 			<div class="col-sm-10">
 			<select name="Course" class="form form-control">
-				<?php for($i=count($courses)-3;$i<count($courses);$i++):?>
+				<?php for($i=count($courses)-4;$i<count($courses);$i++):?>
 					<option value="{{ $courses[$i]->id }}">{{ $courses[$i]->name }}</option>
 				<?php endfor ?>
 			</select> 
@@ -69,7 +69,6 @@
 			<label for="Department" class="col-sm-2">ภาควิชา: </label>
 			  <div class="col-sm-10">
 			<select name="Department" class="form-control">
-				<option value="0"> Eng</option>
 				@foreach($departments as $department)
 					<option value="{{ $department->id }}">{{ $department->name }}</option>
 				@endforeach

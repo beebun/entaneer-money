@@ -66,7 +66,6 @@
 			<label for="Department" class="col-sm-2">ภาควิชา: </label>
 			  <div class="col-sm-10">
 			<select name="Department" class="form-control">
-				<option value="0"> Eng</option>
 				@foreach($departments as $department)
 					<option value="{{ $department->id }}">{{ $department->name }}</option>
 				@endforeach

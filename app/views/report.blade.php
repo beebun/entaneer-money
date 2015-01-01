@@ -41,9 +41,10 @@ body{
 				<td>
 				{{ $departments[$course_name[$i][1]]->name }}
 				</td>
-				<?php for($j=0;$j<count($income_types)-3;$j++) :?>
+				<?php for($j=0;$j<count($income_types)-4;$j++) :?>
 					<td><?php echo $table[$i][$j]; ?></td>
 				<?php endfor ?>
+				<td class="disabled"></td>
 				<td class="disabled"></td>
 				<td class="disabled"></td>
 				<td class="disabled"></td>
@@ -76,7 +77,7 @@ body{
 				<?php for($j=6;$j<9;$j++) :?>
 					<td><?php echo $table2[$i][$j]; ?></td>
 				<?php endfor ?>
-				
+				<td class="disabled"></td>
 			</tr>
 		<?php endfor ?>
 	</table>
@@ -98,6 +99,7 @@ body{
 					{{ $departments[$course_name3[$i][1]]->name }}
 				</td>
 				<td><?php echo $table3[$i]; ?></td>
+				<td class="disabled"></td>
 				<td class="disabled"></td>
 				<td class="disabled"></td>
 				<td class="disabled"></td>
