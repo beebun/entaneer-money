@@ -139,10 +139,12 @@ Route::post('expenditure1', function()
 	if(count($Amount)>0)
 	{
 		$Amount         = Input::get('Amount');
+		$Detail         = Input::get('Detail');
 		expenditure1::where('department', $department)->where('year', $year)->update(array(
             'department'    =>  $department,
             'year' =>  $year,
             'amount'  => $Amount,
+            'detail'  => $Detail,
         ));
 		//$affectedRows = expenditure1:::where('department', $department)->where('year', $year)->update(array('amount' => $Amount));
 	}
@@ -151,6 +153,7 @@ Route::post('expenditure1', function()
 		$expenditure1->department   = Input::get('Department');
 		$expenditure1->year			= Input::get('Years');
 		$expenditure1->amount     	= Input::get('Amount');
+		$expenditure1->detail     	= Input::get('Detail');
 
 		// save our duck
 		$expenditure1->save();
@@ -181,19 +184,52 @@ Route::get('expenditure2', function()
 
 
 
+// Route::post('expenditure2', function()
+// {
+// 	$expenditure2 = new Expenditure2;
+// 	$expenditure2->department   = Input::get('Department');
+// 	$expenditure2->year			= Input::get('Years');
+// 	$expenditure2->amount     	= Input::get('Amount');
+
+// 	// save our duck
+// 	$expenditure2->save();
+// 	// redirect ----------------------------------------
+// 	// redirect our user back to the form so they can do it all over again
+// 	return Redirect::to('expenditure2');	
+// });
+
 Route::post('expenditure2', function()
 {
 	$expenditure2 = new Expenditure2;
-	$expenditure2->department   = Input::get('Department');
-	$expenditure2->year			= Input::get('Years');
-	$expenditure2->amount     	= Input::get('Amount');
+	$department   = Input::get('Department');
+	$year         = Input::get('Years');
 
-	// save our duck
-	$expenditure2->save();
-	// redirect ----------------------------------------
-	// redirect our user back to the form so they can do it all over again
-	return Redirect::to('expenditure2');	
+	$Amount = expenditure2::where('department', $department)->where('year', $year)->get();
+	
+	if(count($Amount)>0)
+	{
+		$Amount         = Input::get('Amount');
+		$Detail 		= Input::get('Detail');
+		expenditure2::where('department', $department)->where('year', $year)->update(array(
+            'department'    =>  $department,
+            'year' =>  $year,
+            'amount'  => $Amount,
+            'detail'  => $Detail,
+        ));
+	}
+	else
+	{
+		$expenditure2->department   = Input::get('Department');
+		$expenditure2->year			= Input::get('Years');
+		$expenditure2->amount     	= Input::get('Amount');
+		$expenditure2->detail     	= Input::get('Detail');
+
+		$expenditure2->save();
+	}
+	return Redirect::to('expenditure2');
 });
+
+
 
 
 
@@ -209,11 +245,20 @@ Route::post('getAmount', function()
 	$department   = Input::get('Department');
 	$year         = Input::get('Years');
 	$Amount       = expenditure1::where('department', $department)->where('year', $year)->get();
-	//$Amount = expenditure1::where('year', $year)->get('amount');
-	// return $expenditure1;
 	return $Amount;
 });
 
+
+
+Route::post('getAmount2', function()
+{
+	$expenditure1 = expenditure1::all();
+	
+	$department   = Input::get('Department');
+	$year         = Input::get('Years');
+	$Amount       = expenditure2::where('department', $department)->where('year', $year)->get();
+	return $Amount;
+});
 
 
 

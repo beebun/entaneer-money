@@ -41,6 +41,13 @@
 		</div>
 
 		<div class="form-group">
+			<label for="Amount" class="col-sm-2">รายละเอียด: </label>
+			<div class="col-md-10">
+				<textarea style="height:200px" class="form-control" id="detail" name="Detail"></textarea>
+			</div>
+		</div>
+
+		<div class="form-group">
 			<div class="col-md-2"></div>
 			<div class="col-md-10"><input type="submit" name="submit" class="btn btn-primary" value="บันทึก"></div>
 		</div>
@@ -58,6 +65,7 @@
 				$.post( "getAmount", { Years: Years, Department: Department }).done(function( data ) {
 					if(data.length > 0){
 						$('#amount').val(data[0].amount);
+						$('#detail').val(data[0].detail);
 					}else{
 						$('#amount').val(0);
 					}
@@ -67,23 +75,7 @@
 			get_saved_amount();
 			
 			$( "select" ).change(function() {
-				
 				get_saved_amount();	
-				/*var AmountValue = $.ajax({
-					url: "/laravel/MoneyAnalysis/public/test",
-					type: "POST",
-					data: {
-							"Years": Years,
-							"Department": Department
-						  },
-				});
-				
-				AmountValue.done(function (res, textStatus, jqXHR){
-					if (res.status = "ok"){     
-						console.log(res);
-					}
-				});*/
-
 			});
 			
 		</script>
