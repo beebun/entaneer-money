@@ -14,7 +14,7 @@
 	<h4>รายงาน <?php $dcount=0; echo $semester."/".$year ; ?></h4>
 	<hr>
 	<h5><strong>ค่า SCCH</strong></h5>
-	<table class="table table-bordered">
+	<table class="table table-bordered" style="font-size:13px">
 		<thead>
 			<th>หลักสูตร</th>
 			@foreach($departments as $department)
@@ -25,12 +25,13 @@
 		</thead>
 		<?php for($i=54;$i<61;$i++): $total=0;$engtotal=0;?>
 			<tr>
-				<td>{{ $courses[$i-1]->name }}</td>
+				<td>{{ $courses[$i-1]->name }} {{ $courses[$i-1]->id }}</td>
 
 				<?php for($j=0;$j<$dcount-2;$j++) :?>
 					<td>
 						<?php //echo $table[$j][$i-54]; ?>
-						<input type="text" class="form-control" value="{{ $table[$j][$i-54] }}">
+						<!--{{ $courses[$i-1]->id }} {{$departments[$j]->id}} {{$year}} {{$semester}}-->
+						<input type="text" onchange="save_scch(this.value, {{ $table2[$j][$i-54]}}, {{ $courses[$i-1]->id }}, {{$departments[$j]->id}}, {{$year}}, {{$semester}})" class="form-control" style="font-size:13px" value="{{ $table[$j][$i-54] }}">
 					</td>
 					<?php 
 						$total=$total+$table[$j][$i-54];
@@ -63,7 +64,11 @@
 				<td>{{ $courses[$i-1]->name }}</td>
 
 				<?php for($j=0;$j<$dcount-2;$j++) :?>
-					<td><?php echo $table2[$j][$i-54];?></td>
+					<td>
+						<?php //echo $table2[$j][$i-54];?>
+						<input type="text" onchange="save_scch({{ $table[$j][$i-54]}}, this.value ,{{ $courses[$i-1]->id }}, {{$departments[$j]->id}}, {{$year}}, {{$semester}})" class="form-control" style="font-size:13px" value="{{ $table2[$j][$i-54] }}">
+
+					</td>
 					<?php 
 						$total=$total+$table2[$j][$i-54];
 						if($j>8)
@@ -81,14 +86,10 @@
 	</table>
 	<br/>	
 
-    
+   	<!--
 	<h4>Edit constant</h4>
 	<hr>
-	
 	{{ Form::open(array('route' => 'post_add_constant','class'=>'form-horizontal')) }}
-
-	<!-- <form method="post" action="constant" class="form-horizontal"> -->
-	
 		<div class="form-group">
 			<label for="Course" class="col-sm-2">หลักสูตร: </label>
 			<div class="col-sm-10">
@@ -157,20 +158,45 @@
 			<div class="col-md-2"></div>
 			<div class="col-md-10"><input type="submit" name="submit" class="btn btn-primary" value="บันทึก"></div>
 		</div>
-	</form>
+	</form>-->
 
 
 	<script>
 
 
+			function save_scch(scch_value, student_amount, course_id, department_id, year, semester){
+
+				$.post( "../../constant", 
+					{ 
+						Course: course_id, 
+						Semester: semester, 
+						Years: year, 
+						Department: department_id,
+						Scch_value: scch_value,
+						Student_amount: student_amount
+					})
+				.done(function( data ) {
+					alert("บันทึกเรียบร้อย");
+				})
+				.error(function(data) {
+					alert("พบข้อผิดพลาด!!!");	
+				});
+			}
+
 			function get_saved_value(){
-				var Course = document.getElementById("Course").value;
-				var Semester = document.getElementById("Semester").value;
-				var Years = document.getElementById("Years").value;
+				var Course     = document.getElementById("Course").value;
+				var Semester   = document.getElementById("Semester").value;
+				var Years      = document.getElementById("Years").value;
 				var Department = document.getElementById("Department").value;
-				//alert( Years+" "+Department);
 				
-				$.post( "../../getValue", { Course: Course, Semester: Semester, Years: Years, Department: Department }).done(function( data ) {
+				$.post( "../../getValue", 
+					{ 
+						Course: Course, 
+						Semester: Semester, 
+						Years: Years, 
+						Department: Department 
+					})
+				.done(function( data ) {
 					if(data.length > 0){
 						//console.log(data);
 						$('#Scch_value').val(data[0].scch_value);
