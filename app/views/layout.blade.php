@@ -99,9 +99,25 @@
         <li><a href="{{ route('report-year', array('year' => $year)) }}">รายงานสรุปตามภาควิชา</a></li> 
       </ul>
     </div>
+
+
+    <div class="dropdown btn-group">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+        แก้ไขค่าคงที่
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li>
+          <a href="{{ route('addconstant', array('semester' => 1, 'year' => 2557)) }}">ค่าคงที่ SCCH</a>
+        </li>
+        <li>
+          <a href="{{ route('percent') }}">ค่าคงที่ Percent</a></li>
+        </li>
+      </ul>
+    </div>
       
       
-      <button class="btn btn-default"><a href="{{ route('addconstant', array('semester' => 1, 'year' => 2557)) }}">ค่าคงที่ (SCCH/Constant)</a></button>
+      
     </div>
       
 

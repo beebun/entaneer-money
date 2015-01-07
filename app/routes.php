@@ -551,6 +551,26 @@ Route::get('constant/{semester}/{year}',  array('as' => 'addconstant', function(
 
 
 
+Route::get('percent',  array('as' => 'percent', function() 
+{
+
+	$arr         = Array();
+	$departments = departmentc::all();
+	$courses     = course::all();
+
+	return View::make('percent')->with('arr', $arr)->with('departments', $departments)->with('courses', $courses);
+	
+}));
+
+
+
+
+
+
+
+
+
+
 Route::post('constant', array( "as"=>"post_add_constant" ,function()
 {
 	$constant = new constant;
