@@ -10,16 +10,54 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-
-Route::get('/', function()
-{
-	// return View::make('hello');
-	return Redirect::to('additem');	
+Route::group(array('before' => 'auth'), function(){
+    Route::get('/', function()
+	{
+		// return View::make('hello');
+		return Redirect::to('usermanage');	
+	});
 });
 
+// route to show the login form
+Route::get('login', array('uses' => 'HomeController@showLogin'));
 
+// route to process the form
+Route::post('login', array('uses' => 'HomeController@doLogin'));
 
+Route::get('genuser', function()
+{
+    $UserType = UserType::all();
 
+    return View::make('genuser')->with('usertype', $UserType);
+});
+Route::post('genuser', function()
+{
+	$user = new User;
+	$user->username		= Input::get('username');
+	$user->password  	= Input::get('password');
+	$user->name   		= Input::get('name');
+
+	// save our duck
+	$user->save();
+	// redirect ----------------------------------------
+	// redirect our user back to the form so they can do it all over again
+	return Redirect::to('login');	
+});
+Route::get('usermanage', function()
+{
+    $users = User::all();
+
+    return View::make('usermanage')->with('users', $users);
+});
+Route::post('checkusername', function()
+{
+	$users = User::all();
+	
+	$username = Input::get('username');
+	$value     = User::where('username', $username)->get();
+	
+	return $value;
+});
 
 
 
