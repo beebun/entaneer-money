@@ -2,22 +2,45 @@
 
 class HomeController extends BaseController {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Default Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| You may wish to use controllers instead of, or in addition to, Closure
-	| based routes. That's great! Here is an example controller method to
-	| get you started. To route to this controller, just add the route:
-	|
-	|	Route::get('/', 'HomeController@showWelcome');
-	|
-	*/
+	public function getIndex(){
+		$user_data = Auth::user();
+		if($user_data->role == 'admin' || $user_data->role=='modulator'){
 
-	public function showWelcome()
+			return Redirect::to('/admin');
+		}
+
+		if($user_data->role=='user'||$user_data->role=='gopro'){
+			return Redirect::to('/user');
+		}
+	}
+
+	public function showLogin()
 	{
-		return View::make('hello');
+		// show the form
+		return View::make('login');
+	}
+
+	public function doLogin()
+	{
+        /* Get the login form data using the 'Input' class */
+        $userdata = array(
+            'username' => Input::get('username'),
+            'password' => Input::get('password')
+        );
+		
+		var_dump( $userdata);
+        /* Try to authenticate the credentials */
+        if(Auth::attempt($userdata)) 
+        {
+            // we are now logged in, go to admin
+            //return Redirect::to('admin');
+			echo "ok";
+        }
+        else
+        {
+            //return Redirect::to('login');
+			echo "fail";
+        }
 	}
 
 }
