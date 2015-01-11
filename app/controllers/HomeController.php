@@ -33,13 +33,20 @@ class HomeController extends BaseController {
         if(Auth::attempt($userdata)) 
         {
             // we are now logged in, go to admin
-            //return Redirect::to('admin');
-			echo "ok";
+			$type = Auth::user()->type;
+			if($type==1){
+				return Redirect::to('usermanage');
+			}
+			else
+			{
+				return Redirect::to('userprofile');
+			}
+			//echo "ok";
         }
         else
         {
-            //return Redirect::to('login');
-			echo "fail";
+            return Redirect::to('login');
+			//echo "fail";
         }
 	}
 
