@@ -37,6 +37,13 @@ Route::post('genuser', function()
 	$user->password  	= Input::get('password');
 	$user->name   		= Input::get('name');
 
+	/* hash password
+	$password = Hash::make(Input::get('password'));
+	$user = new User;
+	$user->username		= Input::get('username');
+	$user->password  	= $password;
+	$user->name   		= Input::get('name');*/
+	
 	// save our duck
 	$user->save();
 	// redirect ----------------------------------------
