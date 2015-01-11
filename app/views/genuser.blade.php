@@ -11,7 +11,6 @@
 		</div>
 		<div class="col-md-1">
 			<input type="button" value="Check Username" class="btn btn-primary" onclick="checkusername()"> 
-			<div id=checkvalue></div>
 		</div>
 	</div>
 	<div class="form-group">
@@ -47,22 +46,30 @@
 
 			function checkusername(){
 				var username	= document.getElementById("username").value;
+				if(username!=""){
+					$.post( "checkusername", 
+						{ 
+							username: username
+						})
+					.done(function( data ) {
+						if(data.length > 0){
+							//console.log(data);
+							alert("ไม่สามารถใช้ username นี้ได้");
+							document.getElementById("submit").disabled = true;
+						}
+						else
+						{
+							alert("สามารถใช้ username นี้ได้");
+							document.getElementById("submit").disabled = false;
+						}
+					});
+				}
+				else
+				{
+					alert('กรุณากรอก username');
+					document.getElementById("submit").disabled = true;
+				}
 				
-				$.post( "checkusername", 
-					{ 
-						username: username
-					})
-				.done(function( data ) {
-					if(data.length > 0){
-						console.log(data);
-						alert("ไม่สามารถใช้ username นี้ได้");
-						
-					}
-					else
-					{
-						document.getElementById("submit").disabled = false;
-					}
-				});
 			}
 
 			$('form').submit(function () {
