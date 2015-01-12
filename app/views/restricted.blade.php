@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-	<h4>Welcome {{$name = Auth::user()->name}}</h4>
+	<h4>Restricted Zone</h4>
 	<hr>
-
+	For Admin Only
 @stop

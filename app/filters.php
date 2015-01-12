@@ -45,7 +45,7 @@ Route::filter('auth.basic', function()
 
 Route::filter('admin', function()
 {
-	if(Auth::user()->type==1) return Redirect::to('usermanage');	
+	if(Auth::user()->type!=1) return View::make('restricted');
 });
 
 Route::filter('account', function()

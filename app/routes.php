@@ -26,10 +26,12 @@ Route::get('logout', function()
 Route::group(array('before' => 'auth'), function(){
     
 	Route::group(array('before'=>'admin'),function(){
-		Route::get('/', function()
+
+		Route::get('usermanage', function()
 		{
-			// return View::make('hello');
-			return Redirect::to('userprofile');	
+			$users = User::all();
+
+			return View::make('usermanage')->with('users', $users);
 		});
 		
 		Route::get('genuser', function()
@@ -38,6 +40,7 @@ Route::group(array('before' => 'auth'), function(){
 
 			return View::make('genuser')->with('usertype', $UserType);
 		});
+		
 		Route::post('genuser', function()
 		{
 			/* hash password*/
@@ -54,6 +57,7 @@ Route::group(array('before' => 'auth'), function(){
 			// redirect our user back to the form so they can do it all over again
 			return Redirect::to('login');	
 		});
+		
 		Route::post('checkusername', function()
 		{
 			$users = User::all();
@@ -63,25 +67,7 @@ Route::group(array('before' => 'auth'), function(){
 			
 			return $value;
 		});
-	});
-		Route::get('usermanage', function()
-		{
-			$users = User::all();
-
-			return View::make('usermanage')->with('users', $users);
-		});
-		Route::get('userprofile', function()
-		{
-			$users = User::all();
-
-			return View::make('userprofile')->with('users', $users);
-		});
-
-
-
-
-
-
+		
 		Route::get('users', function()
 		{
 			$users = User::all();
@@ -324,195 +310,7 @@ Route::group(array('before' => 'auth'), function(){
 
 
 
-		Route::get('report/{semester}/{year}',  array('as' => 'report', function($semester, $year) {
-
-			$arr['semester']     = $semester;
-			$arr['year']         = $year;
-			$arr['income_types'] = IncomeType::all();
-			$arr['departments']  = department::all();
-			// echo "<pre>";
-			
-			$table       = array();
-			$course_name = array();
-
-			$courses     = course::all();
-			$k           = 0 ;
-			
-			foreach($courses as $course){
-				$temp       = array();
-				$is_null    = true ;
-				$department = 0 ;
-
-				for($i=1;$i<=6;$i++){
-					$income_type = $i ;
-					$data = DB::select("SELECT course, department, sum(amount) as result
-										FROM item  
-										WHERE income_type ='".$income_type."' 
-											and course='".$course->id."' 
-											and semester='".$semester."'
-											and year='".$year."'
-										");
-
-					if( !is_null($data[0]->result) ) {
-						$is_null    = false ;
-						$temp[$i-1] = $data[0]->result;
-						$department = $data[0]->department;
-					}
-					else $temp[$i-1] = 0 ;
-				}
-
-				if( !$is_null ) {
-					$course_name[$k][0] = $course->name ;
-					$course_name[$k][1] = $department ;
-					$table[$k] = $temp ;
-					$k++;
-				}
-			}
-
-
-
-			$course_name2 = array();
-			$table2       = array();
-			$k            = 0 ;
-
-			for($i=count($courses)-4;$i<count($courses);$i++){
-
-				//Department from 0 (ENG) => 8
-				for($dep=0;$dep<=8;$dep++){
-					$temp       = array(0,0,0,0,0,0,0,0,0);
-					$department = 0 ;
-					$is_null    = true ;
-
-					//Income Type 
-					for($j=7;$j<=9;$j++){
-
-						$income_type = $j ;
-
-						$data = DB::select("SELECT  course, department, sum(amount) as result
-											FROM item  
-											WHERE income_type ='".$income_type."' 
-												and course='".$courses[$i]->id."' 
-												and semester='".$semester."'
-												and year='".$year."'
-												and department = '".$dep."'
-											");
-
-						if( !is_null($data[0]->result) ) {
-							$is_null    = false ;
-							$temp[$j-1] = $data[0]->result;
-						}
-						else $temp[$j-1] = 0 ;
-					}
-
-					if( !$is_null ) {
-						$course_name2[$k][0] = $courses[$i]->name ;
-						$course_name2[$k][1] = $dep ;
-						$table2[$k] = $temp ;
-						$k++;
-					}
-				}
-			}
-
-
-
-
-
-
-
-
-			$course_name3 = array();
-			$table3       = array();
-			$k            = 0 ;
-
-			for($i=61;$i<=62;$i++){
-					
-				$course_id = $i ;
-
-				//Department from 0 (ENG) => 8
-				for($dep=0;$dep<=8;$dep++){
-					$temp        = array(0,0,0,0,0,0,0,0,0);
-					$department  = 0 ;
-					$is_null     = true ;
-					$income_type = 1 ;
-
-					$data = DB::select("SELECT  course, department, sum(amount) as result
-										FROM item  
-										WHERE income_type ='".$income_type."' 
-											and course='".$course_id."' 
-											and semester='".$semester."'
-											and year='".$year."'
-											and department = '".$dep."'
-										");
-
-					if( !is_null($data[0]->result) ) {
-						$is_null = false ;
-						$temp    = $data[0]->result;
-					}
-					else $temp = 0 ;
-
-					if( !$is_null ) {
-						$course_name3[$k][0] = $courses[$course_id-1]->name ;
-						$course_name3[$k][1] = $dep ;
-						$table3[$k]          = $temp ;
-						$k++;
-					}
-				}
-			}
-
-			// die();
-
-			$arr['table3']       = $table3;
-			$arr['course_name3'] = $course_name3;
-
-			$arr['table2']       = $table2;
-			$arr['course_name2'] = $course_name2;
-
-			$arr['table']        = $table ;
-			$arr['course_name']  = $course_name ;
-
-
-			return View::make('report')->with('arr', $arr);
-		}));
-
-
-
-
-
-
-
-
-
-		Route::get('report-year/{year}', array('as' => 'report-year', function($year) {
-
-			$arr['year']        = $year;
-			$arr['departments'] = department::all();
-			
-			foreach($arr['departments'] as $each){
-
-				$temp           = expenditure1::where('department', $each->id)->where('year', $year)->first();
-
-				if($temp['amount'] == "")
-					$val[$each->id] = 0;
-				else
-					$val[$each->id] = $temp['amount'];
-			}
-
-
-			foreach($arr['departments'] as $each){
-
-				$sum = DB::select("SELECT sum(amount) as sum from expenditure2 where year='".$year."' and department ='".$each->id."'");
-
-				if( is_null($sum[0]->sum) )
-					$val2[$each->id] = 0;
-				else
-					$val2[$each->id] = $sum[0]->sum;
-			}
-
-			$arr['val']  = $val ;
-			$arr['val2'] = $val2;
-
-			return View::make('report-year')->with('arr', $arr);
-		}));
+		
 
 
 
@@ -692,5 +490,206 @@ Route::group(array('before' => 'auth'), function(){
 			
 			return $value;
 		});
+	});
+	Route::get('/', function()
+	{
+		// return View::make('hello');
+		return Redirect::to('userprofile');	
+	});
+
+	Route::get('userprofile', function()
+	{
+		$users = User::all();
+
+		return View::make('userprofile')->with('users', $users);
+	});
+	Route::get('restricted', function()
+	{
+		return View::make('restricted');
+	});
 	
+	Route::get('report/{semester}/{year}',  array('as' => 'report', function($semester, $year) 
+	{
+		$arr['semester']     = $semester;
+		$arr['year']         = $year;
+		$arr['income_types'] = IncomeType::all();
+		$arr['departments']  = department::all();
+		// echo "<pre>";
+			
+		$table       = array();
+		$course_name = array();
+
+		$courses     = course::all();
+		$k           = 0 ;
+			
+		foreach($courses as $course){
+			$temp       = array();
+			$is_null    = true ;
+			$department = 0 ;
+
+			for($i=1;$i<=6;$i++){
+				$income_type = $i ;
+				$data = DB::select("SELECT course, department, sum(amount) as result
+									FROM item  
+									WHERE income_type ='".$income_type."' 
+										and course='".$course->id."' 
+										and semester='".$semester."'
+										and year='".$year."'
+									");
+
+				if( !is_null($data[0]->result) ) {
+					$is_null    = false ;
+					$temp[$i-1] = $data[0]->result;
+					$department = $data[0]->department;
+				}
+				else $temp[$i-1] = 0 ;
+			}
+
+			if( !$is_null ) {
+				$course_name[$k][0] = $course->name ;
+				$course_name[$k][1] = $department ;
+				$table[$k] = $temp ;
+				$k++;
+			}
+		}
+
+
+
+		$course_name2 = array();
+		$table2       = array();
+		$k            = 0 ;
+
+		for($i=count($courses)-4;$i<count($courses);$i++){
+
+				//Department from 0 (ENG) => 8
+			for($dep=0;$dep<=8;$dep++){
+				$temp       = array(0,0,0,0,0,0,0,0,0);
+				$department = 0 ;
+				$is_null    = true ;
+					//Income Type 
+				for($j=7;$j<=9;$j++){
+
+					$income_type = $j ;
+
+					$data = DB::select("SELECT  course, department, sum(amount) as result
+										FROM item  
+										WHERE income_type ='".$income_type."' 
+											and course='".$courses[$i]->id."' 
+											and semester='".$semester."'
+											and year='".$year."'
+											and department = '".$dep."'
+										");
+
+					if( !is_null($data[0]->result) ) {
+						$is_null    = false ;
+						$temp[$j-1] = $data[0]->result;
+					}
+					else $temp[$j-1] = 0 ;
+				}
+
+				if( !$is_null ) {
+					$course_name2[$k][0] = $courses[$i]->name ;
+					$course_name2[$k][1] = $dep ;
+					$table2[$k] = $temp ;
+					$k++;
+				}
+			}
+		}
+
+
+
+
+		$course_name3 = array();
+		$table3       = array();
+		$k            = 0 ;
+
+		for($i=61;$i<=62;$i++){
+					
+			$course_id = $i ;
+
+			//Department from 0 (ENG) => 8
+			for($dep=0;$dep<=8;$dep++){
+				$temp        = array(0,0,0,0,0,0,0,0,0);
+				$department  = 0 ;
+				$is_null     = true ;
+				$income_type = 1 ;
+
+				$data = DB::select("SELECT  course, department, sum(amount) as result
+									FROM item  
+									WHERE income_type ='".$income_type."' 
+										and course='".$course_id."' 
+										and semester='".$semester."'
+										and year='".$year."'
+										and department = '".$dep."'
+									");
+
+				if( !is_null($data[0]->result) ) {
+					$is_null = false ;
+					$temp    = $data[0]->result;
+				}
+				else $temp = 0 ;
+
+				if( !$is_null ) {
+					$course_name3[$k][0] = $courses[$course_id-1]->name ;
+					$course_name3[$k][1] = $dep ;
+					$table3[$k]          = $temp ;
+					$k++;
+				}
+			}
+		}
+
+			// die();
+
+		$arr['table3']       = $table3;
+		$arr['course_name3'] = $course_name3;
+
+		$arr['table2']       = $table2;
+		$arr['course_name2'] = $course_name2;
+
+		$arr['table']        = $table ;
+		$arr['course_name']  = $course_name ;
+
+
+		return View::make('report')->with('arr', $arr);
+	}));
+
+
+
+
+
+
+
+
+
+	Route::get('report-year/{year}', array('as' => 'report-year', function($year) {
+
+		$arr['year']        = $year;
+		$arr['departments'] = department::all();
+		
+		foreach($arr['departments'] as $each){
+
+			$temp           = expenditure1::where('department', $each->id)->where('year', $year)->first();
+
+			if($temp['amount'] == "")
+				$val[$each->id] = 0;
+			else
+				$val[$each->id] = $temp['amount'];
+		}
+
+		foreach($arr['departments'] as $each){
+
+			$sum = DB::select("SELECT sum(amount) as sum from expenditure2 where year='".$year."' and department ='".$each->id."'");
+
+			if( is_null($sum[0]->sum) )
+				$val2[$each->id] = 0;
+			else
+				$val2[$each->id] = $sum[0]->sum;
+		}
+
+		$arr['val']  = $val ;
+		$arr['val2'] = $val2;
+
+		return View::make('report-year')->with('arr', $arr);
+	}));
+
 });
