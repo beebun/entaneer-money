@@ -30,8 +30,9 @@ Route::group(array('before' => 'auth'), function(){
 		Route::get('usermanage', function()
 		{
 			$users = User::all();
+			$usertype = UserType::all();
 
-			return View::make('usermanage')->with('users', $users);
+			return View::make('usermanage')->with('users', $users)->with('usertype', $usertype);
 		});
 		
 		Route::get('genuser', function()
@@ -55,7 +56,7 @@ Route::group(array('before' => 'auth'), function(){
 			$user->save();
 			// redirect ----------------------------------------
 			// redirect our user back to the form so they can do it all over again
-			return Redirect::to('login');	
+			return Redirect::to('usermanage');	
 		});
 		
 		Route::post('checkusername', function()
@@ -848,22 +849,22 @@ Route::group(array('before' => 'auth'), function(){
 		$arr['year']        = $year;
 		$arr['departments'] = department::all();
 		
-			$temp	= expenditure1::where('department', $type)->where('year', $year)->first();
+			$temp	= expenditure1::where('department', ($type-1))->where('year', $year)->first();
 
 			if($temp['amount'] == "")
-				$val[$type] = 0;
+				$val[($type-1)] = 0;
 			else
-				$val[$type] = $temp['amount'];
+				$val[($type-1)] = $temp['amount'];
 		
 
 
 
-			$sum = DB::select("SELECT sum(amount) as sum from expenditure2 where year='".$year."' and department ='".$type."'");
+			$sum = DB::select("SELECT sum(amount) as sum from expenditure2 where year='".$year."' and department ='".($type-1)."'");
 
 			if( is_null($sum[0]->sum) )
-				$val2[$type] = 0;
+				$val2[($type-1)] = 0;
 			else
-				$val2[$type] = $sum[0]->sum;
+				$val2[($type-1)] = $sum[0]->sum;
 		
 
 		$arr['val']  = $val ;

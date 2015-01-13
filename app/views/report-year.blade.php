@@ -60,13 +60,13 @@
 
 
 			<tr>
-				<td>{{$departments[$type]->name}}</td>
+				<td>{{$departments[$type-1]->name}}</td>
 				<td></td>
 				<td></td>
-				<td>{{$val[$type]}}</td>
+				<td>{{$val[$type-1]}}</td>
 				<td></td>
 				<td></td>
-				<td>{{$val2[$type]}}</td>
+				<td>{{$val2[$type-1]}}</td>
 				<td></td>
 				<td></td>
 				<td></td>
