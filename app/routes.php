@@ -536,6 +536,27 @@ Route::group(array('before' => 'auth'), function(){
 
 		return View::make('userprofile')->with('users', $users);
 	});
+	Route::get('edituserp/{id}', array('as' => 'edituser', function($id)
+	{
+		$users = User::all();
+		$UserType = UserType::all();
+
+		return View::make('edituserp')->with('usertype', $UserType)->with('users', $users)->with('id', $id);
+	}));
+		
+	Route::post('edituserp/{id}', array('as' => 'edituser', function($id)
+	{
+		$users = new User;
+			
+		$password = Hash::make(Input::get('password'));
+		$name     = Input::get('name');
+
+		user::where('id', ($id))->update(array(
+			'password' =>  $password,
+			'name'  => $name,
+		));
+		return Redirect::to('userprofile');
+	}));
 	Route::get('restricted', function()
 	{
 		return View::make('restricted');
