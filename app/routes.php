@@ -69,6 +69,38 @@ Route::group(array('before' => 'auth'), function(){
 			return $value;
 		});
 		
+		Route::get('edituser/{id}', array('as' => 'edituser', function($id)
+		{
+			$users = User::all();
+			$UserType = UserType::all();
+
+			return View::make('edituser')->with('usertype', $UserType)->with('users', $users)->with('id', $id);
+		}));
+		
+		Route::post('edituser/{id}', array('as' => 'edituser', function($id)
+		{
+			$users = new User;
+			
+			$username  	= Input::get('username');
+			$password = Hash::make(Input::get('password'));
+			$name     	= Input::get('name');
+			$type     	= Input::get('usertype');
+
+			user::where('id', ($id))->update(array(
+					'username'    =>  $username,
+					'password' =>  $password,
+					'name'  => $name,
+					'type'  => $type,
+			));
+			return Redirect::to('usermanage');
+		}));
+		
+		
+
+
+		
+		
+		
 		Route::get('users', function()
 		{
 			$users = User::all();

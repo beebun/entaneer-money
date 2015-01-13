@@ -20,16 +20,20 @@
 			<td>{{ $usertype[($user->type-1)]->type}}</td>
 			<td>
 				@if ($user->type != 1)
+				<a href="{{ route('edituser', array('id' => $user->id)) }}">
 				<button type="button" class="btn btn-default" >
 				  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 				</button>
+				</a>
 				<button type="button" class="btn btn-default" >
 				  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 				</button>
 				@else
+				<a href="{{ route('edituser', array('id' => $user->id)) }}">
 				<button type="button" class="btn btn-default" >
 				  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 				</button>
+				</a>
 				@endif
 			</td>
 		</tr>
