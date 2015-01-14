@@ -21,11 +21,11 @@
 			<td>
 				@if ($user->type != 1)
 				<a href="{{ route('edituser', array('id' => $user->id)) }}">
-				<button type="button" class="btn btn-default" >
+				<button type="button" class="btn btn-default" ">
 				  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 				</button>
 				</a>
-				<button type="button" class="btn btn-default" >
+				<button type="button" class="btn btn-default" onclick="chkdeleteuser({{$user->id}})">
 				  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 				</button>
 				@else
@@ -41,6 +41,39 @@
 
 	</table>
     
+<script>
+
+function chkdeleteuser(id) {
+    if (confirm("You want to delete this user?") == true) {
+        deleteuser(id);
+    } else {
+        
+    }
+}
+
+	
+			function deleteuser(id){
+				//alert("test "+id);
+
+				$.post( "deleteuser", 
+					{ 
+						id: id
+					})
+				.done(function( data ) {
+					if(data.length > 0){
+						//alert("ไม่สามารถใช้ username นี้ได้");
+						location.reload();
+					}
+					else
+					{
+						//alert("สามารถใช้ username นี้ได้");
+					}
+				});
+			}
+				
+		
+			
+	</script>
 
 
 

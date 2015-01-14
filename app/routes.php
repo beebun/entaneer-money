@@ -94,6 +94,14 @@ Route::group(array('before' => 'auth'), function(){
 			));
 			return Redirect::to('usermanage');
 		}));
+		Route::post('deleteuser', function()
+		{
+
+			$id  	= Input::get('id');
+			DB::delete('delete from users where id='.$id);
+			
+			return Redirect::to('usermanage');
+		});
 		
 		
 
@@ -536,7 +544,7 @@ Route::group(array('before' => 'auth'), function(){
 
 		return View::make('userprofile')->with('users', $users);
 	});
-	Route::get('edituserp/{id}', array('as' => 'edituser', function($id)
+	Route::get('edituserp/{id}', array('as' => 'edituserp', function($id)
 	{
 		$users = User::all();
 		$UserType = UserType::all();
@@ -544,7 +552,7 @@ Route::group(array('before' => 'auth'), function(){
 		return View::make('edituserp')->with('usertype', $UserType)->with('users', $users)->with('id', $id);
 	}));
 		
-	Route::post('edituserp/{id}', array('as' => 'edituser', function($id)
+	Route::post('edituserp/{id}', array('as' => 'edituserp', function($id)
 	{
 		$users = new User;
 			

@@ -2,7 +2,7 @@
 
 @section('content')
 	<h4>Welcome {{$name = Auth::user()->name}} 
-				<a href="{{ route('edituser', array('id' => $id = Auth::user()->id)) }}">
+				<a href="{{ route('edituserp', array('id' => $id = Auth::user()->id)) }}">
 				<button type="button" class="btn btn-default" >
 				  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 				</button>
