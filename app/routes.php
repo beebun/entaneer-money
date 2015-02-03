@@ -531,6 +531,103 @@ Route::group(array('before' => 'auth'), function(){
 			
 			return $value;
 		});
+		
+		
+		
+		
+		
+		
+		Route::get('majormoney/{year}',  array('as' => 'addmajormoney', function($year) 
+		{
+			$arr['year']         = $year;
+
+			$table       = array();
+			
+			$departments = department::all();
+			$k           = 0 ;
+			/*
+			foreach($departments as $department){
+				$temp    = array();
+				$is_null = true ;
+
+				for($i=54;$i<61;$i++){//course
+					
+					$course = $i ;
+					$data = DB::select("SELECT scch_value, student_amount 
+										FROM constant  
+										WHERE course ='".$course."' 
+											and department_c='".$department->id."' 
+											and semester='".$semester."'
+											and year='".$year."'
+										");
+
+					if( isset ($data[0]->scch_value))  {
+						$temp[$i-54] = $data[0]->scch_value;
+					}
+					else{
+						$temp[$i-54] = 0 ;
+					}
+					
+				}
+					$table[$k] = $temp ;
+					$k++;
+			}
+*/
+			// var_dump($table);
+			// var_dump($course_name);
+			// echo "</pre>";
+			// die();
+			
+			$arr['table']       = $table ;
+			//$arr['course_name'] = $course_name ;
+
+
+			return View::make('addmajormoney')->with('arr', $arr)->with('departments', $departments);
+			
+		}));
+		
+		
+		
+		/*Route::post('majormoney', array( "as"=>"post_add_majormoney" ,function()
+		{
+			$constant = new constant;
+			$course       	= Input::get('Course');
+			$department		= Input::get('Department');
+			$semester  		= Input::get('Semester');
+			$year         	= Input::get('Years');
+
+			$value     = constant::where('course', $course)->where('department_c', $department)->where('semester', $semester)->where('year', $year)->get();
+			if(count($value)>0)
+			{
+				$scch_value     = Input::get('Scch_value');
+				$student_amount = Input::get('Student_amount');
+				constant::where('course', $course)->where('department_c', $department)->where('semester', $semester)->where('year', $year)->update(array(
+					'course'    		=>  $course,
+					'department_c' 		=>  $department,
+					'semester'  		=> 	$semester,            
+					'year'    			=>  $year,
+					'scch_value' 		=>  $scch_value,
+					'student_amount'  	=> 	$student_amount
+				));
+				//$affectedRows = expenditure1:::where('department', $department)->where('year', $year)->update(array('amount' => $Amount));
+			}
+			else
+			{
+				$constant->course   		= Input::get('Course');
+				$constant->department_c		= Input::get('Department');
+				$constant->semester     	= Input::get('Semester');
+				$constant->year   			= Input::get('Years');
+				$constant->scch_value		= Input::get('Scch_value');
+				$constant->student_amount	= Input::get('Student_amount');
+
+				// save our duck
+				$constant->save();
+			}
+			// redirect ----------------------------------------
+			// redirect our user back to the form so they can do it all over again
+			
+			return Redirect::to('constant/'.$year);	
+		}));*/
 	});
 	Route::get('/', function()
 	{
