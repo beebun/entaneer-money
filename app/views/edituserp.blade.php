@@ -16,6 +16,12 @@
 			<input type="password" name="password" id="password" value="{{ $users[$id-1]->password }}" class="form-control">
 		</div>
 	</div>
+		<div class="form-group">
+		<label for="retype-password" class="col-sm-2">Retype-Password: </label>
+		<div class="col-md-10">
+			<input type="password" name="retype-password" id="retype-password" value="{{ $users[$id-1]->password }}" class="form-control">
+		</div>
+	</div>
 	<div class="form-group">
 		<label for="name" class="col-sm-2">Full Name: </label>
 		<div class="col-md-10">
@@ -95,17 +101,28 @@
 
 				// Get the Login Name value and trim it
 				var password = $.trim($('#password').val());
+				var repassword = $.trim($('#retype-password').val());
 
 				// Check if empty of not
-				if (password  === '') {
+				if (password  == '') {
 					alert('กรุณากรอก password');
+					return false;
+				}
+				
+				if (password.length < 6) {
+					alert('กรุณาตั้งรหัสตั้งแต่ 6 ตัวขึ้นไป');
+					return false;
+				}
+				
+				if (password  != repassword) {
+					alert('กรุณากรอก password ให้ตรงกัน');
 					return false;
 				}
 								
 				var name = $.trim($('#name').val());
 
 				// Check if empty of not
-				if (name  === '') {
+				if (name  == '') {
 					alert('กรุณากรอก name');
 					return false;
 				}
