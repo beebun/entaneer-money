@@ -16,7 +16,7 @@ class CreateMajorCost extends Migration {
 		{
 			$table->increments('id');
 			$table->double('cost_balance');
-			$table->integer('major_id');
+			$table->integer('department_id');
 			$table->integer('years');
 			$table->timestamps();
 		});

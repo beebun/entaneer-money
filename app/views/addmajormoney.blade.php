@@ -6,21 +6,22 @@
 	$table 	      = $arr['table'];
 	
 	//var_dump($table);
-	//var_dump($table2);
+	//var_dump($year);
 ?> 
 
-	<h4>รายงาน <?php $dcount=0; echo $year ; ?></h4>
+	<h4>รายงานเงินเหลือจ่ายประจำปี  <?php echo $year ; ?></h4>
 	<hr>
-	<h5><strong>ค่า SCCH</strong></h5>
 	<table class="table table-bordered" style="font-size:13px">
 		<thead>
-			<th>หลักสูตร</th>
-			@foreach($departments as $department)
-				<th>{{ $department->name }}</th><?php $dcount++;?>
-			@endforeach
-			<th>Eng-All</th>
-			<th>Total</th><?php $dcount=$dcount+2;?>
+			<th>ภาควิชา</th>
+			<th>ยอดคงเหลือ</th>
 		</thead>
+		<?php for($i=0;$i<8;$i++){?>
+			<tr>
+				<td>{{ $departments[$i+1]->name }}</td>
+				<td><input type="text" onchange="save_majormoney(this.value,{{ $i+1 }},{{ $year }})" class="form-control" style="font-size:13px" value="{{ $table[$i] }}"></td>
+			</tr>
+		<?php }?>
 
 		
 	</table>
@@ -32,16 +33,12 @@
 	<script>
 
 
-			function save_scch(scch_value, student_amount, course_id, department_id, year, semester){
-
-				$.post( "../../constant", 
+			function save_majormoney(money_value, department_id, year){
+				$.post( "../majormoney", 
 					{ 
-						Course: course_id, 
-						Semester: semester, 
 						Years: year, 
 						Department: department_id,
-						Scch_value: scch_value,
-						Student_amount: student_amount
+						Money_value: money_value,
 					})
 				.done(function( data ) {
 					alert("บันทึกเรียบร้อย");
@@ -51,51 +48,6 @@
 				});
 			}
 
-			function get_saved_value(){
-				var Course     = document.getElementById("Course").value;
-				var Semester   = document.getElementById("Semester").value;
-				var Years      = document.getElementById("Years").value;
-				var Department = document.getElementById("Department").value;
-				
-				$.post( "../../getValue", 
-					{ 
-						Course: Course, 
-						Semester: Semester, 
-						Years: Years, 
-						Department: Department 
-					})
-				.done(function( data ) {
-					if(data.length > 0){
-						//console.log(data);
-						$('#Scch_value').val(data[0].scch_value);
-						$('#Student_amount').val(data[0].student_amount);
-					}else{
-						$('#Scch_value').val("");
-						$('#Student_amount').val("");
-					}
-				});
-			}
-
-			get_saved_value();
-			
-			$( "select" ).change(function() {
-				get_saved_value();	
-				/*var AmountValue = $.ajax({
-					url: "/laravel/MoneyAnalysis/public/test",
-					type: "POST",
-					data: {
-							"Years": Years,
-							"Department": Department
-						  },
-				});
-				
-				AmountValue.done(function (res, textStatus, jqXHR){
-					if (res.status = "ok"){     
-						console.log(res);
-					}
-				});*/
-
-			});
 			
 	</script>
 @stop
