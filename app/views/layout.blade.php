@@ -95,8 +95,8 @@
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-        <li><a href="{{ route('report', array('semaster' => $semester,  'year' => $year)) }}">รายงานประจำเทอม/ปีการศึกษา</a></li>
-        <li><a href="{{ route('report-year', array('year' => $year)) }}">รายงานสรุปตามภาควิชา</a></li> 
+        <li><a href="{{url('report/semester/'.$semester.'/'.$year)}}">รายงานประจำเทอม/ปีการศึกษา</a></li>
+        <li><a href="{{url('report/year/'.$year)}}">รายงานสรุปตามภาควิชา</a></li> 
       </ul>
     </div>
 

@@ -28,7 +28,7 @@ class HomeController extends BaseController {
             'password' => Input::get('password')
         );
 		
-		var_dump( $userdata);
+		//var_dump($userdata);
         /* Try to authenticate the credentials */
         if(Auth::attempt($userdata)) 
         {
