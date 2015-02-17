@@ -2,6 +2,26 @@
 
 class ReportController extends BaseController {
 
+	public static $CREDIT_FEE_ID; //ค่าหน่วยกิต
+	public static $JOINING_FEE_ID; //ค่าแรกเข้า
+	public static $FEE_ID; //ค่าธรรมเนียม
+	public static $LIB_FEE_ID; //ค่าห้องสมุด
+	public static $OPERATING_COST_ID; //ค่าดำเนินการ
+	public static $MATAINING_FEE_ID; //ค่ารักษาสภาพ
+	public function __construct()
+	{
+		$this->path = URL::to(Config::get('route.Order'));
+		self::$CREDIT_FEE_ID = IncomeType::where('name','ค่าหน่วยกิต')->first()->id;
+		self::$JOINING_FEE_ID = IncomeType::where('name','ค่าแรกเข้า')->first()->id;
+		self::$FEE_ID = IncomeType::where('name','ค่าธรรมเนียม')->first()->id;
+		self::$LIB_FEE_ID = IncomeType::where('name','ค่าห้องสมุด')->first()->id;
+		self::$OPERATING_COST_ID = IncomeType::where('name','ค่าดำเนินการ')->first()->id;
+		self::$MATAINING_FEE_ID = IncomeType::where('name','ค่ารักษาสภาพ')->first()->id;
+		$this->tempDir = public_path('tempUploads');
+		$this->uploadDir = public_path('uploads');
+
+	} 
+
 	public function getSemester($semester,$year){
 		$type = Auth::user()->type;
 		if($type==1)
@@ -10,6 +30,12 @@ class ReportController extends BaseController {
 			$arr['year']         = $year;
 			$arr['income_types'] = IncomeType::all();
 			$arr['departments']  = department::all();
+			$departments 		 = $arr['departments'] ;
+			$percents 			 = Percent::all();
+			$percent 			 = array();
+			foreach($percents as $each){
+				$percent[$each->input_type] = $each;
+			}
 			// echo "<pre>";
 				
 			$table       = array();
@@ -22,6 +48,7 @@ class ReportController extends BaseController {
 				$temp       = array();
 				$is_null    = true ;
 				$department = 0 ;
+				$total		= 0;
 
 				for($i=1;$i<=6;$i++){
 					$income_type = $i ;
@@ -39,17 +66,124 @@ class ReportController extends BaseController {
 						$department = $data[0]->department;
 					}
 					else $temp[$i-1] = 0 ;
+					$total 	+=	$temp[$i-1];
 				}
+
 
 				if( !$is_null ) {
 					$course_name[$k][0] = $course->name ;
 					$course_name[$k][1] = $department ;
+
+					$i--;
+
+					$temp[$i++]  = $total;
+					//fund = total*0.05
+					$temp[$i++] = $total*0.05;
+					$fund_index = $i-1;
+					
+
+					//eng = sum of input_type*percent *0.95 except lib(id=4)
+					$temp[$i++] = (($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->faculty_percent/100)+
+									  $temp[self::$JOINING_FEE_ID-1]+
+									  ($temp[self::$FEE_ID-1]*$percent[self::$FEE_ID]->faculty_percent/100)+
+									  $temp[self::$OPERATING_COST_ID-1]+
+									  $temp[self::$MATAINING_FEE_ID-1])*0.95;
+					$eng_index = $i-1;
+					
+
+					//lib = 0.95*lib value
+					$temp[$i++] = $temp[self::$LIB_FEE_ID-1]*0.95;
+					$lib_index = $i-1;
+					
+
+					//dept = sum of credit_price*percent,fee*percent then multiply by 0.95
+					$temp[$i++] = (($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->department_percent/100)+
+								   ($temp[self::$FEE_ID-1]*$percent[self::$FEE_ID]->department_percent/100))*0.95;
+					$dept_index = $i-1;
+					
+
+					//total fund+lib+eng+dept
+					$temp[$i] = 0;
+					for($j=1;$j<5;$j++){
+						$temp[$i] += $temp[$i-$j];
+					}
+					$i++;
+					$start_index = $i;
+
+					if($course->id>=54&&$course->id<=59){
+						$ent_all_scch = 0;
+						$data = DB::select("SELECT sum(scch_value) as scch,sum(student_amount) as student
+											FROM constant  
+											WHERE department_c >7 AND department_c <16
+												and course='".$course->id."' 
+												and semester='".$semester."'
+												and year='".$year."'
+											"); 
+						if(count($data>0)){
+							$ent_all_scch = $data[0]->scch;
+						}
+
+						for($j=1;$j<count($departments)-2;$j++){
+							$data = DB::select("SELECT scch_value,student_amount
+												FROM constant  
+												WHERE department_c ='".$departments[$j]->id."' 
+													and course='".$course->id."' 
+													and semester='".$semester."'
+													and year='".$year."'
+												"); 
+							if(count($data)>0){
+								if($ent_all_scch>0){
+									$temp[$i++] = $temp[$dept_index]*$data[0]->scch_value/$ent_all_scch;
+								}else{
+									$temp[$i++] = 0;
+								}
+								
+							}
+							else{
+								$temp[$i++] = 0;
+							}
+							
+						}
+						//BME
+						$temp[$i++] = 0;
+						
+					}else{
+						for($j=1;$j<count($departments)-2;$j++){
+							if($department == $departments[$j]->id){
+								$temp[$i++] = $temp[$dept_index];
+								
+							}else{
+								$temp[$i++] = 0;
+							}
+							
+							
+						}
+						//BME
+						$temp[$i++] = 0;
+						
+					}
+
+					$temp[$i++] = $temp[$eng_index];
+					
+					$temp[$i++] = $temp[$fund_index];
+					
+					$temp[$i++] = $temp[$lib_index];
+
+					$temp[$i] = 0;
+					for($j=$start_index;$j<$i;$j++){
+						$temp[$i] += $temp[$j];
+					}
+
+					
 					$table[$k] = $temp ;
 					$k++;
 				}
 			}
 
-
+			// echo '<pre>';
+			// var_dump($table);
+			// echo '</pre>';
+			// die();
 
 			$course_name2 = array();
 			$table2       = array();
