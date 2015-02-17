@@ -23,10 +23,39 @@
 body{
 	font-size: 12px;
 }
+#scroller {
+    width: 100%;
+    overflow-x: scroll;
+}
+#scroller table {
+    /* just a quick hack to make the table overflow the containing div
+       your method may differ */
+    width: 200%;
+}
+
+#scroller .table.fixedCol {
+    width: auto;
+    position: absolute;
+    /* below styles are specific for borderd Bootstrap tables
+       to remove rounded corners on cloned table */
+    -webkit-border-top-right-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+       -moz-border-radius-topright: 0px;
+       -moz-border-radius-bottomright: 0px;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+}
+.table.fixedCol th,
+.table.fixedCol td {
+    /* background is set to white to hide underlaying column
+       of original table */
+    background: white;
+}
 </style>
 	<h4>รายงาน <?php echo $semester."/".$year ; ?></h4>
 	<hr>
 	<h5><strong>ตามหลักสูตร</strong></h5>
+	<div >
 	<table class="table table-bordered table-responsive">
 		<thead>
 			<th style="width:20%">หลักสูตร</th>
@@ -53,12 +82,12 @@ body{
 			</tr>
 		<?php endfor ?>
 	</table>
-
+    </div>
 	<br/>
-
+	<div id="scroller2">
 		<table class="table table-bordered table-responsive">
 		<thead>
-			<th style="width:20%">หลักสูตร</th>
+			<th style="width:50%">หลักสูตร</th>
 			<th style="width:8%">ภาควิชา</th>
 			<th> Fund</th>
 			<th> ENG</th>
@@ -83,15 +112,15 @@ body{
 				<?php for($j=count($income_types)-3;$j<count($table[$i]);$j++) :?>
 					<td><?php echo $table[$i][$j]; ?></td>
 				<?php endfor ?>
-				<td></td>
 			</tr>
 		<?php endfor ?>
 	</table>
+	</div>
 	<br/>
 	<h5><strong>ตาม Sevice/OH/อื่น ๆ</strong></h5>
 	<table class="table table-bordered table-responsive">
 		<thead>
-			<th style="width:20%">รายการ</th>
+			<th style="width:50%">รายการ</th>
 			<th style="width:8%">ภาควิชา</th>
 			<?php for($j=0;$j<count($income_types);$j++) :?>
 				<th style="width:8%"><?php echo $income_types[$j]->name; ?></th>
@@ -114,7 +143,39 @@ body{
 					<td><?php echo $table2[$i][$j]; ?></td>
 				<?php endfor ?>
 				<td class="disabled"></td>
-				<td></td>
+				<td><?php echo $table2[$i][9]; ?></td>
+			</tr>
+		<?php endfor ?>
+	</table>
+
+	<br/>
+	<table class="table table-bordered table-responsive">
+		<thead>
+			<th style="width:50%">หลักสูตร</th>
+			<th style="width:8%">ภาควิชา</th>
+			<th> Fund</th>
+			<th> ENG</th>
+			<th> Lib</th>
+			<th> Depart</th>
+			<th> Total</th>
+			<?php for($i=1;$i<count($departments)-1;$i++) :?>
+				<th>{{$departments[$i]->name}}</th>
+			<?php endfor;?>
+			<th> ENG</th>
+			<th> Fund</th>
+			<th> Lib</th>
+			<th> Total</th>
+
+		</thead>
+		<?php for($i=0;$i<count($table2);$i++) :?>
+			<tr>
+				<td><?php echo $course_name2[$i][0]; ?></td>
+				<td>
+				{{ $departments[$course_name2[$i][1]]->name }}
+				</td>
+				<?php for($j=10;$j<count($table2[$i]);$j++) :?>
+					<td><?php echo $table2[$i][$j]; ?></td>
+				<?php endfor ?>
 			</tr>
 		<?php endfor ?>
 	</table>
@@ -123,7 +184,7 @@ body{
 	<h5><strong>ค่าจัดสรรค่าธรรมเนียม จากคณะอื่น</strong></h5>
 	<table class="table table-bordered table-responsive">
 		<thead>
-			<th style="width:20%">รายการ</th>
+			<th style="width:40%">รายการ</th>
 			<th style="width:8%">ภาควิชา</th>
 			<?php for($j=0;$j<count($income_types);$j++) :?>
 				<th style="width:8%"><?php echo $income_types[$j]->name; ?></th>
@@ -150,5 +211,33 @@ body{
 			</tr>
 		<?php endfor ?>
 	</table>
+	<script>
+	$('#scroller table').each(function(){
+    var table = $(this),
+        fixedCol = table.clone(true),
+        fixedWidth = table.find('th').eq(0).width(),
+
+        tablePos = table.position();
+alert(fixedWidth);
+    // Remove all but the first column from the cloned table
+    fixedCol.find('th').not(':eq(0)').remove();
+    fixedCol.find('tbody tr').each(function(){
+        $(this).find('td').not(':eq(0)').remove();
+    });
+
+    // Set positioning so that cloned table overlays
+    // first column of original table
+    fixedCol.addClass('fixedCol');
+    fixedCol.css({
+        left: tablePos.left,
+        top: tablePos.top
+    });
+
+    // Match column width with that of original table
+    fixedCol.find('th,td').css('width',fixedWidth+'px');
+
+    $('#scroller').append(fixedCol);
+});
+	</script>
 @stop
 

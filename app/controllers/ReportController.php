@@ -8,6 +8,10 @@ class ReportController extends BaseController {
 	public static $LIB_FEE_ID; //ค่าห้องสมุด
 	public static $OPERATING_COST_ID; //ค่าดำเนินการ
 	public static $MATAINING_FEE_ID; //ค่ารักษาสภาพ
+	public static $SERVICE_ID;
+	public static $OH_ID;
+	public static $DONATE_ID;
+
 	public function __construct()
 	{
 		$this->path = URL::to(Config::get('route.Order'));
@@ -17,6 +21,9 @@ class ReportController extends BaseController {
 		self::$LIB_FEE_ID = IncomeType::where('name','ค่าห้องสมุด')->first()->id;
 		self::$OPERATING_COST_ID = IncomeType::where('name','ค่าดำเนินการ')->first()->id;
 		self::$MATAINING_FEE_ID = IncomeType::where('name','ค่ารักษาสภาพ')->first()->id;
+		self::$SERVICE_ID = IncomeType::where('name','Service')->first()->id;
+		self::$OH_ID = IncomeType::where('name','OH')->first()->id;
+		self::$DONATE_ID = IncomeType::where('name','บริจาค')->first()->id;
 		$this->tempDir = public_path('tempUploads');
 		$this->uploadDir = public_path('uploads');
 
@@ -83,11 +90,11 @@ class ReportController extends BaseController {
 					
 
 					//eng = sum of input_type*percent *0.95 except lib(id=4)
-					$temp[$i++] = (($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->faculty_percent/100)+
+					$temp[$i++] = round((($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->faculty_percent/100)+
 									  $temp[self::$JOINING_FEE_ID-1]+
 									  ($temp[self::$FEE_ID-1]*$percent[self::$FEE_ID]->faculty_percent/100)+
 									  $temp[self::$OPERATING_COST_ID-1]+
-									  $temp[self::$MATAINING_FEE_ID-1])*0.95;
+									  $temp[self::$MATAINING_FEE_ID-1])*0.95,2);
 					$eng_index = $i-1;
 					
 
@@ -133,7 +140,7 @@ class ReportController extends BaseController {
 												"); 
 							if(count($data)>0){
 								if($ent_all_scch>0){
-									$temp[$i++] = $temp[$dept_index]*$data[0]->scch_value/$ent_all_scch;
+									$temp[$i++] = round($temp[$dept_index]*$data[0]->scch_value/$ent_all_scch,2);
 								}else{
 									$temp[$i++] = 0;
 								}
@@ -196,6 +203,7 @@ class ReportController extends BaseController {
 					$temp       = array(0,0,0,0,0,0,0,0,0);
 					$department = 0 ;
 					$is_null    = true ;
+					$total 		= 0;
 						//Income Type 
 					for($j=7;$j<=9;$j++){
 
@@ -215,11 +223,75 @@ class ReportController extends BaseController {
 							$temp[$j-1] = $data[0]->result;
 						}
 						else $temp[$j-1] = 0 ;
+
+						$total 	+=	$temp[$j-1];
 					}
 
 					if( !$is_null ) {
 						$course_name2[$k][0] = $courses[$i]->name ;
 						$course_name2[$k][1] = $dep ;
+						$j--;
+						$temp[$j++]  = $total;
+						//fund = total*0.05
+						$temp[$j++] = $total*0.05;
+						$fund_index = $j-1;
+						
+
+						//eng = sum of input_type*percent *0.95 except lib(id=4)
+						$temp[$j++] = round(($temp[self::$SERVICE_ID-1]*$percent[self::$SERVICE_ID]->faculty_percent/100)+
+										  	 ($temp[self::$OH_ID-1]*$percent[self::$OH_ID]->faculty_percent/100)+
+										  	 ($temp[self::$DONATE_ID-1]*$percent[self::$DONATE_ID]->faculty_percent/100)*0.95,2);
+						$eng_index = $j-1;
+						
+
+						//lib = 0.95*lib value
+						$temp[$j++] = $temp[self::$LIB_FEE_ID-1]*0.95;
+						$lib_index = $j-1;
+						
+
+						//dept = sum of credit_price*percent,fee*percent then multiply by 0.95
+						$temp[$j++] = round(($temp[self::$SERVICE_ID-1]*$percent[self::$SERVICE_ID]->department_percent/100)+
+										  	 ($temp[self::$OH_ID-1]*$percent[self::$OH_ID]->department_percent/100)+
+										  	 ($temp[self::$DONATE_ID-1]*$percent[self::$DONATE_ID]->department_percent/100)*0.95,2);
+						$dept_index = $j-1;
+						
+
+						//total fund+lib+eng+dept
+						$temp[$j] = 0;
+						for($l=1;$l<5;$l++){
+							$temp[$j] += $temp[$j-$l];
+						}
+						$j++;
+						$start_index = $j;
+
+						for($l=1;$l<count($departments)-2;$l++){
+							if($dep == $departments[$l]->id){
+								$temp[$j++] = $temp[$dept_index];
+								
+							}else{
+								$temp[$j++] = 0;
+							}
+							
+							
+						}
+						//BME
+						$temp[$j++] = 0;
+									
+						if($dep == 0){
+							$temp[$j++] = $temp[$eng_index];
+						}else{
+							$temp[$j++] = $temp[$eng_index]+$temp[$dept_index];
+						}
+						
+						$temp[$j++] = $temp[$fund_index];
+						
+						$temp[$j++] = $temp[$lib_index];
+
+						$temp[$j] = 0;
+						for($l=$start_index;$l<$j;$l++){
+							$temp[$j] += $temp[$l];
+						}
+						
 						$table2[$k] = $temp ;
 						$k++;
 					}
