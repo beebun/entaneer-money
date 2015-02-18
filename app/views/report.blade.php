@@ -77,8 +77,9 @@ body{
 				<td class="disabled"></td>
 				<td class="disabled"></td>
 				<td class="disabled"></td>
-				<td class="disabled"></td>
-				<td><?php echo $table[$i][count($income_types)-4]; ?></td>
+				<?php for($j=6;$j<8;$j++) :?>
+					<td><?php echo $table[$i][$j]; ?></td>
+				<?php endfor ?>
 			</tr>
 		<?php endfor ?>
 	</table>
@@ -109,7 +110,7 @@ body{
 				<td>
 				{{ $departments[$course_name[$i][1]]->name }}
 				</td>
-				<?php for($j=count($income_types)-3;$j<count($table[$i]);$j++) :?>
+				<?php for($j=8;$j<count($table[$i]);$j++) :?>
 					<td><?php echo $table[$i][$j]; ?></td>
 				<?php endfor ?>
 			</tr>
@@ -197,7 +198,7 @@ body{
 				<td>
 					{{ $departments[$course_name3[$i][1]]->name }}
 				</td>
-				<td><?php echo $table3[$i]; ?></td>
+				<td><?php echo $table3[$i][0]; ?></td>
 				<td class="disabled"></td>
 				<td class="disabled"></td>
 				<td class="disabled"></td>
@@ -206,8 +207,39 @@ body{
 				<td class="disabled"></td>
 				<td class="disabled"></td>
 				<td class="disabled"></td>
-				<td class="disabled"></td>
-				<td></td>
+				<td><?php echo $table3[$i][1]; ?></td>
+				<td><?php echo $table3[$i][2]; ?></td>
+			</tr>
+		<?php endfor ?>
+	</table>
+	<br/>
+	<table class="table table-bordered table-responsive">
+		<thead>
+			<th style="width:50%">หลักสูตร</th>
+			<th style="width:8%">ภาควิชา</th>
+			<th> Fund</th>
+			<th> ENG</th>
+			<th> Lib</th>
+			<th> Depart</th>
+			<th> Total</th>
+			<?php for($i=1;$i<count($departments)-1;$i++) :?>
+				<th>{{$departments[$i]->name}}</th>
+			<?php endfor;?>
+			<th> ENG</th>
+			<th> Fund</th>
+			<th> Lib</th>
+			<th> Total</th>
+
+		</thead>
+		<?php for($i=0;$i<count($table3);$i++) :?>
+			<tr>
+				<td><?php echo $course_name3[$i][0]; ?></td>
+				<td>
+				{{ $departments[$course_name3[$i][1]]->name }}
+				</td>
+				<?php for($j=3;$j<count($table3[$i]);$j++) :?>
+					<td><?php echo $table3[$i][$j]; ?></td>
+				<?php endfor ?>
 			</tr>
 		<?php endfor ?>
 	</table>
@@ -218,7 +250,7 @@ body{
         fixedWidth = table.find('th').eq(0).width(),
 
         tablePos = table.position();
-alert(fixedWidth);
+	alert(fixedWidth);
     // Remove all but the first column from the cloned table
     fixedCol.find('th').not(':eq(0)').remove();
     fixedCol.find('tbody tr').each(function(){

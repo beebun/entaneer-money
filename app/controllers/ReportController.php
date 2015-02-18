@@ -54,15 +54,20 @@ class ReportController extends BaseController {
 			foreach($courses as $course){
 				$temp       = array();
 				$is_null    = true ;
-				$department = 0 ;
+				$department = 0;
 				$total		= 0;
 
-				for($i=1;$i<=6;$i++){
+				for($i=1;$i<=7;$i++){
 					$income_type = $i ;
+					if($i==7){
+						$income_type = 10;
+					}
 					$data = DB::select("SELECT course, department, sum(amount) as result
 										FROM item  
 										WHERE income_type ='".$income_type."' 
 											and course='".$course->id."' 
+											and course != 61 
+											and course != 62
 											and semester='".$semester."'
 											and year='".$year."'
 										");
@@ -73,7 +78,13 @@ class ReportController extends BaseController {
 						$department = $data[0]->department;
 					}
 					else $temp[$i-1] = 0 ;
-					$total 	+=	$temp[$i-1];
+
+					if($i<7){
+						$total 	+=	$temp[$i-1];
+					}else{
+						$total 	-=	$temp[$i-1];
+					}
+					
 				}
 
 
@@ -341,7 +352,9 @@ class ReportController extends BaseController {
 					$is_null     = true ;
 					$income_type = 1 ;
 
-					$data = DB::select("SELECT  course, department, sum(amount) as result
+					for($j=1;$j<=2;$j++){
+						if($j==2){ $income_type = 10;}
+						$data = DB::select("SELECT  course, department, sum(amount) as result
 										FROM item  
 										WHERE income_type ='".$income_type."' 
 											and course='".$course_id."' 
@@ -350,15 +363,79 @@ class ReportController extends BaseController {
 											and department = '".$dep."'
 										");
 
-					if( !is_null($data[0]->result) ) {
-						$is_null = false ;
-						$temp    = $data[0]->result;
+						if( !is_null($data[0]->result) ) {
+							$is_null = false ;
+							$temp[$j-1]    = $data[0]->result;
+						}
+						else $temp[$j-1] = 0 ;
 					}
-					else $temp = 0 ;
 
 					if( !$is_null ) {
 						$course_name3[$k][0] = $courses[$course_id-1]->name ;
 						$course_name3[$k][1] = $dep ;
+						$total = $temp[0]-$temp[1];
+						$j--;
+
+						$temp[$j++]  = $total;
+						//fund = total*0.05
+						$temp[$j++] = $total*0.05;
+						$fund_index = $j-1;
+
+						//eng = sum of input_type(Service,OH,donate)*faculty_percent *0.95 
+						$temp[$j++] = round(($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->faculty_percent/100)*0.95,2);
+						$eng_index = $j-1;
+						
+
+						//lib = 0.95*lib value
+						$temp[$j++] = $temp[self::$LIB_FEE_ID-1]*0.95;
+						$lib_index = $j-1;
+						
+
+						//dept = sum of input_type(Service,OH,donate)*dept_percent *0.95 
+						$temp[$j++] = round(($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->department_percent/100)*0.95,2);
+						$dept_index = $j-1;
+						
+
+						//total fund+lib+eng+dept
+						$temp[$j] = 0;
+						for($l=1;$l<5;$l++){
+							$temp[$j] += $temp[$j-$l];
+						}
+						$j++;
+						//start index for calculate total
+						$start_index = $j;
+
+						for($l=1;$l<count($departments)-2;$l++){
+							if($dep == $departments[$l]->id){
+								$temp[$j++] = $temp[$dept_index];
+								
+							}else{
+								$temp[$j++] = 0;
+							}
+							
+							
+						}
+						//BME
+						$temp[$j++] = 0;
+									
+						//ENG $dep 0 = Eng
+						if($dep == 0){
+							$temp[$j++] = $temp[$eng_index];
+						}else{
+							$temp[$j++] = $temp[$eng_index]+$temp[$dept_index];
+						}
+						
+						//Fund
+						$temp[$j++] = $temp[$fund_index];
+						
+						//Lib
+						$temp[$j++] = $temp[$lib_index];
+
+						//total
+						$temp[$j] = 0;
+						for($l=$start_index;$l<$j;$l++){
+							$temp[$j] += $temp[$l];
+						}
 						$table3[$k]          = $temp ;
 						$k++;
 					}
@@ -504,6 +581,7 @@ class ReportController extends BaseController {
 					if( !$is_null ) {
 						$course_name3[$k][0] = $courses[$course_id-1]->name ;
 						$course_name3[$k][1] = ($type-1) ;
+
 						$table3[$k]          = $temp ;
 						$k++;
 					}
