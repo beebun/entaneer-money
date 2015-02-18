@@ -169,8 +169,28 @@ class ReportController extends BaseController {
 						$temp[$i++] = 0;
 						
 					}
-
-					$temp[$i++] = $temp[$eng_index];
+					//54 = ค่าหน่วยกิตป ตรี , 58 = ป.ตรี ภาคพิเศษ (1)
+					if($course->id ==54||$course->id == 58){
+						$total_scch = 0;
+						$data = DB::select("SELECT sum(scch_value) as scch,sum(student_amount) as student
+											FROM constant  
+											WHERE course='".$course->id."' 
+												and semester='".$semester."'
+												and year='".$year."'
+											"); 
+						if(count($data>0)){
+							$total_scch = $data[0]->scch;
+						}
+						if($total_scch>0){
+							$temp[$i++] = round($temp[$eng_index]+$temp[$dept_index]*$ent_all_scch/$total_scch,2);
+						}else{
+							$temp[$i++] = 0;
+						}
+						
+					}else{
+						$temp[$i++] = $temp[$eng_index];
+					}
+					
 					
 					$temp[$i++] = $temp[$fund_index];
 					
@@ -237,7 +257,7 @@ class ReportController extends BaseController {
 						$fund_index = $j-1;
 						
 
-						//eng = sum of input_type*percent *0.95 except lib(id=4)
+						//eng = sum of input_type(Service,OH,donate)*faculty_percent *0.95 
 						$temp[$j++] = round(($temp[self::$SERVICE_ID-1]*$percent[self::$SERVICE_ID]->faculty_percent/100)+
 										  	 ($temp[self::$OH_ID-1]*$percent[self::$OH_ID]->faculty_percent/100)+
 										  	 ($temp[self::$DONATE_ID-1]*$percent[self::$DONATE_ID]->faculty_percent/100)*0.95,2);
@@ -249,7 +269,7 @@ class ReportController extends BaseController {
 						$lib_index = $j-1;
 						
 
-						//dept = sum of credit_price*percent,fee*percent then multiply by 0.95
+						//dept = sum of input_type(Service,OH,donate)*dept_percent *0.95 
 						$temp[$j++] = round(($temp[self::$SERVICE_ID-1]*$percent[self::$SERVICE_ID]->department_percent/100)+
 										  	 ($temp[self::$OH_ID-1]*$percent[self::$OH_ID]->department_percent/100)+
 										  	 ($temp[self::$DONATE_ID-1]*$percent[self::$DONATE_ID]->department_percent/100)*0.95,2);
@@ -262,6 +282,7 @@ class ReportController extends BaseController {
 							$temp[$j] += $temp[$j-$l];
 						}
 						$j++;
+						//start index for calculate total
 						$start_index = $j;
 
 						for($l=1;$l<count($departments)-2;$l++){
@@ -277,16 +298,20 @@ class ReportController extends BaseController {
 						//BME
 						$temp[$j++] = 0;
 									
+						//ENG $dep 0 = Eng
 						if($dep == 0){
 							$temp[$j++] = $temp[$eng_index];
 						}else{
 							$temp[$j++] = $temp[$eng_index]+$temp[$dept_index];
 						}
 						
+						//Fund
 						$temp[$j++] = $temp[$fund_index];
 						
+						//Lib
 						$temp[$j++] = $temp[$lib_index];
 
+						//total
 						$temp[$j] = 0;
 						for($l=$start_index;$l<$j;$l++){
 							$temp[$j] += $temp[$l];
