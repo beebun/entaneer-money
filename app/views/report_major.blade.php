@@ -9,18 +9,14 @@
 	
 	$table        = $arr['table'];
 	$course_name  = $arr['course_name'];
-	$total1 	  = $arr['total1'];
 	
 	$table2       = $arr['table2'];
 	$course_name2 = $arr['course_name2'];
-	$total2 	  = $arr['total2'];
 	
 	$table3       = $arr['table3'];
 	$course_name3 = $arr['course_name3'];
-	$total3 	  = $arr['total3'];
 	
 	$departments  = $arr['departments'];
-	
 ?>    
 
 <style>
@@ -86,19 +82,6 @@ body{
 				<?php endfor ?>
 			</tr>
 		<?php endfor ?>
-		<tr>
-		<th>Total</th>
-		<td></td>
-		<?php for($i=0;$i<count($income_types)-4;$i++) :?>
-		<td><?php echo $total1[$i]; ?></td>
-		<?php endfor ?>
-		<td class="disabled"></td>
-		<td class="disabled"></td>
-		<td class="disabled"></td>
-		<?php for($i=6;$i<8;$i++) :?>
-			<td><?php echo $total1[$i]; ?></td>
-		<?php endfor ?>
-		</tr>
 	</table>
     </div>
 	<br/>
@@ -112,7 +95,7 @@ body{
 			<th> Lib</th>
 			<th> Depart</th>
 			<th> Total</th>
-			<?php for($i=1;$i<count($departments)-1;$i++) :?>
+			<?php for($i=0;$i<count($departments)-1;$i++) :?>
 				<th>{{$departments[$i]->name}}</th>
 			<?php endfor;?>
 			<th> ENG</th>
@@ -128,17 +111,10 @@ body{
 				{{ $departments[$course_name[$i][1]]->name }}
 				</td>
 				<?php for($j=8;$j<count($table[$i]);$j++) :?>
-					<td><?php echo $table[$i][$j]; ?></td>
+					<td><?php //echo $table[$i][$j]; ?></td>
 				<?php endfor ?>
 			</tr>
 		<?php endfor ?>
-		<tr>
-		<th>Total</th>
-		<td></td>
-		<?php for($i=8;$i<count($total1);$i++) :?>
-		<td><?php echo $total1[$i]; ?></td>
-		<?php endfor ?>
-		</tr>
 	</table>
 	</div>
 	<br/>
@@ -165,27 +141,12 @@ body{
 				<td class="disabled"></td>
 				<td class="disabled"></td>
 				<?php for($j=6;$j<9;$j++) :?>
-					<td><?php echo $table2[$i][$j]; ?></td>
+					<td><?php //echo $table2[$i][$j]; ?></td>
 				<?php endfor ?>
 				<td class="disabled"></td>
-				<td><?php echo $table2[$i][9]; ?></td>
+				<td><?php //echo $table2[$i][9]; ?></td>
 			</tr>
 		<?php endfor ?>
-		<tr>
-			<th>Total</th>
-			<td></td>
-			<td class="disabled"></td>
-			<td class="disabled"></td>
-			<td class="disabled"></td>
-			<td class="disabled"></td>
-			<td class="disabled"></td>
-			<td class="disabled"></td>
-			<?php for($i=6;$i<9;$i++) :?>
-				<td><?php echo $total2[$i]; ?></td>
-			<?php endfor ?>
-			<td class="disabled"></td>
-			<td><?php echo $total2[9]; ?></td>
-		</tr>
 	</table>
 
 	<br/>
@@ -214,17 +175,10 @@ body{
 				{{ $departments[$course_name2[$i][1]]->name }}
 				</td>
 				<?php for($j=10;$j<count($table2[$i]);$j++) :?>
-					<td><?php echo $table2[$i][$j]; ?></td>
+					<td><?php //echo $table2[$i][$j]; ?></td>
 				<?php endfor ?>
 			</tr>
 		<?php endfor ?>
-		<tr>
-		<th>Total</th>
-			<td></td>
-		<?php for($i=10;$i<count($total2);$i++) :?>
-					<td><?php echo $total2[$i]; ?></td>
-				<?php endfor ?>
-		</tr>
 	</table>
 
 	<br/>
@@ -257,21 +211,6 @@ body{
 				<td><?php echo $table3[$i][2]; ?></td>
 			</tr>
 		<?php endfor ?>
-		<tr>
-			<th>Total</th>
-			<td></td>
-			<td><?php echo $total3[0]; ?></td>
-				<td class="disabled"></td>
-				<td class="disabled"></td>
-				<td class="disabled"></td>
-				<td class="disabled"></td>
-				<td class="disabled"></td>
-				<td class="disabled"></td>
-				<td class="disabled"></td>
-				<td class="disabled"></td>
-				<td><?php echo $total3[1]; ?></td>
-				<td><?php echo $total3[2]; ?></td>
-		</tr>
 	</table>
 	<br/>
 	<table class="table table-bordered table-responsive">
@@ -303,13 +242,6 @@ body{
 				<?php endfor ?>
 			</tr>
 		<?php endfor ?>
-		<tr>
-		<th>Total</th>
-		<td></td>
-			<?php for($i=3;$i<count($table3);$i++) :?>
-					<td><?php echo $total3[$i]; ?></td>
-				<?php endfor ?>
-		</tr>
 	</table>
 	<script>
 	$('#scroller table').each(function(){
