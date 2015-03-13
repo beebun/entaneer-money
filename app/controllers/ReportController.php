@@ -39,7 +39,7 @@ class ReportController extends BaseController {
 			$arr['semester']     = $semester;
 			$arr['year']         = $year;
 			$arr['income_types'] = IncomeType::all();
-			$arr['departments']  = department::all();
+			$arr['departments']  = Department::all();
 			$departments 		 = $arr['departments'] ;
 			$percents 			 = Percent::all();
 			$percent 			 = array();
@@ -496,7 +496,7 @@ class ReportController extends BaseController {
 			$arr['semester']     = $semester;
 			$arr['year']         = $year;
 			$arr['income_types'] = IncomeType::all();
-			$arr['departments']  = department::all();
+			$arr['departments']  = Department::all();
 			$arr['department']	 = department::where('id',$type-1)->get();
 			$percents 			 = Percent::all();
 			$percent 			 = array();
@@ -781,7 +781,7 @@ class ReportController extends BaseController {
 		if($type==1)
 		{
 			$arr['year']        = $year;
-			$arr['departments'] = department::all();
+			$arr['departments'] = Department::all();
 			
 			foreach($arr['departments'] as $each){
 
@@ -811,7 +811,7 @@ class ReportController extends BaseController {
 		else
 		{
 			$arr['year']        = $year;
-			$arr['departments'] = department::all();
+			$arr['departments'] = Department::all();
 			
 				$temp	= expenditure1::where('department', ($type-1))->where('year', $year)->first();
 
