@@ -51,7 +51,7 @@ class ReportController extends BaseController {
 			$table       = array();
 			$course_name = array();
 
-			$courses     = course::all();
+			$courses     = Course::all();
 			$k           = 0 ;
 				
 			foreach($courses as $course){
@@ -497,7 +497,7 @@ class ReportController extends BaseController {
 			$arr['year']         = $year;
 			$arr['income_types'] = IncomeType::all();
 			$arr['departments']  = Department::all();
-			$arr['department']	 = department::where('id',$type-1)->get();
+			$arr['department']	 = Department::where('id',$type-1)->get();
 			$percents 			 = Percent::all();
 			$percent 			 = array();
 			foreach($percents as $each){
@@ -507,7 +507,7 @@ class ReportController extends BaseController {
 			$table       = array();
 			$course_name = array();
 
-			$courses     = course::all();
+			$courses     = Course::all();
 			$k           = 0 ;
 				
 			foreach($courses as $course){
@@ -785,7 +785,7 @@ class ReportController extends BaseController {
 			
 			foreach($arr['departments'] as $each){
 
-				$temp           = expenditure1::where('department', $each->id)->where('year', $year)->first();
+				$temp           = Expenditure1::where('department', $each->id)->where('year', $year)->first();
 
 				if($temp['amount'] == "")
 					$val[$each->id] = 0;
@@ -813,7 +813,7 @@ class ReportController extends BaseController {
 			$arr['year']        = $year;
 			$arr['departments'] = Department::all();
 			
-				$temp	= expenditure1::where('department', ($type-1))->where('year', $year)->first();
+				$temp	= Expenditure1::where('department', ($type-1))->where('year', $year)->first();
 
 				if($temp['amount'] == "")
 					$val[($type-1)] = 0;
