@@ -34,6 +34,9 @@ class ReportController extends BaseController {
 
 	public function getSemester($semester,$year){
 		$type = Auth::user()->type;
+		$total1_arr = array();
+		$total2_arr = array();
+		$total3_arr = array();
 		if($type==1)
 		{
 			$arr['semester']     = $semester;
@@ -473,6 +476,7 @@ class ReportController extends BaseController {
 				}
 
 			}
+			//var_dump($total3_arr);
 
 				// die();
 

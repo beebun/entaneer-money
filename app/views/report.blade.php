@@ -90,13 +90,13 @@ body{
 		<th>Total</th>
 		<td></td>
 		<?php for($i=0;$i<count($income_types)-4;$i++) :?>
-		<td><?php echo $total1[$i]; ?></td>
+		<td><?php if(count($total1)>0) echo $total1[$i]; ?></td>
 		<?php endfor ?>
 		<td class="disabled"></td>
 		<td class="disabled"></td>
 		<td class="disabled"></td>
 		<?php for($i=6;$i<8;$i++) :?>
-			<td><?php echo $total1[$i]; ?></td>
+			<td><?php if(count($total1)>0)echo $total1[$i]; ?></td>
 		<?php endfor ?>
 		</tr>
 	</table>
@@ -165,10 +165,10 @@ body{
 				<td class="disabled"></td>
 				<td class="disabled"></td>
 				<?php for($j=6;$j<9;$j++) :?>
-					<td><?php echo $table2[$i][$j]; ?></td>
+					<td><?php if(count($table2)>0) echo $table2[$i][$j]; ?></td>
 				<?php endfor ?>
 				<td class="disabled"></td>
-				<td><?php echo $table2[$i][9]; ?></td>
+				<td><?php if(count($table2)>0) echo $table2[$i][9]; ?></td>
 			</tr>
 		<?php endfor ?>
 		<tr>
@@ -181,10 +181,10 @@ body{
 			<td class="disabled"></td>
 			<td class="disabled"></td>
 			<?php for($i=6;$i<9;$i++) :?>
-				<td><?php echo $total2[$i]; ?></td>
+				<td><?php if(count($table2)>0) echo $total2[$i]; ?></td>
 			<?php endfor ?>
 			<td class="disabled"></td>
-			<td><?php echo $total2[9]; ?></td>
+			<td><?php if(count($table2)>0) echo $total2[9]; ?></td>
 		</tr>
 	</table>
 
@@ -222,7 +222,7 @@ body{
 		<th>Total</th>
 			<td></td>
 		<?php for($i=10;$i<count($total2);$i++) :?>
-					<td><?php echo $total2[$i]; ?></td>
+					<td><?php if(count($table2)>0) echo $total2[$i]; ?></td>
 				<?php endfor ?>
 		</tr>
 	</table>
@@ -260,7 +260,7 @@ body{
 		<tr>
 			<th>Total</th>
 			<td></td>
-			<td><?php echo $total3[0]; ?></td>
+			<td><?php if(count($table3)>0) echo $total3[0]; ?></td>
 				<td class="disabled"></td>
 				<td class="disabled"></td>
 				<td class="disabled"></td>
@@ -269,8 +269,8 @@ body{
 				<td class="disabled"></td>
 				<td class="disabled"></td>
 				<td class="disabled"></td>
-				<td><?php echo $total3[1]; ?></td>
-				<td><?php echo $total3[2]; ?></td>
+				<td><?php if(count($table3)>0) echo $total3[1]; ?></td>
+				<td><?php if(count($table3)>0) echo $total3[2]; ?></td>
 		</tr>
 	</table>
 	<br/>
@@ -306,9 +306,9 @@ body{
 		<tr>
 		<th>Total</th>
 		<td></td>
-			<?php for($i=3;$i<count($table3);$i++) :?>
-					<td><?php echo $total3[$i]; ?></td>
-				<?php endfor ?>
+			<?php for($i=3;$i<count($total3);$i++) :?>
+				<td><?php if(count($total3)>0) echo $total3[$i]; ?></td>
+			<?php endfor ?>
 		</tr>
 	</table>
 	<script>
