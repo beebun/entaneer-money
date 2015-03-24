@@ -21,44 +21,40 @@
 	
 	$departments  = $arr['departments'];
 	$total 		  = $arr['total'];
+
+	$type = Auth::user()->type;
 	
 ?>    
 
 <style>
-body{
-	font-size: 12px;
+.table-responsive>.fixed-column {
+    position: absolute;
+    display: inline-block;
+    width: auto;
+    border-right: 1px solid #ddd;
+    background-color: #fff;
 }
-#scroller {
-    width: 100%;
-    overflow-x: scroll;
-}
-#scroller table {
-    /* just a quick hack to make the table overflow the containing div
-       your method may differ */
-    width: 200%;
+@media(max-width:768px) {
+    .table-responsive>.fixed-column {
+        display: none;
+    }
 }
 
-#scroller .table.fixedCol {
-    width: auto;
-    position: absolute;
-    /* below styles are specific for borderd Bootstrap tables
-       to remove rounded corners on cloned table */
-    -webkit-border-top-right-radius: 0px;
-    -webkit-border-bottom-right-radius: 0px;
-       -moz-border-radius-topright: 0px;
-       -moz-border-radius-bottomright: 0px;
-            border-top-right-radius: 0px;
-            border-bottom-right-radius: 0px;
-}
-.table.fixedCol th,
-.table.fixedCol td {
-    /* background is set to white to hide underlaying column
-       of original table */
-    background: white;
-}
 </style>
-	<h4>รายงาน <?php echo $semester."/".$year ; ?></h4>`
+	<form class="form-inline">
+  <div class="form-group">
+    <label>ภาคการศึกษา</label>
+    <select class="form-control"id="select_year">
+		<option>1/2557</option>
+		<option>2/2557</option>
+		<option>1/2558</option>
+	</select>
+  </div>
+</form>
+	<h4>รายงาน <?php echo $semester."/".$year ; ?></h4>
+	
 	<hr>
+	@if($type ==1)
 	<table class="table table-bordered">
 		<thead>
 			<th>
@@ -97,10 +93,11 @@ body{
 			@endfor
 		</tr>
 	</table>
+	@endif
 	<h5><strong>ตามหลักสูตร</strong></h5>
 	<div>
 
-	<table class="table table-bordered table-responsive">
+	<table class="table table-bordered">
 		<thead>
 			<th style="width:20%">หลักสูตร</th>
 			<th style="width:8%">ภาควิชา</th>
@@ -138,11 +135,13 @@ body{
 	</table>
     </div>
 	<br/>
-	<div>
-		<table class="table table-bordered">
+	<div class="table-responsive">
+		<table class="table table-bordered table-condensed">
 		<thead>
-			<th style="width:200px">หลักสูตร</th>
-			<th style="width:8%">ภาควิชา</th>
+		<tr>
+			<th style="width:20%">หลักสูตร</th>
+			<th >ภาควิชา</th>
+			@if($type==1)
 			<th class="danger"> Fund</th>
 			<th class="danger"> ENG</th>
 			<th class="danger"> Lib</th>
@@ -151,30 +150,49 @@ body{
 			<?php for($i=1;$i<count($departments)-1;$i++) :?>
 				<th class="success">{{$departments[$i]->name}}</th>
 			<?php endfor;?>
+			@else
+				<th class="success">{{$departments[$type-1]->name}}</th>
+			@endif
 			<th class="success"> ENG</th>
 			<th class="success"> Fund</th>
 			<th class="success"> Lib</th>
 			<th class="success"> Total</th>
-
+	    </tr>
 		</thead>
+		<tbody>
 		<?php for($i=0;$i<count($table);$i++) :?>
 			<tr>
 				<td><?php echo $course_name[$i][0]; ?></td>
 				<td>
 				{{ $departments[$course_name[$i][1]]->name }}
 				</td>
+				@if($type==1)
 				<?php for($j=11;$j<count($table[$i]);$j++) :?>
 					<td><?php echo $table[$i][$j]; ?></td>
 				<?php endfor ?>
+				@else
+					<td><?php echo $table[$i][14+$type]; ?></td>
+				<?php for($j=24;$j<count($table[$i]);$j++) :?>
+					<td><?php echo $table[$i][$j]; ?></td>
+				<?php endfor ?>
+				@endif
 			</tr>
 		<?php endfor ?>
 		<tr>
 		<th>Total</th>
 		<td></td>
+		@if($type==1)
 		@for($i=11;$i<count($total1);$i++)
 			<td>{{$total1[$i]}}</td>
 		@endfor
+		@else
+			<td>{{$total1[14+$type]}}</td>
+			@for($i=24;$i<count($total1);$i++)
+				<td>{{$total1[$i]}}</td>
+			@endfor
+		@endif
 		</tr>
+		</tbody>
 	</table>
 	</div>
 	<br/>
@@ -217,10 +235,11 @@ body{
 	</table>
 
 	<br/>
-	<table class="table table-bordered table-responsive">
+	<table class="table table-bordered">
 		<thead>
 			<th style="width:50%">หลักสูตร</th>
 			<th style="width:8%">ภาควิชา</th>
+			@if($type==1)
 			<th class="danger"> Fund</th>
 			<th class="danger"> ENG</th>
 			<th class="danger"> Lib</th>
@@ -229,6 +248,9 @@ body{
 			<?php for($i=1;$i<count($departments)-1;$i++) :?>
 				<th class="success">{{$departments[$i]->name}}</th>
 			<?php endfor;?>
+			@else
+				<th class="success">{{$departments[$type-1]->name}}</th>
+			@endif
 			<th class="success"> ENG</th>
 			<th class="success"> Fund</th>
 			<th class="success"> Lib</th>
@@ -241,17 +263,31 @@ body{
 				<td>
 				{{ $departments[$course_name2[$i][1]]->name }}
 				</td>
-				@for($j=11;$j<count($table2[$i]);$j++)
-					<td>{{$table2[$i][$j]}}</td>
-				@endfor
+				@if($type==1)
+				<?php for($j=11;$j<count($table2[$i]);$j++) :?>
+					<td><?php echo $table2[$i][$j]; ?></td>
+				<?php endfor ?>
+				@else
+					<td><?php echo $table2[$i][14+$type]; ?></td>
+				<?php for($j=24;$j<count($table2[$i]);$j++) :?>
+					<td><?php echo $table2[$i][$j]; ?></td>
+				<?php endfor ?>
+				@endif
 			</tr>
 		<?php endfor ?>
 		<tr>
 			<th>Total</th>
 			<td></td>
-			<?php for($i=11;$i<count($total2);$i++) :?>
-				<td><?php if(count($table2)>0) echo $total2[$i]; ?></td>
-			<?php endfor ?>
+			@if($type==1)
+		@for($i=11;$i<count($total2);$i++)
+			<td>{{$total2[$i]}}</td>
+		@endfor
+		@else
+			<td>{{$total2[14+$type]}}</td>
+			@for($i=24;$i<count($total2);$i++)
+				<td>{{$total2[$i]}}</td>
+			@endfor
+		@endif
 		</tr>
 	</table>
 
@@ -294,18 +330,22 @@ body{
 		</tr>
 	</table>
 	<br/>
-	<table class="table table-bordered table-responsive">
+	<table class="table table-bordered">
 		<thead>
 			<th style="width:50%">หลักสูตร</th>
 			<th style="width:8%">ภาควิชา</th>
+			@if($type==1)
 			<th class="danger"> Fund</th>
 			<th class="danger"> ENG</th>
 			<th class="danger"> Lib</th>
 			<th class="danger"> Depart</th>
-			<th class="danger" > Total</th>
+			<th class="danger"> Total</th>
 			<?php for($i=1;$i<count($departments)-1;$i++) :?>
 				<th class="success">{{$departments[$i]->name}}</th>
 			<?php endfor;?>
+			@else
+				<th class="success">{{$departments[$type-1]->name}}</th>
+			@endif
 			<th class="success"> ENG</th>
 			<th class="success"> Fund</th>
 			<th class="success"> Lib</th>
@@ -318,46 +358,51 @@ body{
 				<td>
 				{{ $departments[$course_name3[$i][1]]->name }}
 				</td>
-				@for($j=11;$j<count($table3[$i]);$j++)
-					<td>{{$table3[$i][$j]}}</td>
-			@endfor
+				@if($type==1)
+				<?php for($j=11;$j<count($table3[$i]);$j++) :?>
+					<td><?php echo $table3[$i][$j]; ?></td>
+				<?php endfor ?>
+				@else
+					<td><?php echo $table3[$i][14+$type]; ?></td>
+				<?php for($j=24;$j<count($table3[$i]);$j++) :?>
+					<td><?php echo $table3[$i][$j]; ?></td>
+				<?php endfor ?>
+				@endif
 			</tr>
 		<?php endfor ?>
 		<tr>
 		<th>Total</th>
 		<td></td>
-			@for($j=11;$j<count($total3);$j++)
-				<td>{{$total3[$j]}}</td>
+			@if($type==1)
+		@for($i=11;$i<count($total3);$i++)
+			<td>{{$total3[$i]}}</td>
+		@endfor
+		@else
+			<td>{{$total3[14+$type]}}</td>
+			@for($i=24;$i<count($total3);$i++)
+				<td>{{$total3[$i]}}</td>
 			@endfor
+		@endif
 		</tr>
 	</table>
 	<script>
-	$('#scroller table').each(function(){
-    var table = $(this),
-        fixedCol = table.clone(true),
-        fixedWidth = table.find('th').eq(0).width(),
+	$(document).ready(function(){
+		$('#select_year').val("{{$semester.'/'.$year}}");
+	});
+	$('#select_year').change(function(){
+		var value = $(this).val();
+		window.location.href = "{{url('report/semester')}}/"+value;
+	});
 
-        tablePos = table.position();
-		//alert(fixedWidth);
-    // Remove all but the first column from the cloned table
-    fixedCol.find('th').not(':eq(0)').remove();
-    fixedCol.find('tbody tr').each(function(){
-        $(this).find('td').not(':eq(0)').remove();
-    });
+	var $table = $('.table.scroll');
+var $fixedColumn = $table.clone().insertBefore($table).addClass('fixed-column');
 
-    // Set positioning so that cloned table overlays
-    // first column of original table
-    fixedCol.addClass('fixedCol');
-    fixedCol.css({
-        left: tablePos.left,
-        top: tablePos.top
-    });
+$fixedColumn.find('th:not(:first-child),td:not(:first-child)').remove();
 
-    // Match column width with that of original table
-    fixedCol.find('th,td').css('width',fixedWidth+'px');
-
-    $('#scroller').append(fixedCol);
+$fixedColumn.find('tr').each(function (i, elem) {
+    $(this).height($table.find('tr:eq(' + i + ')').height());
 });
+	
 	</script>
 @stop
 
