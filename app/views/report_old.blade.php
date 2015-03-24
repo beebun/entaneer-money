@@ -20,7 +20,6 @@
 	$total3 	  = $arr['total3'];
 	
 	$departments  = $arr['departments'];
-	$total 		  = $arr['total'];
 	
 ?>    
 
@@ -57,49 +56,10 @@ body{
     background: white;
 }
 </style>
-	<h4>รายงาน <?php echo $semester."/".$year ; ?></h4>`
+	<h4>รายงาน <?php echo $semester."/".$year ; ?></h4>
 	<hr>
-	<table class="table table-bordered">
-		<thead>
-			<th>
-			@for($i=0;$i<count($income_types);$i++)
-				<th style="width:8%"><?php echo $income_types[$i]->name; ?></th>
-			@endfor
-			<th>Total</th>
-		</thead>
-		<tr>
-			<th>Total </th>
-			@for($i=0;$i<11;$i++)
-				<td>{{$total[$i]}}</td>
-			@endfor
-		</tr>	
-	</table>
-	<table class="table table-bordered">
-		<thead>
-			<th>
-			<th class="danger"> Fund</th>
-			<th class="danger"> ENG</th>
-			<th class="danger"> Lib</th>
-			<th class="danger"> Depart</th>
-			<th class="danger" > Total</th>
-			<?php for($i=1;$i<count($departments)-1;$i++) :?>
-				<th class="success">{{$departments[$i]->name}}</th>
-			<?php endfor;?>
-			<th class="success"> ENG</th>
-			<th class="success"> Fund</th>
-			<th class="success"> Lib</th>
-			<th class="success"> Total</th>
-		</thead>
-		<tr>
-			<th>Total</th>
-			@for($i=11;$i<count($total);$i++)
-				<td>{{$total[$i]}}</td>
-			@endfor
-		</tr>
-	</table>
 	<h5><strong>ตามหลักสูตร</strong></h5>
-	<div>
-
+	<div >
 	<table class="table table-bordered table-responsive">
 		<thead>
 			<th style="width:20%">หลักสูตร</th>
@@ -115,46 +75,50 @@ body{
 				<td>
 				{{ $departments[$course_name[$i][1]]->name }}
 				</td>
-				@for($j=0;$j<11;$j++)
-				@if($j<6 || $j>8)
-					<td>{{$table[$i][$j]}}</td>
-				@else
-					<td class="disabled"></td>
-				@endif
-				@endfor
+				<?php for($j=0;$j<count($income_types)-4;$j++) :?>
+					<td><?php echo $table[$i][$j]; ?></td>
+				<?php endfor ?>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<?php for($j=6;$j<8;$j++) :?>
+					<td><?php echo $table[$i][$j]; ?></td>
+				<?php endfor ?>
 			</tr>
 		<?php endfor ?>
 		<tr>
 		<th>Total</th>
 		<td></td>
-		@for($i =0;$i<11;$i++)
-			@if($i<6 || $i>8)
-				<td>{{$total1[$i]}} </td>
-			@else
-				<td class="disabled"></td>
-			@endif
-		@endfor
+		<?php for($i=0;$i<count($income_types)-4;$i++) :?>
+		<td><?php if(count($total1)>0) echo $total1[$i]; ?></td>
+		<?php endfor ?>
+		<td class="disabled"></td>
+		<td class="disabled"></td>
+		<td class="disabled"></td>
+		<?php for($i=6;$i<8;$i++) :?>
+			<td><?php if(count($total1)>0)echo $total1[$i]; ?></td>
+		<?php endfor ?>
 		</tr>
 	</table>
     </div>
 	<br/>
-	<div>
+	<div id="scroller">
 		<table class="table table-bordered">
 		<thead>
 			<th style="width:200px">หลักสูตร</th>
 			<th style="width:8%">ภาควิชา</th>
-			<th class="danger"> Fund</th>
-			<th class="danger"> ENG</th>
-			<th class="danger"> Lib</th>
-			<th class="danger"> Depart</th>
-			<th class="danger"> Total</th>
+			<th> Fund</th>
+			<th> ENG</th>
+			<th> Lib</th>
+			<th> Depart</th>
+			<th> Total</th>
 			<?php for($i=1;$i<count($departments)-1;$i++) :?>
-				<th class="success">{{$departments[$i]->name}}</th>
+				<th>{{$departments[$i]->name}}</th>
 			<?php endfor;?>
-			<th class="success"> ENG</th>
-			<th class="success"> Fund</th>
-			<th class="success"> Lib</th>
-			<th class="success"> Total</th>
+			<th> ENG</th>
+			<th> Fund</th>
+			<th> Lib</th>
+			<th> Total</th>
 
 		</thead>
 		<?php for($i=0;$i<count($table);$i++) :?>
@@ -163,7 +127,7 @@ body{
 				<td>
 				{{ $departments[$course_name[$i][1]]->name }}
 				</td>
-				<?php for($j=11;$j<count($table[$i]);$j++) :?>
+				<?php for($j=8;$j<count($table[$i]);$j++) :?>
 					<td><?php echo $table[$i][$j]; ?></td>
 				<?php endfor ?>
 			</tr>
@@ -171,9 +135,9 @@ body{
 		<tr>
 		<th>Total</th>
 		<td></td>
-		@for($i=11;$i<count($total1);$i++)
-			<td>{{$total1[$i]}}</td>
-		@endfor
+		<?php for($i=8;$i<count($total1);$i++) :?>
+		<td><?php echo $total1[$i]; ?></td>
+		<?php endfor ?>
 		</tr>
 	</table>
 	</div>
@@ -194,25 +158,33 @@ body{
 				<td>
 					{{ $departments[$course_name2[$i][1]]->name }}
 				</td>
-				@for($j=0;$j<11;$j++)
-					@if(($j>5&&$j<9)||$j==10)
-						<td>{{$table2[$i][$j]}}</td>
-					@else
-						<td class="disabled"></td>
-					@endif
-				@endfor
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<?php for($j=6;$j<9;$j++) :?>
+					<td><?php if(count($table2)>0) echo $table2[$i][$j]; ?></td>
+				<?php endfor ?>
+				<td class="disabled"></td>
+				<td><?php if(count($table2)>0) echo $table2[$i][9]; ?></td>
 			</tr>
 		<?php endfor ?>
 		<tr>
 			<th>Total</th>
-			<td></td>		
-			@for($j=0;$j<11;$j++)
-				@if(($j>5&&$j<9)||$j==10)
-					<td>{{$total2[$j]}}</td>
-				@else
-					<td class="disabled"></td>
-				@endif
-			@endfor
+			<td></td>
+			<td class="disabled"></td>
+			<td class="disabled"></td>
+			<td class="disabled"></td>
+			<td class="disabled"></td>
+			<td class="disabled"></td>
+			<td class="disabled"></td>
+			<?php for($i=6;$i<9;$i++) :?>
+				<td><?php if(count($table2)>0) echo $total2[$i]; ?></td>
+			<?php endfor ?>
+			<td class="disabled"></td>
+			<td><?php if(count($table2)>0) echo $total2[9]; ?></td>
 		</tr>
 	</table>
 
@@ -221,18 +193,18 @@ body{
 		<thead>
 			<th style="width:50%">หลักสูตร</th>
 			<th style="width:8%">ภาควิชา</th>
-			<th class="danger"> Fund</th>
-			<th class="danger"> ENG</th>
-			<th class="danger"> Lib</th>
-			<th class="danger"> Depart</th>
-			<th class="danger"> Total</th>
+			<th> Fund</th>
+			<th> ENG</th>
+			<th> Lib</th>
+			<th> Depart</th>
+			<th> Total</th>
 			<?php for($i=1;$i<count($departments)-1;$i++) :?>
-				<th class="success">{{$departments[$i]->name}}</th>
+				<th>{{$departments[$i]->name}}</th>
 			<?php endfor;?>
-			<th class="success"> ENG</th>
-			<th class="success"> Fund</th>
-			<th class="success"> Lib</th>
-			<th class="success"> Total</th>
+			<th> ENG</th>
+			<th> Fund</th>
+			<th> Lib</th>
+			<th> Total</th>
 
 		</thead>
 		<?php for($i=0;$i<count($table2);$i++) :?>
@@ -241,17 +213,17 @@ body{
 				<td>
 				{{ $departments[$course_name2[$i][1]]->name }}
 				</td>
-				@for($j=11;$j<count($table2[$i]);$j++)
-					<td>{{$table2[$i][$j]}}</td>
-				@endfor
+				<?php for($j=10;$j<count($table2[$i]);$j++) :?>
+					<td><?php echo $table2[$i][$j]; ?></td>
+				<?php endfor ?>
 			</tr>
 		<?php endfor ?>
 		<tr>
-			<th>Total</th>
+		<th>Total</th>
 			<td></td>
-			<?php for($i=11;$i<count($total2);$i++) :?>
-				<td><?php if(count($table2)>0) echo $total2[$i]; ?></td>
-			<?php endfor ?>
+		<?php for($i=10;$i<count($total2);$i++) :?>
+					<td><?php if(count($table2)>0) echo $total2[$i]; ?></td>
+				<?php endfor ?>
 		</tr>
 	</table>
 
@@ -272,25 +244,33 @@ body{
 				<td>
 					{{ $departments[$course_name3[$i][1]]->name }}
 				</td>
-				@for($j=0;$j<11;$j++)
-					@if($j==0 || $j>8)
-						<td>{{$table3[$i][$j]}}</td>
-					@else
-						<td class="disabled"></td>
-					@endif
-				@endfor
+				<td><?php echo $table3[$i][0]; ?></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td><?php echo $table3[$i][1]; ?></td>
+				<td><?php echo $table3[$i][2]; ?></td>
 			</tr>
 		<?php endfor ?>
 		<tr>
 			<th>Total</th>
 			<td></td>
-			@for($j=0;$j<11;$j++)
-				@if($j==0 || $j>8)
-					<td>{{$total3[$j]}}</td>
-				@else
-					<td class="disabled"></td>
-				@endif
-			@endfor
+			<td><?php if(count($table3)>0) echo $total3[0]; ?></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td class="disabled"></td>
+				<td><?php if(count($table3)>0) echo $total3[1]; ?></td>
+				<td><?php if(count($table3)>0) echo $total3[2]; ?></td>
 		</tr>
 	</table>
 	<br/>
@@ -298,18 +278,18 @@ body{
 		<thead>
 			<th style="width:50%">หลักสูตร</th>
 			<th style="width:8%">ภาควิชา</th>
-			<th class="danger"> Fund</th>
-			<th class="danger"> ENG</th>
-			<th class="danger"> Lib</th>
-			<th class="danger"> Depart</th>
-			<th class="danger" > Total</th>
+			<th> Fund</th>
+			<th> ENG</th>
+			<th> Lib</th>
+			<th> Depart</th>
+			<th> Total</th>
 			<?php for($i=1;$i<count($departments)-1;$i++) :?>
-				<th class="success">{{$departments[$i]->name}}</th>
+				<th>{{$departments[$i]->name}}</th>
 			<?php endfor;?>
-			<th class="success"> ENG</th>
-			<th class="success"> Fund</th>
-			<th class="success"> Lib</th>
-			<th class="success"> Total</th>
+			<th> ENG</th>
+			<th> Fund</th>
+			<th> Lib</th>
+			<th> Total</th>
 
 		</thead>
 		<?php for($i=0;$i<count($table3);$i++) :?>
@@ -318,17 +298,17 @@ body{
 				<td>
 				{{ $departments[$course_name3[$i][1]]->name }}
 				</td>
-				@for($j=11;$j<count($table3[$i]);$j++)
-					<td>{{$table3[$i][$j]}}</td>
-			@endfor
+				<?php for($j=3;$j<count($table3[$i]);$j++) :?>
+					<td><?php echo $table3[$i][$j]; ?></td>
+				<?php endfor ?>
 			</tr>
 		<?php endfor ?>
 		<tr>
 		<th>Total</th>
 		<td></td>
-			@for($j=11;$j<count($total3);$j++)
-				<td>{{$total3[$j]}}</td>
-			@endfor
+			<?php for($i=3;$i<count($total3);$i++) :?>
+				<td><?php if(count($total3)>0) echo $total3[$i]; ?></td>
+			<?php endfor ?>
 		</tr>
 	</table>
 	<script>
@@ -338,7 +318,7 @@ body{
         fixedWidth = table.find('th').eq(0).width(),
 
         tablePos = table.position();
-		//alert(fixedWidth);
+	alert(fixedWidth);
     // Remove all but the first column from the cloned table
     fixedCol.find('th').not(':eq(0)').remove();
     fixedCol.find('tbody tr').each(function(){

@@ -58,7 +58,7 @@ class ReportController extends BaseController {
 			$k           = 0 ;
 				
 			foreach($courses as $course){
-				$temp       = array_fill(0,27, 0);
+				$temp       = array();
 				$is_null    = true ;
 				$department = 0;
 				$total		= 0;
@@ -80,10 +80,10 @@ class ReportController extends BaseController {
 
 					if( !is_null($data[0]->result) ) {
 						$is_null    = false ;
-						$temp[$income_type-1] = $data[0]->result;
+						$temp[$i-1] = $data[0]->result;
 						$department = $data[0]->department;
 					}
-					else $temp[$income_type-1] = 0 ;
+					else $temp[$i-1] = 0 ;
 
 					if($i<7){
 						$total 	+=	$temp[$i-1];
@@ -98,45 +98,43 @@ class ReportController extends BaseController {
 					$course_name[$k][0] = $course->name ;
 					$course_name[$k][1] = $department ;
 
-					//$i--;
+					$i--;
 
-					$temp[10]  = $total;
+					$temp[$i++]  = $total;
 					//fund = total*0.05
-					$temp[11] = $total*0.05;
-					$fund_index = 11;
+					$temp[$i++] = $total*0.05;
+					$fund_index = $i-1;
 					
 
 					//eng = sum of input_type*percent *0.95 except lib(id=4)
-					$temp[12] = round((($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->faculty_percent/100)+
+					$temp[$i++] = round((($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->faculty_percent/100)+
 									  $temp[self::$JOINING_FEE_ID-1]+
 									  ($temp[self::$FEE_ID-1]*$percent[self::$FEE_ID]->faculty_percent/100)+
 									  $temp[self::$OPERATING_COST_ID-1]+
 									  $temp[self::$MATAINING_FEE_ID-1])*0.95,2);
-					$eng_index = 12;
+					$eng_index = $i-1;
 					
 
 					//lib = 0.95*lib value
-					$temp[13] = $temp[self::$LIB_FEE_ID-1]*0.95;
-					$lib_index = 13;
+					$temp[$i++] = $temp[self::$LIB_FEE_ID-1]*0.95;
+					$lib_index = $i-1;
 					
 
 					//dept = sum of credit_price*percent,fee*percent then multiply by 0.95
-					$temp[14] = (($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->department_percent/100)+
+					$temp[$i++] = (($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->department_percent/100)+
 								   ($temp[self::$FEE_ID-1]*$percent[self::$FEE_ID]->department_percent/100))*0.95;
-					$dept_index = 14;
+					$dept_index = $i-1;
 					
 
 					//total fund+lib+eng+dept
-					$temp[15] = 0;
-					for($j=11;$j<15;$j++){
-						$temp[15] += $temp[$j];
+					$temp[$i] = 0;
+					for($j=1;$j<5;$j++){
+						$temp[$i] += $temp[$i-$j];
 					}
-					//$i++;
-					$start_index = 16;
-					$i = $start_index;
+					$i++;
+					$start_index = $i;
+
 					if($course->id>=54&&$course->id<=59){
-						
-						//query ent_all_scch
 						$ent_all_scch = 0;
 						$data = DB::select("SELECT sum(scch_value) as scch,sum(student_amount) as student
 											FROM constant  
@@ -149,8 +147,6 @@ class ReportController extends BaseController {
 							$ent_all_scch = $data[0]->scch;
 						}
 
-						//loop through each major
-						
 						for($j=1;$j<count($departments)-2;$j++){
 							$data = DB::select("SELECT scch_value,student_amount
 												FROM constant  
@@ -173,7 +169,7 @@ class ReportController extends BaseController {
 							
 						}
 						//BME
-						$temp[23] = 0;
+						$temp[$i++] = 0;
 						
 					}else{
 						for($j=1;$j<count($departments)-2;$j++){
@@ -187,7 +183,7 @@ class ReportController extends BaseController {
 							
 						}
 						//BME
-						$temp[23] = 0;
+						$temp[$i++] = 0;
 						
 					}
 					//54 = ค่าหน่วยกิตป ตรี , 58 = ป.ตรี ภาคพิเศษ (1)
@@ -203,23 +199,23 @@ class ReportController extends BaseController {
 							$total_scch = $data[0]->scch;
 						}
 						if($total_scch>0){
-							$temp[24] = round($temp[$eng_index]+$temp[$dept_index]*$ent_all_scch/$total_scch,2);
+							$temp[$i++] = round($temp[$eng_index]+$temp[$dept_index]*$ent_all_scch/$total_scch,2);
 						}else{
-							$temp[24] = 0;
+							$temp[$i++] = 0;
 						}
 						
 					}else{
-						$temp[24] = $temp[$eng_index];
+						$temp[$i++] = $temp[$eng_index];
 					}
 					
 					
-					$temp[25] = $temp[$fund_index];
+					$temp[$i++] = $temp[$fund_index];
 					
-					$temp[26] = $temp[$lib_index];
+					$temp[$i++] = $temp[$lib_index];
 
-					$temp[27] = 0;
-					for($j=$start_index;$j<27;$j++){
-						$temp[27] += $temp[$j];
+					$temp[$i] = 0;
+					for($j=$start_index;$j<$i;$j++){
+						$temp[$i] += $temp[$j];
 					}
 
 					
@@ -229,7 +225,8 @@ class ReportController extends BaseController {
 				
 			}
 
-				$total1_arr = array_fill(0,28, 0);
+			if(count($table)>0){
+				$total1_arr = array_fill(0,count($table[0]), 0);
 				for($i=0;$i<count($table);$i++){
 					for($j=0;$j<count($table[$i]);$j++){
 						$total1_arr[$j] += $table[$i][$j]; 
@@ -237,15 +234,17 @@ class ReportController extends BaseController {
 					
 				}
 
+			}
+
 			$course_name2 = array();
 			$table2       = array();
 			$k            = 0 ;
 
 			for($i=count($courses)-4;$i<count($courses);$i++){
 
-				//Department from 0 (ENG) => 8
+					//Department from 0 (ENG) => 8
 				for($dep=0;$dep<=8;$dep++){
-					$temp       = array(0,0,0,0,0,0,0,0,0,0);
+					$temp       = array(0,0,0,0,0,0,0,0,0);
 					$department = 0 ;
 					$is_null    = true ;
 					$total 		= 0;
@@ -275,41 +274,41 @@ class ReportController extends BaseController {
 					if( !$is_null ) {
 						$course_name2[$k][0] = $courses[$i]->name ;
 						$course_name2[$k][1] = $dep ;
-						//$j--;
-						$temp[10]  = $total;
+						$j--;
+						$temp[$j++]  = $total;
 						//fund = total*0.05
-						$temp[11] = $total*0.05;
-						$fund_index = 11;
+						$temp[$j++] = $total*0.05;
+						$fund_index = $j-1;
 						
 
 						//eng = sum of input_type(Service,OH,donate)*faculty_percent *0.95 
-						$temp[12] = round(($temp[self::$SERVICE_ID-1]*$percent[self::$SERVICE_ID]->faculty_percent/100)+
+						$temp[$j++] = round(($temp[self::$SERVICE_ID-1]*$percent[self::$SERVICE_ID]->faculty_percent/100)+
 										  	 ($temp[self::$OH_ID-1]*$percent[self::$OH_ID]->faculty_percent/100)+
 										  	 ($temp[self::$DONATE_ID-1]*$percent[self::$DONATE_ID]->faculty_percent/100)*0.95,2);
-						$eng_index = 12;
+						$eng_index = $j-1;
 						
 
 						//lib = 0.95*lib value
-						$temp[13] = $temp[self::$LIB_FEE_ID-1]*0.95;
-						$lib_index = 13;
+						$temp[$j++] = $temp[self::$LIB_FEE_ID-1]*0.95;
+						$lib_index = $j-1;
 						
 
 						//dept = sum of input_type(Service,OH,donate)*dept_percent *0.95 
-						$temp[14] = round(($temp[self::$SERVICE_ID-1]*$percent[self::$SERVICE_ID]->department_percent/100)+
+						$temp[$j++] = round(($temp[self::$SERVICE_ID-1]*$percent[self::$SERVICE_ID]->department_percent/100)+
 										  	 ($temp[self::$OH_ID-1]*$percent[self::$OH_ID]->department_percent/100)+
 										  	 ($temp[self::$DONATE_ID-1]*$percent[self::$DONATE_ID]->department_percent/100)*0.95,2);
-						$dept_index = 14;
+						$dept_index = $j-1;
 						
 
 						//total fund+lib+eng+dept
-						$temp[15] = 0;
-						for($l=$fund_index;$l<$dept_index+1;$l++){
-							$temp[15] += $temp[$l];
+						$temp[$j] = 0;
+						for($l=1;$l<5;$l++){
+							$temp[$j] += $temp[$j-$l];
 						}
-						//$j++;
+						$j++;
 						//start index for calculate total
-						$start_index = 16;
-						$j = $start_index;
+						$start_index = $j;
+
 						for($l=1;$l<count($departments)-2;$l++){
 							if($dep == $departments[$l]->id){
 								$temp[$j++] = $temp[$dept_index];
@@ -321,25 +320,25 @@ class ReportController extends BaseController {
 							
 						}
 						//BME
-						$temp[23] = 0;
+						$temp[$j++] = 0;
 									
 						//ENG $dep 0 = Eng
 						if($dep == 0){
-							$temp[24] = $temp[$eng_index];
+							$temp[$j++] = $temp[$eng_index];
 						}else{
-							$temp[24] = $temp[$eng_index]+$temp[$dept_index];
+							$temp[$j++] = $temp[$eng_index]+$temp[$dept_index];
 						}
 						
 						//Fund
-						$temp[25] = $temp[$fund_index];
+						$temp[$j++] = $temp[$fund_index];
 						
 						//Lib
-						$temp[26] = $temp[$lib_index];
+						$temp[$j++] = $temp[$lib_index];
 
 						//total
-						$temp[27] = 0;
-						for($l=$start_index;$l<27;$l++){
-							$temp[27] += $temp[$l];
+						$temp[$j] = 0;
+						for($l=$start_index;$l<$j;$l++){
+							$temp[$j] += $temp[$l];
 						}
 						
 						$table2[$k] = $temp ;
@@ -348,13 +347,19 @@ class ReportController extends BaseController {
 				}
 			}
 
-				$total2_arr = array_fill(0,28, 0);
+			if(count($table2)>0){
+				$total2_arr = array_fill(0,count($table2[0]), 0);
 				for($i=0;$i<count($table2);$i++){
 					for($j=0;$j<count($table2[$i]);$j++){
 						$total2_arr[$j] += $table2[$i][$j]; 
 					}
 					
 				}
+
+			}
+
+
+
 
 			$course_name3 = array();
 			$table3       = array();
@@ -384,46 +389,45 @@ class ReportController extends BaseController {
 
 						if( !is_null($data[0]->result) ) {
 							$is_null = false ;
-							$temp[$income_type-1]    = $data[0]->result;
+							$temp[$j-1]    = $data[0]->result;
 						}
-						else $temp[$income_type-1] = 0 ;
+						else $temp[$j-1] = 0 ;
 					}
 
 					if( !$is_null ) {
 						$course_name3[$k][0] = $courses[$course_id-1]->name ;
 						$course_name3[$k][1] = $dep ;
-						$total = $temp[0]-$temp[9];
-						//$j--;
+						$total = $temp[0]-$temp[1];
+						$j--;
 
-						$temp[10]  = $total;
+						$temp[$j++]  = $total;
 						//fund = total*0.05
-						$temp[11] = $total*0.05;
-						$fund_index = 11;
+						$temp[$j++] = $total*0.05;
+						$fund_index = $j-1;
 
 						//eng = sum of input_type(Service,OH,donate)*faculty_percent *0.95 
-						$temp[12] = round(($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->faculty_percent/100)*0.95,2);
-						$eng_index = 12;
+						$temp[$j++] = round(($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->faculty_percent/100)*0.95,2);
+						$eng_index = $j-1;
 						
 
 						//lib = 0.95*lib value
-						$temp[13] = $temp[self::$LIB_FEE_ID-1]*0.95;
-						$lib_index = 13;
+						$temp[$j++] = $temp[self::$LIB_FEE_ID-1]*0.95;
+						$lib_index = $j-1;
 						
 
 						//dept = sum of input_type(Service,OH,donate)*dept_percent *0.95 
-						$temp[14] = round(($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->department_percent/100)*0.95,2);
-						$dept_index = 14;
+						$temp[$j++] = round(($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->department_percent/100)*0.95,2);
+						$dept_index = $j-1;
 						
 
 						//total fund+lib+eng+dept
-						$temp[15] = 0;
-						for($l=$fund_index;$l<15;$l++){
-							$temp[15] += $temp[$l];
+						$temp[$j] = 0;
+						for($l=1;$l<5;$l++){
+							$temp[$j] += $temp[$j-$l];
 						}
-						//$j++;
+						$j++;
 						//start index for calculate total
-						$start_index = 16;
-						$j = $start_index;
+						$start_index = $j;
 
 						for($l=1;$l<count($departments)-2;$l++){
 							if($dep == $departments[$l]->id){
@@ -436,25 +440,25 @@ class ReportController extends BaseController {
 							
 						}
 						//BME
-						$temp[23] = 0;
+						$temp[$j++] = 0;
 									
 						//ENG $dep 0 = Eng
 						if($dep == 0){
-							$temp[24] = $temp[$eng_index];
+							$temp[$j++] = $temp[$eng_index];
 						}else{
-							$temp[24] = $temp[$eng_index]+$temp[$dept_index];
+							$temp[$j++] = $temp[$eng_index]+$temp[$dept_index];
 						}
 						
 						//Fund
-						$temp[25] = $temp[$fund_index];
+						$temp[$j++] = $temp[$fund_index];
 						
 						//Lib
-						$temp[26] = $temp[$lib_index];
+						$temp[$j++] = $temp[$lib_index];
 
 						//total
-						$temp[27] = 0;
-						for($l=$start_index;$l<27;$l++){
-							$temp[27] += $temp[$l];
+						$temp[$j] = 0;
+						for($l=$start_index;$l<$j;$l++){
+							$temp[$j] += $temp[$l];
 						}
 						$table3[$k]          = $temp ;
 						$k++;
@@ -462,7 +466,8 @@ class ReportController extends BaseController {
 				}
 			}
 
-				$total3_arr = array_fill(0,28, 0);
+			if(count($table3)>0){
+				$total3_arr = array_fill(0,count($table3[0]), 0);
 				for($i=0;$i<count($table3);$i++){
 					for($j=0;$j<count($table3[$i]);$j++){
 						$total3_arr[$j] += $table3[$i][$j]; 
@@ -470,9 +475,6 @@ class ReportController extends BaseController {
 					
 				}
 
-			$total = array_fill(0,28, 0);
-			for($i=0;$i<28;$i++){
-				$total[$i] = $total1_arr[$i]+$total2_arr[$i]+$total3_arr[$i];
 			}
 			//var_dump($total3_arr);
 
@@ -489,8 +491,6 @@ class ReportController extends BaseController {
 			$arr['table']        = $table ;
 			$arr['course_name']  = $course_name ;
 			$arr['total1']		 = $total1_arr;
-
-			$arr['total']		 = $total;
 
 
 			return View::make('report')->with('arr', $arr);
