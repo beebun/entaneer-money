@@ -126,8 +126,8 @@ Route::group(array('before' => 'auth'), function(){
 		//Add รายรับแบบปกติ
 		Route::get('additem', array('as' => 'additem', function()
 		{
-			$courses = course::all();
-			$departments = department::all();
+			$courses = Course::all();
+			$departments = Department::all();
 			$income_types = IncomeType::all();
 			
 			return View::make('additem')->with('courses', $courses)->with('departments', $departments)->with('income_types', $income_types);
@@ -141,8 +141,8 @@ Route::group(array('before' => 'auth'), function(){
 		//Add Service/OH/อื่นๆ
 		Route::get('additem2', array('as' => 'additem2', function()
 		{
-			$courses = course::all();
-			$departments = department::all();
+			$courses = Course::all();
+			$departments = Department::all();
 			$income_types = IncomeType::all();
 			
 			return View::make('additem2')->with('courses', $courses)->with('departments', $departments)->with('income_types', $income_types);
@@ -156,8 +156,8 @@ Route::group(array('before' => 'auth'), function(){
 		//Add ค่าจัดสรรค่าธรรมเนียม
 		Route::get('additem3', array('as' => 'additem3', function()
 		{
-			$courses = course::all();
-			$departments = department::all();
+			$courses = Course::all();
+			$departments = Department::all();
 			$income_types = IncomeType::all();
 			
 			return View::make('additem3')->with('courses', $courses)->with('departments', $departments)->with('income_types', $income_types);
@@ -198,8 +198,8 @@ Route::group(array('before' => 'auth'), function(){
 
 		Route::get('expenditure1', function()
 		{
-			$departments = department::all();
-			$expenditure1 = expenditure1::all();
+			$departments = Department::all();
+			$expenditure1 = Expenditure1::all();
 			
 			return View::make('addexpenditure1')->with('departments', $departments)->with('expenditure1', $expenditure1);
 		});
@@ -218,13 +218,13 @@ Route::group(array('before' => 'auth'), function(){
 			$department   = Input::get('Department');
 			$year         = Input::get('Years');
 
-			$Amount = expenditure1::where('department', $department)->where('year', $year)->get();
+			$Amount = Expenditure1::where('department', $department)->where('year', $year)->get();
 			
 			if(count($Amount)>0)
 			{
 				$Amount         = Input::get('Amount');
 				$Detail         = Input::get('Detail');
-				expenditure1::where('department', $department)->where('year', $year)->update(array(
+				Expenditure1::where('department', $department)->where('year', $year)->update(array(
 					'department'    =>  $department,
 					'year' =>  $year,
 					'amount'  => $Amount,
@@ -256,7 +256,7 @@ Route::group(array('before' => 'auth'), function(){
 
 		Route::get('expenditure2', function()
 		{
-			$departments = department::all();
+			$departments = Department::all();
 			
 			return View::make('addexpenditure2')->with('departments', $departments);
 		});
@@ -288,13 +288,13 @@ Route::group(array('before' => 'auth'), function(){
 			$department   = Input::get('Department');
 			$year         = Input::get('Years');
 
-			$Amount = expenditure2::where('department', $department)->where('year', $year)->get();
+			$Amount = Expenditure2::where('department', $department)->where('year', $year)->get();
 			
 			if(count($Amount)>0)
 			{
 				$Amount         = Input::get('Amount');
 				$Detail 		= Input::get('Detail');
-				expenditure2::where('department', $department)->where('year', $year)->update(array(
+				Expenditure2::where('department', $department)->where('year', $year)->update(array(
 					'department'    =>  $department,
 					'year' =>  $year,
 					'amount'  => $Amount,
@@ -324,11 +324,11 @@ Route::group(array('before' => 'auth'), function(){
 
 		Route::post('getAmount', function()
 		{
-			$expenditure1 = expenditure1::all();
+			$expenditure1 = Expenditure1::all();
 			
 			$department   = Input::get('Department');
 			$year         = Input::get('Years');
-			$Amount       = expenditure1::where('department', $department)->where('year', $year)->get();
+			$Amount       = Expenditure1::where('department', $department)->where('year', $year)->get();
 			return $Amount;
 		});
 
@@ -336,11 +336,11 @@ Route::group(array('before' => 'auth'), function(){
 
 		Route::post('getAmount2', function()
 		{
-			$expenditure1 = expenditure1::all();
+			$expenditure1 = Expenditure1::all();
 			
 			$department   = Input::get('Department');
 			$year         = Input::get('Years');
-			$Amount       = expenditure2::where('department', $department)->where('year', $year)->get();
+			$Amount       = Expenditure2::where('department', $department)->where('year', $year)->get();
 			return $Amount;
 		});
 
@@ -380,8 +380,8 @@ Route::group(array('before' => 'auth'), function(){
 			$table2       = array();
 			$course_name = array();
 			
-			$departments = departmentc::all();
-			$courses     = course::all();
+			$departments = DepartmentC::all();
+			$courses     = Course::all();
 			$k           = 0 ;
 			$k2           = 0 ;
 			
@@ -451,8 +451,8 @@ Route::group(array('before' => 'auth'), function(){
 		{
 
 			$arr         = Array();
-			$departments = departmentc::all();
-			$courses     = course::all();
+			$departments = DepartmentC::all();
+			$courses     = Course::all();
 
 			return View::make('percent')->with('arr', $arr)->with('departments', $departments)->with('courses', $courses);
 			
@@ -544,7 +544,7 @@ Route::group(array('before' => 'auth'), function(){
 			$temp    = array();
 			$is_null = true ;
 			
-			$departments = department::all();
+			$departments = Department::all();
 			
 			for($i=0;$i<8;$i++){//course
 					
@@ -577,11 +577,11 @@ Route::group(array('before' => 'auth'), function(){
 			$department		= Input::get('Department');
 			$year         	= Input::get('Years');
 
-			$value     = majormoney::where('department_id', $department)->where('years', $year)->get();
+			$value     = MajorMoney::where('department_id', $department)->where('years', $year)->get();
 			if(count($value)>0)
 			{
 				$money_value     = Input::get('Money_value');
-				majormoney::where('department_id', $department)->where('years', $year)->update(array(
+				MajorMoney::where('department_id', $department)->where('years', $year)->update(array(
 					'department_id' 	=>  $department,       
 					'years'    			=>  $year,
 					'cost_balance' 		=>  $money_value
@@ -631,7 +631,7 @@ Route::group(array('before' => 'auth'), function(){
 		$password = Hash::make(Input::get('password'));
 		$name     = Input::get('name');
 
-		user::where('id', ($id))->update(array(
+		User::where('id', ($id))->update(array(
 			'password' =>  $password,
 			'name'  => $name,
 		));
