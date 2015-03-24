@@ -8,7 +8,21 @@
 		$val         = $arr['val'];
 		$val2        = $arr['val2'];
 		$type = Auth::user()->type;
-	?>    
+	?>  
+	<form class="form-inline">
+  <div class="form-group">
+    <label>ปีการศึกษา</label>
+    <select class="form-control"id="select_year">
+    	<option>2552</option>
+		<option>2553</option>
+		<option>2554</option>
+    	<option>2555</option>
+		<option>2556</option>
+		<option>2557</option>
+    	<option>2558</option>
+	</select>
+  </div>
+</form>  
 	
 	<h4>Report Year {{$year}}</h4>
 	<hr>
@@ -75,6 +89,15 @@
 
 			</table>	
 	@endif
+<script>
+	$(document).ready(function(){
+		$('#select_year').val("{{$year}}");
+	});
+	$('#select_year').change(function(){
+		var value = $(this).val();
+		window.location.href = "{{url('report/year')}}/"+value;
+	});
 	
+	</script>	
 @stop
 

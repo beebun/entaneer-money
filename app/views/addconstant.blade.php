@@ -10,8 +10,35 @@
 	//var_dump($table);
 	//var_dump($table2);
 ?> 
-
-	<h4>รายงาน <?php $dcount=0; echo $semester."/".$year ; ?></h4>
+	<form class="form-inline">
+	  <div class="form-group">
+	    <label>ภาคการศึกษา</label>
+	    <select class="form-control"id="select_year">
+	    	<option>1/2552</option>
+			<option>2/2552</option>
+			<option>3/2552</option>
+	    	<option>1/2553</option>
+			<option>2/2553</option>
+			<option>3/2553</option>
+	    	<option>1/2554</option>
+			<option>2/2554</option>
+			<option>3/2554</option>
+	    	<option>1/2555</option>
+			<option>2/2555</option>
+			<option>3/2555</option>
+	    	<option>1/2556</option>
+			<option>2/2556</option>
+			<option>3/2556</option>
+	    	<option>1/2557</option>
+			<option>2/2557</option>
+			<option>3/2557</option>
+			<option>1/2558</option>
+			<option>2/2558</option>
+			<option>3/2558</option>
+		</select>
+	  </div>
+	</form>
+	<h4>ค่าคงที่ <?php $dcount=0; echo $semester."/".$year ; ?></h4>
 	<hr>
 	<h5><strong>ค่า SCCH</strong></h5>
 	<table class="table table-bordered" style="font-size:13px">
@@ -208,9 +235,9 @@
 				});
 			}
 
-			get_saved_value();
+			//get_saved_value();
 			
-			$( "select" ).change(function() {
+			$( ".select" ).change(function() {
 				get_saved_value();	
 				/*var AmountValue = $.ajax({
 					url: "/laravel/MoneyAnalysis/public/test",
@@ -227,6 +254,14 @@
 					}
 				});*/
 
+			});
+
+			$(document).ready(function(){
+				$('#select_year').val("{{$semester.'/'.$year}}");
+			});
+			$('#select_year').change(function(){
+				var value = $(this).val();
+				window.location.href = "{{url('constant')}}/"+value;
 			});
 			
 	</script>
