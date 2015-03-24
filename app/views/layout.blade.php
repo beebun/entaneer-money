@@ -115,6 +115,18 @@
         </li>
       </ul>
     </div>
+
+    <div class="dropdown btn-group">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-expanded="true">
+        ผู้ใช้
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li><a href="{{url('usermanage')}}">จัดการผู้ใช้</a></li>
+        <li><a href="{{url('userprofile')}}">ข้อมูลส่วนตัว</a></li> 
+        <li><a href="{{url('logout')}}">ออกจากระบบ</a></li> 
+      </ul>
+    </div>
       
       
       
