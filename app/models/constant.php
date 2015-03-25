@@ -1,26 +1,43 @@
 <?php
 
-use Illuminate\Auth\UserTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
-use Illuminate\Auth\Reminders\RemindableInterface;
 
-class Constant extends Eloquent implements UserInterface, RemindableInterface {
+class Constant extends Eloquent{
 
-	use UserTrait, RemindableTrait;
-
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
 	protected $table = 'constant';
+	public static function getTotalSCCH($course_id,$semester,$year){
+		$data = DB::select("SELECT sum(scch_value) as scch,sum(student_amount) as student
+							FROM constant  
+							WHERE course='".$course_id."' 
+								and semester='".$semester."'
+								and year='".$year."'
+							");
+		if(!is_null($data[0]->student))
+			return $data[0]->student;
+		return 0; 
+	}
 
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = array('password', 'remember_token');
+	public static function getEntAllSCCH($course_id,$semester,$year){
+		$data = DB::select("SELECT sum(scch_value) as scch,sum(student_amount) as student
+							FROM constant  
+							WHERE department_c >7 AND department_c <16
+								and course='".$course_id."' 
+								and semester='".$semester."'
+								and year='".$year."'
+							"); 
+		return $data; 
+	}
+
+	public static function getByDepartment($dept_id,$course_id,$semester,$year){
+		$data = DB::select("SELECT scch_value,student_amount
+							FROM constant  
+							WHERE department_c ='".$dept_id."' 
+								and course='".$course_id."' 
+								and semester='".$semester."'
+								and year='".$year."'
+							");
+		if(count($data)<=0)
+			return 0;
+		return $data[0]->student_amount; 
+	}
 
 }

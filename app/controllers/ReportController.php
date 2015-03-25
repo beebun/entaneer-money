@@ -141,30 +141,18 @@ class ReportController extends BaseController {
 						
 						//query ent_all_scch
 						$ent_all_scch = 0;
-						$data = DB::select("SELECT sum(scch_value) as scch,sum(student_amount) as student
-											FROM constant  
-											WHERE department_c >7 AND department_c <16
-												and course='".$course->id."' 
-												and semester='".$semester."'
-												and year='".$year."'
-											"); 
+						$data = constant::getEntAllSCCH($course->id,$semester,$year);
 						if(count($data>0)){
-							$ent_all_scch = $data[0]->scch;
+							$ent_all_scch = $data[0]->student;
 						}
 
 						//loop through each major
 						
 						for($j=1;$j<count($departments)-2;$j++){
-							$data = DB::select("SELECT scch_value,student_amount
-												FROM constant  
-												WHERE department_c ='".$departments[$j]->id."' 
-													and course='".$course->id."' 
-													and semester='".$semester."'
-													and year='".$year."'
-												"); 
+							$data = constant::getByDepartment($departments[$j]->id,$course->id,$semester,$year);
 							if(count($data)>0){
 								if($ent_all_scch>0){
-									$temp[$i++] = round($temp[$dept_index]*$data[0]->scch_value/$ent_all_scch,2);
+									$temp[$i++] = round($temp[$dept_index]*$data[0]->student_amount/$ent_all_scch,2);
 								}else{
 									$temp[$i++] = 0;
 								}
@@ -196,20 +184,27 @@ class ReportController extends BaseController {
 					//54 = ค่าหน่วยกิตป ตรี , 58 = ป.ตรี ภาคพิเศษ (1)
 					if($course->id ==54||$course->id == 58){
 						$total_scch = 0;
-						$data = DB::select("SELECT sum(scch_value) as scch,sum(student_amount) as student
-											FROM constant  
-											WHERE course='".$course->id."' 
-												and semester='".$semester."'
-												and year='".$year."'
-											"); 
+						$data = constant::getTotalSCCH($course->id,$semester,$year);
 						if(count($data>0)){
-							$total_scch = $data[0]->scch;
+							$total_scch = $data[0]->student;
 						}
 						if($total_scch>0){
 							$temp[24] = round($temp[$eng_index]+$temp[$dept_index]*$ent_all_scch/$total_scch,2);
 						}else{
 							$temp[24] = 0;
 						}
+
+						if($type == 1){
+							if($course->id == 54 || ($course->id == 58 && $semester != 3)){
+								$course_money = CourseMoney::getBySemester($semester,$year,$course->id);
+								if(count($course_money)<=0){
+									CourseMoney::insert($temp[$dept_index],$course->id,$semester,$year);
+								}else{
+									$course_money[0]->_update($temp[$dept_index]);
+								}
+							}
+						}
+
 						
 					}else{
 						$temp[24] = $temp[$eng_index];
@@ -491,9 +486,18 @@ class ReportController extends BaseController {
 			for($i=0;$i<28;$i++){
 				$total[$i] = $total1_arr[$i]+$total2_arr[$i]+$total3_arr[$i];
 			}
-			//var_dump($total3_arr);
 
-				// die();
+			if($type == 1){
+				for($dep =1 ;$dep<=8;$dep++){
+					$cost = $total[15+$dep];
+					$data = DepartmentTotal::get($dep,$semester,$year);
+					if(count($data)<=0){
+						DepartmentTotal::insert($cost,$dep,$semester,$year);
+					}else{
+						$result = $data[0]->_update($cost);
+					}
+				}
+			}
 
 			$arr['table3']       = $table3;
 			$arr['course_name3'] = $course_name3;
@@ -536,26 +540,101 @@ class ReportController extends BaseController {
 			
 			foreach($arr['departments'] as $each){
 
-				$temp           = Expenditure1::where('department', $each->id)->where('year', $year)->first();
+				$last_year_major_money = MajorMoney::getByYear($each->id,$year-1);
+				if(count($last_year_major_money)<=0){
+					$val1[$each->id]	= 0;
+				}else{
+					$val1[$each->id]	= $last_year_major_money[0]->cost_balance;
+				}
 
+				$temp  = Expenditure1::where('department', $each->id)->where('year', $year)->first();
 				if($temp['amount'] == "")
-					$val[$each->id] = 0;
+					$val3[$each->id] = 0;
 				else
-					$val[$each->id] = $temp['amount'];
-			}
+					$val3[$each->id] = $temp['amount'];
 
-			foreach($arr['departments'] as $each){
-
+				
 				$sum = DB::select("SELECT sum(amount) as sum from expenditure2 where year='".$year."' and department ='".$each->id."'");
-
 				if( is_null($sum[0]->sum) )
-					$val2[$each->id] = 0;
+					$val6[$each->id] = 0;
 				else
-					$val2[$each->id] = $sum[0]->sum;
+					$val6[$each->id] = $sum[0]->sum;
+
+				
+				$income = DepartmentTotal::getByYear($year,$each->id);
+
+
+				if( is_null($income[0]->sum) ){
+					$val2[$each->id] = 0;
+				}
+				else{
+					$val2[$each->id] = $income[0]->sum;
+				}
+
+				$val4[$each->id] = 0;
+
+				$total_scch 	= array();
+				$scch 			= array();
+				$course_money 	= array();
+
+				//semester 1 ,year
+				$total_scch[1] 		= constant::getTotalSCCH(54,1,$year);
+				$total_scch[2] 		= constant::getTotalSCCH(58,1,$year);
+				$scch[1] 			= constant::getByDepartment($each->id+8,54,1,$year);
+				$scch[2]			= constant::getByDepartment($each->id+8,58,1,$year);
+				$course_money[1] 	= CourseMoney::get(54,1,$year);
+				$course_money[2] 	= CourseMoney::get(58,1,$year);
+				//semester 2 , year-1
+				$total_scch[3] 		= constant::getTotalSCCH(54,2,$year-1);
+				$total_scch[4] 		= constant::getTotalSCCH(58,2,$year-1);
+				$scch[3] 			= constant::getByDepartment($each->id+8,54,2,$year-1);
+				$scch[4] 			= constant::getByDepartment($each->id+8,58,2,$year-1);
+				$course_money[3] 	= CourseMoney::get(54,2,$year-1);
+				$course_money[4] 	= CourseMoney::get(54,2,$year-1);
+
+				//semester 3 , year-1
+				$total_scch[5] 		= constant::getTotalSCCH(54,3,$year-1);
+				$scch[5] 			= constant::getByDepartment($each->id+8,54,3,$year-1);
+				$course_money[5] 	= CourseMoney::get(54,3,$year-1);
+
+
+				//sum(scch*course_money/total_scch)
+				$val5[$each->id] = 0;
+				for($i=1;$i<=5;$i++){
+					if($total_scch[$i] == 0){
+						$val5[$each->id] = '-';
+						break;
+					}
+					else{
+						$val5[$each->id] += $scch[$i]*$course_money[$i]/$total_scch[$i];
+					}
+				}				
+
+				$val7[$each->id] = $val2[$each->id] + $val5[$each->id] + $val6[$each->id];
+				$val8[$each->id] = $val3[$each->id] + $val4[$each->id];
+				$val9[$each->id] = $val1[$each->id] + $val2[$each->id] - $val3[$each->id]
+								   - $val4[$each->id] + $val5[$each->id] + $val6[$each->id];
+
+				
+				$major_money = MajorMoney::getByYear($each->id,$year);
+				if(count($major_money)<=0){
+					MajorMoney::insert($val9[$each->id],$each->id,$year);
+				}else{
+					$major_money[0]->_update($val9[$each->id]);
+				}
+
+
 			}
 
-			$arr['val']  = $val ;
-			$arr['val2'] = $val2;
+			$arr['val1'] = $val1; //เงินเหลือจ่ายปีก่อน
+			$arr['val2'] = $val2; //99% รับจริง
+			$arr['val3'] = $val3; //รายจ่าย
+			$arr['val4'] = $val4; //เงินกันเหลื่อม
+			$arr['val5'] = $val5; //ค่าสอนพื้นฐาน
+			$arr['val6'] = $val6; //รับ/จ่าย สอนภายใน
+			$arr['val7'] = $val7; //รับจริงทั้งหมด
+			$arr['val8'] = $val8; //จ่ายจริงทั้งหมด
+			$arr['val9'] = $val9; //เงินเหลือจ่ายปีปัจจุบัน
 
 			return View::make('report-year')->with('arr', $arr);
 		}
@@ -564,26 +643,93 @@ class ReportController extends BaseController {
 			$arr['year']        = $year;
 			$arr['departments'] = Department::all();
 			
+				$last_year_major_money = MajorMoney::getByYear($type-1,$year-1);
+				if(count($last_year_major_money)<=0){
+					$val1[$type-1]	= 0;
+				}else{
+					$val1[$type-1]	= $last_year_major_money[0]->cost_balance;
+				}
+
+				$income = DepartmentTotal::getByYear($year,$type-1);
+				if( is_null($income[0]->sum) ){
+					$val2[$type-1] = 0;
+				}
+				else{
+					$val2[$type-1] = $income[0]->sum;
+				}
+
 				$temp	= Expenditure1::where('department', ($type-1))->where('year', $year)->first();
 
 				if($temp['amount'] == "")
-					$val[($type-1)] = 0;
+					$val3[($type-1)] = 0;
 				else
-					$val[($type-1)] = $temp['amount'];
+					$val3[($type-1)] = $temp['amount'];
 			
+				
+				$val4[($type-1)] = 0;
+
+				$total_scch 	= array();
+				$scch 			= array();
+				$course_money 	= array();
+
+				//semester 1 ,year
+				$total_scch[1] 		= constant::getTotalSCCH(54,1,$year);
+				$total_scch[2] 		= constant::getTotalSCCH(58,1,$year);
+				$scch[1] 			= constant::getByDepartment($type-1+8,54,1,$year);
+				$scch[2]			= constant::getByDepartment($type-1+8,58,1,$year);
+				$course_money[1] 	= CourseMoney::get(54,1,$year);
+				$course_money[2] 	= CourseMoney::get(58,1,$year);
+				//semester 2 , year-1
+				$total_scch[3] 		= constant::getTotalSCCH(54,2,$year-1);
+				$total_scch[4] 		= constant::getTotalSCCH(58,2,$year-1);
+				$scch[3] 			= constant::getByDepartment($type-1+8,54,2,$year-1);
+				$scch[4] 			= constant::getByDepartment($type-1+8,58,2,$year-1);
+				$course_money[3] 	= CourseMoney::get(54,2,$year-1);
+				$course_money[4] 	= CourseMoney::get(54,2,$year-1);
+
+				//semester 3 , year-1
+				$total_scch[5] 		= constant::getTotalSCCH(54,3,$year-1);
+				$scch[5] 			= constant::getByDepartment($type-1+8,54,3,$year-1);
+				$course_money[5] 	= CourseMoney::get(54,3,$year-1);
 
 
+				//sum(scch*course_money/total_scch)
+				$val5[$type-1] = 0;
+				for($i=1;$i<=5;$i++){
+					if($total_scch[$i] == 0){
+						$val5[$type-1] = '-';
+						break;
+					}
+					else{
+						$val5[$type-1] += $scch[$i]*$course_money[$i]/$total_scch[$i];
+					}
+				}	
 
 				$sum = DB::select("SELECT sum(amount) as sum from expenditure2 where year='".$year."' and department ='".($type-1)."'");
 
 				if( is_null($sum[0]->sum) )
-					$val2[($type-1)] = 0;
+					$val6[($type-1)] = 0;
 				else
-					$val2[($type-1)] = $sum[0]->sum;
+					$val6[($type-1)] = $sum[0]->sum;			
+
+				$val7[$type-1] = $val2[$type-1] + $val5[$type-1] + $val6[$type-1];
+				$val8[$type-1] = $val3[$type-1] + $val4[$type-1];
+				$val9[$type-1] = $val1[$type-1] + $val2[$type-1] - $val3[$type-1]
+								   - $val4[$type-1] + $val5[$type-1] + $val6[$type-1];
+
+
+				
 			
 
-			$arr['val']  = $val ;
+			$arr['val1'] = $val1;
 			$arr['val2'] = $val2;
+			$arr['val3'] = $val3;
+			$arr['val4'] = $val4;
+			$arr['val5'] = $val5;
+			$arr['val6'] = $val6;
+			$arr['val7'] = $val7;
+			$arr['val8'] = $val8;
+			$arr['val9'] = $val9;
 
 			return View::make('report-year')->with('arr', $arr);
 		}

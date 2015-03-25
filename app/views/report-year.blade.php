@@ -5,8 +5,15 @@
 	<?php 
 		$year        = $arr['year'];
 		$departments = $arr['departments'];
-		$val         = $arr['val'];
+		$val1        = $arr['val1'];
 		$val2        = $arr['val2'];
+		$val3        = $arr['val3'];
+		$val4        = $arr['val4'];
+		$val5        = $arr['val5'];
+		$val6        = $arr['val6'];
+		$val7        = $arr['val7'];
+		$val8        = $arr['val8'];
+		$val9        = $arr['val9'];
 		$type = Auth::user()->type;
 	?>  
 	<form class="form-inline">
@@ -44,15 +51,15 @@
 		@for($i=0;$i<count($departments);$i++)
 		<tr>
 			<td>{{$departments[$i]->name}}</td>
-			<td></td>
-			<td></td>
-			<td>{{$val[$i]}}</td>
-			<td></td>
-			<td></td>
+			<td>{{$val1[$i]}}</td>
 			<td>{{$val2[$i]}}</td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td>{{$val3[$i]}}</td>
+			<td>{{$val4[$i]}}</td>
+			<td>{{$val5[$i]}}</td>
+			<td>{{$val6[$i]}}</td>
+			<td>{{$val7[$i]}}</td>
+			<td>{{$val8[$i]}}</td>
+			<td>{{$val9[$i]}}</td>
 		</tr>
 		@endfor
 
@@ -75,15 +82,15 @@
 
 			<tr>
 				<td>{{$departments[$type-1]->name}}</td>
-				<td></td>
-				<td></td>
-				<td>{{$val[$type-1]}}</td>
-				<td></td>
-				<td></td>
+				<td>{{$val1[$type-1]}}</td>
 				<td>{{$val2[$type-1]}}</td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td>{{$val3[$type-1]}}</td>
+				<td>{{$val4[$type-1]}}</td>
+				<td>{{$val5[$type-1]}}</td>
+				<td>{{$val6[$type-1]}}</td>
+				<td>{{$val7[$type-1]}}</td>
+				<td>{{$val8[$type-1]}}</td>
+				<td>{{$val9[$type-1]}}</td>
 			</tr>
 
 

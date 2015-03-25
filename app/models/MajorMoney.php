@@ -1,26 +1,31 @@
 <?php
 
-use Illuminate\Auth\UserTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
-use Illuminate\Auth\Reminders\RemindableInterface;
 
-class MajorMoney extends Eloquent implements UserInterface, RemindableInterface {
+class MajorMoney extends Eloquent {
 
-	use UserTrait, RemindableTrait;
-
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
 	protected $table = 'major_money';
+	public static function insert($cost_balance,$dept_id,$year){
+		$major_money = new MajorMoney();
+		$major_money->cost_balance = $cost_balance;
+		$major_money->department_id = $dept_id;
+		$major_money->years 	   = $year;
+		$major_money->save();
+		return $major_money->id;
+	}
 
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = array('password', 'remember_token');
+	public function _update($cost_balance){
+		$this->cost_balance = $cost_balance;
+		$this->save();
+		return $this->id;
+	}
+
+	public static function getByYear($dept_id,$year){
+		$data = MajorMoney::where('department_id',$dept_id)
+							->where('years',$year)
+							->get();
+		return $data;
+	}
+
+
 
 }
