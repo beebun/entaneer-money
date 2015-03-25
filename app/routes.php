@@ -439,32 +439,31 @@ Route::group(array('before' => 'auth'), function(){
 		}));
 
 
-
-
-
-
-
-
-
-
 		Route::get('percent',  array('as' => 'percent', function() 
 		{
 
 			$arr         = Array();
-			$departments = DepartmentC::all();
-			$courses     = Course::all();
+			$percent	= Percent::all();
 
-			return View::make('percent')->with('arr', $arr)->with('departments', $departments)->with('courses', $courses);
+			return View::make('percent')->with('arr', $arr)->with('percent', $percent);
 			
 		}));
 
+		Route::post('percent', array( "as"=>"post_add_percent" ,function()
+		{
+			$id				= Input::get('id');
+			$percent_value	= Input::get('percent');
+			$type 			= Input::get('type');
 
-
-
-
-
-
-
+			$percent = Percent::find($id);
+			if($type == 1)
+				$percent->department_percent = $percent_value;
+			if($type == 2)
+				$percent->faculty_percent = $percent_value;
+			$percent->save();
+			
+			return Redirect::to('percent');	
+		}));
 
 
 		Route::post('constant', array( "as"=>"post_add_constant" ,function()
@@ -507,15 +506,6 @@ Route::group(array('before' => 'auth'), function(){
 			
 			return Redirect::to('constant/'.$semester.'/'.$year);	
 		}));
-
-
-
-
-
-
-
-
-
 
 
 		Route::post('getValue', function()
