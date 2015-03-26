@@ -72,10 +72,31 @@ Route::group(array('before' => 'auth'), function(){
 		Route::post('checkpassword', function()
 		{
 			$password = Input::get('password');
+			$new_password = Input::get('new_password');
+			$repassword = Input::get('repassword');
+			$response = array();
 			$user = Auth::user();
-			if(Hash::check($password,$user->password))
-				return 'true';
-			return 'false';
+			if($password == ''){
+				$response['valid'] = 'false';
+				$response['message'] = 'กรุณากรอก password ปัจจุบัน';
+			}		
+			else if(!Hash::check($password,$user->password)){
+				$response['valid'] = 'false';
+				$response['message'] = 'password ไม่ถูกต้อง';
+			}else if($new_password==''){
+				$response['valid'] = 'false';
+				$response['message'] = 'กรุณากรอก password ใหม่';
+			}else if(strlen($new_password)<6){
+				$response['valid'] = 'false';
+				$response['message'] = 'กรุณาตั้งรหัสตั้งแต่ 6 ตัวขึ้นไป';
+			}else if($new_password!=$repassword){
+				$response['valid'] = 'false';
+				$response['message'] = 'password ไม่ตรงกัน';
+			}else{
+				$response['valid'] = 'true';
+				$response['message'] = '';
+			}
+			return Response::json($response);
 		});
 		
 		Route::get('edituser/{id}', array('as' => 'edituser', function($id)
@@ -551,14 +572,14 @@ Route::group(array('before' => 'auth'), function(){
 	{
 		$users = new User;
 			
-		$password = Hash::make(Input::get('password'));
+		$password = Hash::make(Input::get('new_password'));
 		$name     = Input::get('name');
 
 		User::where('id', ($id))->update(array(
 			'password' =>  $password,
 			'name'  => $name,
 		));
-		return Redirect::to('userprofile');
+		return 'done';
 	}));
 	Route::get('restricted', function()
 	{
