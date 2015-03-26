@@ -75,8 +75,46 @@
 	
 	<hr>
 	@if($type ==1)
+	<table class="table table-bordered">
+		<thead>
+			<th>
+			@for($i=0;$i<count($income_types);$i++)
+				<th style="width:8%"><?php echo $income_types[$i]->name; ?></th>
+			@endfor
+			<th>Total</th>
+		</thead>
+		<tr>
+			<th>Total </th>
+			@for($i=0;$i<11;$i++)
+				<td>{{$total[$i]}}</td>
+			@endfor
+		</tr>	
+	</table>
+	<table class="table table-bordered">
+		<thead>
+			<th class="danger"> Fund</th>
+			<th class="danger"> ENG</th>
+			<th class="danger"> Lib</th>
+			<th class="danger"> Depart</th>
+			<th class="danger" > Total</th>
+			<?php for($i=1;$i<count($departments)-1;$i++) :?>
+				<th class="success">{{$departments[$i]->name}}</th>
+			<?php endfor;?>
+			<th class="success"> ENG</th>
+			<th class="success"> Fund</th>
+			<th class="success"> Lib</th>
+			<th class="success"> Total</th>
+		</thead>
+		<tr>
+			<th>Total</th>
+			@for($i=11;$i<count($total);$i++)
+				<td>{{$total[$i]}}</td>
+			@endfor
+		</tr>
+	</table>
+	@endif
 	<div class="table-responsive">
-		<table class="table table-bordered scroll1">
+		<table class="table table-bordered scroll">
 		<thead>
 			<th>
 			@for($i=0;$i<count($income_types);$i++)
@@ -104,11 +142,10 @@
 		</tr>
 	</table>
 	</div>
-	@endif
 	<h5><strong>ตามหลักสูตร</strong></h5>
 	<div class="table-responsive">
 
-	<table class="table table-bordered scroll2">
+	<table class="table table-bordered scroll">
 		<thead>
 			<th style="width:120px">หลักสูตร</th>
 			<th >ภาควิชา</th>
@@ -139,13 +176,60 @@
 				<td>
 				{{ $departments[$course_name[$i][1]]->name }}
 				</td>
-				@for($j=0;$j<11;$j++)
+				@for($j=0;$j<28;$j++)
 				@if($j<6 || $j>8)
 					<td>{{$table[$i][$j]}}</td>
 				@else
 					<td class="disabled"></td>
 				@endif
 				@endfor
+			</tr>
+		<?php endfor ?>
+		<tr>
+		<th>Total</th>
+		<td></td>
+		@for($i =0;$i<28;$i++)
+			@if($i<6 || $i>8)
+				<td>{{$total1[$i]}} </td>
+			@else
+				<td class="disabled"></td>
+			@endif
+		@endfor
+		</tr>
+	</table>
+    </div>
+	<br/>
+	<div class="table-responsive">
+		<table class="table table-bordered table-condensed">
+		<thead>
+		<tr>
+			<th style="width:20%">หลักสูตร</th>
+			<th >ภาควิชา</th>
+			@if($type==1)
+			<th class="danger"> Fund</th>
+			<th class="danger"> ENG</th>
+			<th class="danger"> Lib</th>
+			<th class="danger"> Depart</th>
+			<th class="danger"> Total</th>
+			<?php for($i=1;$i<count($departments)-1;$i++) :?>
+				<th class="success">{{$departments[$i]->name}}</th>
+			<?php endfor;?>
+			@else
+				<th class="success">{{$departments[$type-1]->name}}</th>
+			@endif
+			<th class="success"> ENG</th>
+			<th class="success"> Fund</th>
+			<th class="success"> Lib</th>
+			<th class="success"> Total</th>
+	    </tr>
+		</thead>
+		<tbody>
+		<?php for($i=0;$i<count($table);$i++) :?>
+			<tr>
+				<td><?php echo $course_name[$i][0]; ?></td>
+				<td>
+				{{ $departments[$course_name[$i][1]]->name }}
+				</td>
 				@if($type==1)
 				<?php for($j=11;$j<count($table[$i]);$j++) :?>
 					<td><?php echo $table[$i][$j]; ?></td>
@@ -161,13 +245,6 @@
 		<tr>
 		<th>Total</th>
 		<td></td>
-		@for($i =0;$i<11;$i++)
-			@if($i<6 || $i>8)
-				<td>{{$total1[$i]}} </td>
-			@else
-				<td class="disabled"></td>
-			@endif
-		@endfor
 		@if($type==1)
 		@for($i=11;$i<count($total1);$i++)
 			<td>{{$total1[$i]}}</td>
@@ -179,13 +256,12 @@
 			@endfor
 		@endif
 		</tr>
+		</tbody>
 	</table>
-    </div>
+	</div>
 	<br/>
-
 	<h5><strong>ตาม Sevice/OH/อื่น ๆ</strong></h5>
-	<div class="table-responsive">
-	<table class="table table-bordered scroll3">
+	<table class="table table-bordered">
 		<thead>
 			<th style="width:50%">รายการ</th>
 			<th style="width:8%">ภาควิชา</th>
@@ -193,22 +269,6 @@
 				<th style="width:8%"><?php echo $income_types[$j]->name; ?></th>
 			<?php endfor ?>
 			<th> Total</th>
-			@if($type==1)
-			<th class="danger"> Fund</th>
-			<th class="danger"> ENG</th>
-			<th class="danger"> Lib</th>
-			<th class="danger"> Depart</th>
-			<th class="danger"> Total</th>
-			<?php for($i=1;$i<count($departments)-1;$i++) :?>
-				<th class="success">{{$departments[$i]->name}}</th>
-			<?php endfor;?>
-			@else
-				<th class="success">{{$departments[$type-1]->name}}</th>
-			@endif
-			<th class="success"> ENG</th>
-			<th class="success"> Fund</th>
-			<th class="success"> Lib</th>
-			<th class="success"> Total</th>
 		</thead>
 		<?php for($i=0;$i<count($table2);$i++) :?>
 			<tr>
@@ -223,16 +283,6 @@
 						<td class="disabled"></td>
 					@endif
 				@endfor
-				@if($type==1)
-				<?php for($j=11;$j<count($table2[$i]);$j++) :?>
-					<td><?php echo $table2[$i][$j]; ?></td>
-				<?php endfor ?>
-				@else
-					<td><?php echo $table2[$i][14+$type]; ?></td>
-				<?php for($j=24;$j<count($table2[$i]);$j++) :?>
-					<td><?php echo $table2[$i][$j]; ?></td>
-				<?php endfor ?>
-				@endif
 			</tr>
 		<?php endfor ?>
 		<tr>
@@ -245,33 +295,14 @@
 					<td class="disabled"></td>
 				@endif
 			@endfor
-			@if($type==1)
-			@for($i=11;$i<count($total2);$i++)
-				<td>{{$total2[$i]}}</td>
-			@endfor
-			@else
-				<td>{{$total2[14+$type]}}</td>
-				@for($i=24;$i<count($total2);$i++)
-					<td>{{$total2[$i]}}</td>
-				@endfor
-			@endif
 		</tr>
 	</table>
-	</div>
-	<br/>
-	<!--  -->
 
 	<br/>
-	<h5><strong>ค่าจัดสรรค่าธรรมเนียม จากคณะอื่น</strong></h5>
-	<div class="table-responsive">
-	<table class="table table-bordered table-responsive scroll4">
+	<table class="table table-bordered">
 		<thead>
-			<th style="width:40%">รายการ</th>
+			<th style="width:50%">หลักสูตร</th>
 			<th style="width:8%">ภาควิชา</th>
-			<?php for($j=0;$j<count($income_types);$j++) :?>
-				<th style="width:8%"><?php echo $income_types[$j]->name; ?></th>
-			<?php endfor ?>
-			<th> Total</th>
 			@if($type==1)
 			<th class="danger"> Fund</th>
 			<th class="danger"> ENG</th>
@@ -288,6 +319,52 @@
 			<th class="success"> Fund</th>
 			<th class="success"> Lib</th>
 			<th class="success"> Total</th>
+
+		</thead>
+		<?php for($i=0;$i<count($table2);$i++) :?>
+			<tr>
+				<td><?php echo $course_name2[$i][0]; ?></td>
+				<td>
+				{{ $departments[$course_name2[$i][1]]->name }}
+				</td>
+				@if($type==1)
+				<?php for($j=11;$j<count($table2[$i]);$j++) :?>
+					<td><?php echo $table2[$i][$j]; ?></td>
+				<?php endfor ?>
+				@else
+					<td><?php echo $table2[$i][14+$type]; ?></td>
+				<?php for($j=24;$j<count($table2[$i]);$j++) :?>
+					<td><?php echo $table2[$i][$j]; ?></td>
+				<?php endfor ?>
+				@endif
+			</tr>
+		<?php endfor ?>
+		<tr>
+			<th>Total</th>
+			<td></td>
+			@if($type==1)
+		@for($i=11;$i<count($total2);$i++)
+			<td>{{$total2[$i]}}</td>
+		@endfor
+		@else
+			<td>{{$total2[14+$type]}}</td>
+			@for($i=24;$i<count($total2);$i++)
+				<td>{{$total2[$i]}}</td>
+			@endfor
+		@endif
+		</tr>
+	</table>
+
+	<br/>
+	<h5><strong>ค่าจัดสรรค่าธรรมเนียม จากคณะอื่น</strong></h5>
+	<table class="table table-bordered table-responsive">
+		<thead>
+			<th style="width:40%">รายการ</th>
+			<th style="width:8%">ภาควิชา</th>
+			<?php for($j=0;$j<count($income_types);$j++) :?>
+				<th style="width:8%"><?php echo $income_types[$j]->name; ?></th>
+			<?php endfor ?>
+			<th> Total</th>
 		</thead>
 		<?php for($i=0;$i<count($table3);$i++) :?>
 			<tr>
@@ -302,6 +379,49 @@
 						<td class="disabled"></td>
 					@endif
 				@endfor
+			</tr>
+		<?php endfor ?>
+		<tr>
+			<th>Total</th>
+			<td></td>
+			@for($j=0;$j<11;$j++)
+				@if($j==0 || $j>8)
+					<td>{{$total3[$j]}}</td>
+				@else
+					<td class="disabled"></td>
+				@endif
+			@endfor
+		</tr>
+	</table>
+	<br/>
+	<table class="table table-bordered">
+		<thead>
+			<th style="width:50%">หลักสูตร</th>
+			<th style="width:8%">ภาควิชา</th>
+			@if($type==1)
+			<th class="danger"> Fund</th>
+			<th class="danger"> ENG</th>
+			<th class="danger"> Lib</th>
+			<th class="danger"> Depart</th>
+			<th class="danger"> Total</th>
+			<?php for($i=1;$i<count($departments)-1;$i++) :?>
+				<th class="success">{{$departments[$i]->name}}</th>
+			<?php endfor;?>
+			@else
+				<th class="success">{{$departments[$type-1]->name}}</th>
+			@endif
+			<th class="success"> ENG</th>
+			<th class="success"> Fund</th>
+			<th class="success"> Lib</th>
+			<th class="success"> Total</th>
+
+		</thead>
+		<?php for($i=0;$i<count($table3);$i++) :?>
+			<tr>
+				<td><?php echo $course_name3[$i][0]; ?></td>
+				<td>
+				{{ $departments[$course_name3[$i][1]]->name }}
+				</td>
 				@if($type==1)
 				<?php for($j=11;$j<count($table3[$i]);$j++) :?>
 					<td><?php echo $table3[$i][$j]; ?></td>
@@ -315,91 +435,39 @@
 			</tr>
 		<?php endfor ?>
 		<tr>
-			<th>Total</th>
-			<td></td>
-			@for($j=0;$j<11;$j++)
-				@if($j==0 || $j>8)
-					<td>{{$total3[$j]}}</td>
-				@else
-					<td class="disabled"></td>
-				@endif
-			@endfor
+		<th>Total</th>
+		<td></td>
 			@if($type==1)
-				@for($i=11;$i<count($total3);$i++)
-					<td>{{$total3[$i]}}</td>
-				@endfor
-				@else
-				<td>{{$total3[14+$type]}}</td>
-				@for($i=24;$i<count($total3);$i++)
-					<td>{{$total3[$i]}}</td>
-				@endfor
-			@endif
+		@for($i=11;$i<count($total3);$i++)
+			<td>{{$total3[$i]}}</td>
+		@endfor
+		@else
+			<td>{{$total3[14+$type]}}</td>
+			@for($i=24;$i<count($total3);$i++)
+				<td>{{$total3[$i]}}</td>
+			@endfor
+		@endif
 		</tr>
 	</table>
-	</div>
-	<br/>
 	<script>
 	$(document).ready(function(){
 		$('#select_year').val("{{$semester.'/'.$year}}");
-		var $table1 = $('.table.scroll1');
-		var w1  = $table1.find('th:first-child').width();
-		//alert($table1.find('th:first-child').width());
+		var $table = $('.table.scroll');
+	var w  = $table.find('th:first-child').width();
+	alert($table.find('th:first-child').width());
 
-		var $fixedColumn1 = $table1.clone().insertBefore($table1).addClass('fixed-column');
-		$fixedColumn1.find('th:not(:first-child),td:not(:first-child)').remove();
+	var $fixedColumn = $table.clone().insertBefore($table).addClass('fixed-column');
+	 var width = $fixedColumn.width();
+	$fixedColumn.find('th:not(:first-child),td:not(:first-child)').remove();
 
-		$fixedColumn1.find('tr').each(function (i, elem) {
-	    	$(this).height($table1.find('tr:eq(' + i + ')').height());
-		});
-		$fixedColumn1.find('th,td').each(function (i, elem) {
-	    	$(this).width(w1);
-		});
+	$fixedColumn.find('tr').each(function (i, elem) {
+    	$(this).height($table.find('tr:eq(' + i + ')').height());
+	});
+	$fixedColumn.find('th,td').each(function (i, elem) {
+    	$(this).width(w);
+	});
 
-		var $table2 = $('.table.scroll2');
-		var w2  = $table2.find('th:first-child').width();
-		//alert($table2.find('th:first-child').width());
-
-		var $fixedColumn2 = $table2.clone().insertBefore($table2).addClass('fixed-column');
-		$fixedColumn2.find('th:not(:first-child),td:not(:first-child)').remove();
-
-		$fixedColumn2.find('tr').each(function (i, elem) {
-	    	$(this).height($table2.find('tr:eq(' + i + ')').height());
-		});
-		$fixedColumn2.find('th,td').each(function (i, elem) {
-	    	$(this).width(w2);
-		});
-
-		var $table3 = $('.table.scroll3');
-		var w3  = $table3.find('th:first-child').width();
-		//alert($table3.find('th:first-child').width());
-
-		var $fixedColumn3 = $table3.clone().insertBefore($table3).addClass('fixed-column');
-		$fixedColumn3.find('th:not(:first-child),td:not(:first-child)').remove();
-
-		$fixedColumn3.find('tr').each(function (i, elem) {
-	    	$(this).height($table3.find('tr:eq(' + i + ')').height());
-		});
-		$fixedColumn3.find('th,td').each(function (i, elem) {
-	    	$(this).width(w3);
-		});
-
-		var $table4 = $('.table.scroll4');
-		var w4  = $table4.find('th:first-child').width();
-		//alert($table4.find('th:first-child').width());
-
-		var $fixedColumn4 = $table4.clone().insertBefore($table4).addClass('fixed-column');
-		$fixedColumn4.find('th:not(:first-child),td:not(:first-child)').remove();
-
-		$fixedColumn4.find('tr').each(function (i, elem) {
-	    	$(this).height($table4.find('tr:eq(' + i + ')').height());
-		});
-		$fixedColumn4.find('th,td').each(function (i, elem) {
-	    	$(this).width(w4);
-		});
-
-
-
-		});
+	});
 	$('#select_year').change(function(){
 		var value = $(this).val();
 		window.location.href = "{{url('report/semester')}}/"+value;
