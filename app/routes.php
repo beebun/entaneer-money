@@ -102,26 +102,13 @@ Route::group(array('before' => 'auth'), function(){
 			
 			return Redirect::to('usermanage');
 		});
-		
-		
 
-
-		
-		
-		
 		Route::get('users', function()
 		{
 			$users = User::all();
 
 			return View::make('users')->with('users', $users);
 		});
-
-
-
-
-
-
-
 
 		//Add รายรับแบบปกติ
 		Route::get('additem', array('as' => 'additem', function()
@@ -133,11 +120,6 @@ Route::group(array('before' => 'auth'), function(){
 			return View::make('additem')->with('courses', $courses)->with('departments', $departments)->with('income_types', $income_types);
 		}));
 
-
-
-
-
-
 		//Add Service/OH/อื่นๆ
 		Route::get('additem2', array('as' => 'additem2', function()
 		{
@@ -148,11 +130,6 @@ Route::group(array('before' => 'auth'), function(){
 			return View::make('additem2')->with('courses', $courses)->with('departments', $departments)->with('income_types', $income_types);
 		}));
 
-
-
-
-
-
 		//Add ค่าจัดสรรค่าธรรมเนียม
 		Route::get('additem3', array('as' => 'additem3', function()
 		{
@@ -162,13 +139,6 @@ Route::group(array('before' => 'auth'), function(){
 			
 			return View::make('additem3')->with('courses', $courses)->with('departments', $departments)->with('income_types', $income_types);
 		}));
-
-
-
-
-
-
-
 
 		Route::post('additem', function()
 		{
@@ -185,16 +155,8 @@ Route::group(array('before' => 'auth'), function(){
 			$item->save();
 			// redirect ----------------------------------------
 			// redirect our user back to the form so they can do it all over again
-			return Redirect::to('additem');	
+			return Redirect::to('additem')->with('success', 'บันทึกสำเร็จ');;	
 		});
-
-
-
-
-
-
-
-
 
 		Route::get('expenditure1', function()
 		{
@@ -203,13 +165,6 @@ Route::group(array('before' => 'auth'), function(){
 			
 			return View::make('addexpenditure1')->with('departments', $departments)->with('expenditure1', $expenditure1);
 		});
-
-
-
-
-
-
-
 
 
 		Route::post('expenditure1', function()
@@ -249,22 +204,12 @@ Route::group(array('before' => 'auth'), function(){
 
 
 
-
-
-
-
-
 		Route::get('expenditure2', function()
 		{
 			$departments = Department::all();
 			
 			return View::make('addexpenditure2')->with('departments', $departments);
 		});
-
-
-
-
-
 
 
 
@@ -316,12 +261,6 @@ Route::group(array('before' => 'auth'), function(){
 
 
 
-
-
-
-
-
-
 		Route::post('getAmount', function()
 		{
 			$expenditure1 = Expenditure1::all();
@@ -343,22 +282,6 @@ Route::group(array('before' => 'auth'), function(){
 			$Amount       = Expenditure2::where('department', $department)->where('year', $year)->get();
 			return $Amount;
 		});
-
-
-
-
-
-
-
-
-		
-
-
-
-
-
-
-
 
 
 
@@ -439,6 +362,7 @@ Route::group(array('before' => 'auth'), function(){
 		}));
 
 
+		
 		Route::get('percent',  array('as' => 'percent', function() 
 		{
 
@@ -459,7 +383,7 @@ Route::group(array('before' => 'auth'), function(){
 			if($type == 1)
 				$percent->department_percent = $percent_value;
 			if($type == 2)
-				$percent->faculty_percent = $percent_value;
+				$percent->faculty_percent 	 = $percent_value;
 			$percent->save();
 			
 			return Redirect::to('percent');	

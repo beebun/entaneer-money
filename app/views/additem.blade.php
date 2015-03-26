@@ -3,10 +3,18 @@
 @section('content')
 
     
-
+	<?php if (Session::has('success'))
+    		$display = 'block';
+    	  else
+    	  	$display = 'none';
+	?>
+	<div class="alert alert-success" style="display:{{$display}}" id="success">
+        {{ Session::get('success') }}
+    </div>
 	<h4>เพิ่มรายรับ</h4>
 	<hr>
-	<form method="post" action="additem" role="form" class="form-horizontal" style="">
+	
+	<form method="post" action="additem" role="form" class="form-horizontal" style="" id="form">
 		
 		<div class="form-group">
 			<label for="Detail" class="col-sm-2">รายละเอียด: </label>
@@ -88,8 +96,25 @@
 		
 		<div class="form-group">
 			<div class="col-md-2"></div>
-			<div class="col-md-10"><input type="submit" name="submit" class="btn btn-primary" value="บันทึก"></div>
+			<div class="col-md-10"><input type="submit" id="submit" class="btn btn-primary" value="บันทึก"></div>
 		</div>
 	</form>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			setTimeout(function() {
+        		$('#success').fadeOut().data("active", false);
+    		}, 1000);
+		});
+
+		$("#form").submit(function(e){
+			var confirmAdd = confirm('ต้องการบันทึกค่า ?');
+			if(!confirmAdd){
+				return false;
+			}
+			return true;
+				
+				
+		});
+	</script>
 @stop
 
