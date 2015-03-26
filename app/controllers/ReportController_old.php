@@ -1,6 +1,6 @@
 <?php
 
-class ReportController extends BaseController {
+class ReportController_Old extends BaseController {
 
 	public static $CREDIT_FEE_ID; //ค่าหน่วยกิต
 	public static $JOINING_FEE_ID; //ค่าแรกเข้า
