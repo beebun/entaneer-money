@@ -184,7 +184,7 @@ class ReportController extends BaseController {
 					//54 = ค่าหน่วยกิตป ตรี , 58 = ป.ตรี ภาคพิเศษ (1)
 					if($course->id ==54||$course->id == 58){
 						$total_scch = 0;
-						$data = constant::getTotalSCCH($course->id,$semester,$year);
+						$data = constant::getTotalSCCHObj($course->id,$semester,$year);
 						if(count($data>0)){
 							$total_scch = $data[0]->student;
 						}
@@ -196,7 +196,7 @@ class ReportController extends BaseController {
 
 						if($type == 1){
 							if($course->id == 54 || ($course->id == 58 && $semester != 3)){
-								$course_money = CourseMoney::getBySemester($semester,$year,$course->id);
+								$course_money = CourseMoney::getObj($semester,$year,$course->id);
 								if(count($course_money)<=0){
 									CourseMoney::insert($temp[$dept_index],$course->id,$semester,$year);
 								}else{

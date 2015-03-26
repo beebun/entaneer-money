@@ -16,6 +16,16 @@ class Constant extends Eloquent{
 		return 0; 
 	}
 
+	public static function getTotalSCCHObj($course_id,$semester,$year){
+		$data = DB::select("SELECT sum(scch_value) as scch,sum(student_amount) as student
+							FROM constant  
+							WHERE course='".$course_id."' 
+								and semester='".$semester."'
+								and year='".$year."'
+							");
+		return $data;
+	}
+
 	public static function getEntAllSCCH($course_id,$semester,$year){
 		$data = DB::select("SELECT sum(scch_value) as scch,sum(student_amount) as student
 							FROM constant  

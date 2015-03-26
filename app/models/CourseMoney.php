@@ -29,4 +29,12 @@ class CourseMoney extends Eloquent {
 		return $this->id;
 	}
 
+	public static function getObj($course_id,$semester,$year){
+		$data = CourseMoney::where('course_id',$course_id)
+								->where('semester',$semester)
+								->where('years',$year)
+								->get();
+		return $data;
+	}
+
 }
