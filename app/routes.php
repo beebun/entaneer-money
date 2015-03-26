@@ -68,6 +68,15 @@ Route::group(array('before' => 'auth'), function(){
 			
 			return $value;
 		});
+
+		Route::post('checkpassword', function()
+		{
+			$password = Input::get('password');
+			$user = Auth::user();
+			if(Hash::check($password,$user->password))
+				return 'true';
+			return 'false';
+		});
 		
 		Route::get('edituser/{id}', array('as' => 'edituser', function($id)
 		{

@@ -635,7 +635,6 @@ class ReportController extends BaseController {
 			$arr['val7'] = $val7; //รับจริงทั้งหมด
 			$arr['val8'] = $val8; //จ่ายจริงทั้งหมด
 			$arr['val9'] = $val9; //เงินเหลือจ่ายปีปัจจุบัน
-
 			return View::make('report-year')->with('arr', $arr);
 		}
 		else
@@ -717,9 +716,6 @@ class ReportController extends BaseController {
 				$val9[$type-1] = $val1[$type-1] + $val2[$type-1] - $val3[$type-1]
 								   - $val4[$type-1] + $val5[$type-1] + $val6[$type-1];
 
-
-				
-			
 
 			$arr['val1'] = $val1;
 			$arr['val2'] = $val2;

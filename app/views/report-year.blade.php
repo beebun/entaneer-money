@@ -3,6 +3,7 @@
 @section('content')
 
 	<?php 
+		var_dump($arr);
 		$year        = $arr['year'];
 		$departments = $arr['departments'];
 		$val1        = $arr['val1'];
