@@ -3,9 +3,17 @@
 @section('content')
 
     
+	<?php if (Session::has('success'))
+    		$display = 'block';
+    	  else
+    	  	$display = 'none';
+	?>
+	<div class="alert alert-success" style="display:{{$display}}" id="success">
+        {{ Session::get('success') }}
+    </div>
 	<h4>Add Expenditure2</h4>
 	<hr>
-	<form method="post" action="expenditure2" class="form-horizontal">
+	<form method="post" action="expenditure2" class="form-horizontal" id="form">
 
 		<div class="form-group">
 			<label for="Department" class="col-sm-2">ภาควิชา: </label>
@@ -74,6 +82,22 @@
 		$( "select" ).change(function() {
 			get_saved_amount();	
 		});
+
+		$(document).ready(function(){
+				setTimeout(function() {
+	        		$('#success').fadeOut().data("active", false);
+	    		}, 1000);
+			});
+
+			$("#form").submit(function(e){
+				var confirmAdd = confirm('ต้องการบันทึกค่า ?');
+				if(!confirmAdd){
+					return false;
+				}
+				return true;
+					
+					
+			});
 		
 	</script>
 @stop

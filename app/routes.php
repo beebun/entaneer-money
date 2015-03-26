@@ -185,7 +185,7 @@ Route::group(array('before' => 'auth'), function(){
 			$item->save();
 			// redirect ----------------------------------------
 			// redirect our user back to the form so they can do it all over again
-			return Redirect::to('additem')->with('success', 'บันทึกสำเร็จ');;	
+			return Redirect::to('additem')->with('success', 'บันทึกสำเร็จ');	
 		});
 
 		Route::get('expenditure1', function()
@@ -229,7 +229,7 @@ Route::group(array('before' => 'auth'), function(){
 			}
 			// redirect ----------------------------------------
 			// redirect our user back to the form so they can do it all over again
-			return Redirect::to('expenditure1');	
+			return Redirect::to('expenditure1')->with('success', 'บันทึกสำเร็จ');	;	
 		});
 
 
@@ -285,7 +285,7 @@ Route::group(array('before' => 'auth'), function(){
 
 				$expenditure2->save();
 			}
-			return Redirect::to('expenditure2');
+			return Redirect::to('expenditure2')->with('success', 'บันทึกสำเร็จ');	;
 		});
 
 
