@@ -3,7 +3,7 @@
 @section('content')
 
 <?php 
-	var_dump($arr);
+	//var_dump($arr);
 	$year         = $arr['year'];
 	$semester     = $arr['semester'];
 	$income_types = $arr['income_types'];

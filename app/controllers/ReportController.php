@@ -512,10 +512,10 @@ class ReportController extends BaseController {
 			$arr['total1']		 = $total1_arr;
 
 			$arr['total']		 = $total;
-			echo '<pre>';
-			var_dump($arr);
-			echo '</pre>';
-			die();
+			// echo '<pre>';
+			// var_dump($arr);
+			// echo '</pre>';
+			// die();
 
 			return View::make('report')->with('arr', $arr);
 		
@@ -639,10 +639,10 @@ class ReportController extends BaseController {
 			$arr['val7'] = $val7; //รับจริงทั้งหมด
 			$arr['val8'] = $val8; //จ่ายจริงทั้งหมด
 			$arr['val9'] = $val9; //เงินเหลือจ่ายปีปัจจุบัน
-			echo '<pre>';
-			var_dump($arr);
-			echo '</pre>';
-			die();
+			// echo '<pre>';
+			// var_dump($arr);
+			// echo '</pre>';
+			// die();
 			return View::make('report-year')->with('arr', $arr);
 		}
 		else
@@ -736,10 +736,10 @@ class ReportController extends BaseController {
 			$arr['val8'] = $val8;
 			$arr['val9'] = $val9;
 
-			echo '<pre>';
-			var_dump($arr);
-			echo '</pre>';
-			die();
+			// echo '<pre>';
+			// var_dump($arr);
+			// echo '</pre>';
+			// die();
 
 			return View::make('report-year')->with('arr', $arr);
 		}
