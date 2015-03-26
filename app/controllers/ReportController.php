@@ -515,6 +515,7 @@ class ReportController extends BaseController {
 			echo '<pre>';
 			var_dump($arr);
 			echo '</pre>';
+			die();
 
 			return View::make('report')->with('arr', $arr);
 		
@@ -641,6 +642,7 @@ class ReportController extends BaseController {
 			echo '<pre>';
 			var_dump($arr);
 			echo '</pre>';
+			die();
 			return View::make('report-year')->with('arr', $arr);
 		}
 		else
@@ -737,6 +739,7 @@ class ReportController extends BaseController {
 			echo '<pre>';
 			var_dump($arr);
 			echo '</pre>';
+			die();
 
 			return View::make('report-year')->with('arr', $arr);
 		}
