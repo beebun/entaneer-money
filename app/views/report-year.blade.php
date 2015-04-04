@@ -15,6 +15,15 @@
 		$val7        = $arr['val7'];
 		$val8        = $arr['val8'];
 		$val9        = $arr['val9'];
+		$total1		 = 0;
+		$total2		 = 0;
+		$total3		 = 0;
+		$total4		 = 0;
+		$total5		 = 0;
+		$total6		 = 0;
+		$total7		 = 0;
+		$total8		 = 0;
+		$total9		 = 0;
 		$type = Auth::user()->type;
 	?>  
 	<form class="form-inline">
@@ -62,8 +71,28 @@
 			<td>{{$val8[$i]}}</td>
 			<td>{{$val9[$i]}}</td>
 		</tr>
+		<?php $total1 += $val1[$i];
+			  $total2 += $val2[$i];
+			  $total3 += $val3[$i];
+			  $total4 += $val4[$i];
+			  $total5 += $val5[$i];
+			  $total6 += $val6[$i];
+			  $total7 += $val7[$i];
+			  $total8 += $val8[$i];
+			  $total9 += $val9[$i];?>
 		@endfor
-
+		<tr>
+			<th>Total</th>
+			<td>{{$total1}}</td>
+			<td>{{$total2}}</td>
+			<td>{{$total3}}</td>
+			<td>{{$total4}}</td>
+			<td>{{$total5}}</td>
+			<td>{{$total6}}</td>
+			<td>{{$total7}}</td>
+			<td>{{$total8}}</td>
+			<td>{{$total9}}</td>
+		</tr>
 		</table>
 	@else
 			<table class="table table-bordered">
@@ -93,7 +122,6 @@
 				<td>{{$val8[$type-1]}}</td>
 				<td>{{$val9[$type-1]}}</td>
 			</tr>
-
 
 			</table>	
 	@endif

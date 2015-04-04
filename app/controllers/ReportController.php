@@ -550,20 +550,6 @@ class ReportController extends BaseController {
 					$val1[$each->id]	= $last_year_major_money[0]->cost_balance;
 				}
 
-				$temp  = Expenditure1::where('department', $each->id)->where('year', $year)->first();
-				if($temp['amount'] == "")
-					$val3[$each->id] = 0;
-				else
-					$val3[$each->id] = $temp['amount'];
-
-				
-				$sum = DB::select("SELECT sum(amount) as sum from expenditure2 where year='".$year."' and department ='".$each->id."'");
-				if( is_null($sum[0]->sum) )
-					$val6[$each->id] = 0;
-				else
-					$val6[$each->id] = $sum[0]->sum;
-
-				
 				$income = DepartmentTotal::getByYear($year,$each->id);
 
 
@@ -573,6 +559,12 @@ class ReportController extends BaseController {
 				else{
 					$val2[$each->id] = $income[0]->sum;
 				}
+
+				$temp  = Expenditure1::where('department', $each->id)->where('year', $year)->first();
+				if($temp['amount'] == "")
+					$val3[$each->id] = 0;
+				else
+					$val3[$each->id] = $temp['amount'];
 
 				$val4[$each->id] = 0;
 
@@ -611,7 +603,13 @@ class ReportController extends BaseController {
 					else{
 						$val5[$each->id] += $scch[$i]*$course_money[$i]/$total_scch[$i];
 					}
-				}				
+				}
+
+				$sum = DB::select("SELECT sum(amount) as sum from expenditure2 where year='".$year."' and department ='".$each->id."'");
+				if( is_null($sum[0]->sum) )
+					$val6[$each->id] = 0;
+				else
+					$val6[$each->id] = $sum[0]->sum;				
 
 				$val7[$each->id] = $val2[$each->id] + $val5[$each->id] + $val6[$each->id];
 				$val8[$each->id] = $val3[$each->id] + $val4[$each->id];
