@@ -47,6 +47,8 @@
   <div class="form-group">
     <label>ภาคการศึกษา</label>
     <select class="form-control"id="select_year">
+    	<option>2/2551</option>
+		<option>3/2551</option>
     	<option>1/2552</option>
 		<option>2/2552</option>
 		<option>3/2552</option>
@@ -388,8 +390,8 @@
 		//alert($table4.find('th:first-child').width());
 
 		var $fixedColumn4 = $table4.clone().insertBefore($table4).addClass('fixed-column');
-		$fixedColumn4.find('th:not(:first-child),td:not(:first-child)').remove();
 
+		$fixedColumn4.find('th:not(:first-child),td:not(:first-child)').remove();
 		$fixedColumn4.find('tr').each(function (i, elem) {
 	    	$(this).height($table4.find('tr:eq(' + i + ')').height());
 		});
