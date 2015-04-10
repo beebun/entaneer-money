@@ -111,7 +111,7 @@
           <a href="{{ route('addconstant', array('semester' => 1, 'year' => 2557)) }}">ค่าคงที่ SCCH</a>
         </li>
         <li>
-          <a href="{{ route('percent') }}">ค่าคงที่ Percent</a></li>
+          <a href="{{ route('percent',array('year'=>2557)) }}">ค่าคงที่ Percent</a></li>
         </li>
       </ul>
     </div>

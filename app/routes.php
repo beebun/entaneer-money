@@ -393,13 +393,14 @@ Route::group(array('before' => 'auth'), function(){
 
 
 		
-		Route::get('percent',  array('as' => 'percent', function() 
+		Route::get('percent/{year}',  array('as' => 'percent', function($year) 
 		{
 
 			$arr         = Array();
-			$percent	= Percent::all();
+			$percent	= Percent::where('year',$year)->get();
 
-			return View::make('percent')->with('arr', $arr)->with('percent', $percent);
+
+			return View::make('percent')->with('arr', $arr)->with('percent', $percent)->with('year',$year);
 			
 		}));
 
@@ -408,15 +409,20 @@ Route::group(array('before' => 'auth'), function(){
 			$id				= Input::get('id');
 			$percent_value	= Input::get('percent');
 			$type 			= Input::get('type');
+			$year 			= Input::get('year');
 
 			$percent = Percent::find($id);
 			if($type == 1)
 				$percent->department_percent = $percent_value;
 			if($type == 2)
 				$percent->faculty_percent 	 = $percent_value;
+			$percent->year = $year;
 			$percent->save();
+			echo $year;
+
+			//return 'success';
 			
-			return Redirect::to('percent');	
+			return Redirect::to('percent/'.$year);	
 		}));
 
 

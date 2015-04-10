@@ -1,9 +1,23 @@
 @extends('layout')
 
 @section('content')
-
+	<form class="form-inline">
+	  <div class="form-group">
+	    <label>ภาคการศึกษา</label>
+	    <select class="form-control"id="select_year">
+	    	<option value="2558">2558</option>
+			<option value="2557">2557</option>
+			<option value="2556">2556</option>
+			<option value="2555">2555</option>
+			<option value="2554">2554</option>
+			<option value="2553">2553</option>
+			<option value="2552">2552</option>
+		</select>
+	  </div>
+	</form>
 	<h4>แก้ไขค่าคงที่</h4>
 	<hr>
+
 	<h5><strong>ค่า Percent</strong></h5>
 	<table class="table table-bordered" style="font-size:13px">
 		<thead>
@@ -24,12 +38,14 @@
 	</table>
 	<script>
 		function save_percent(id,percent_value,type){
+				var year = $('#select_year').val();
 
-				$.post( "percent", 
+				$.post( "../percent", 
 					{ 
 						percent: percent_value, 
 						id:id,
-						type:type
+						type:type,
+						year:year
 					})
 				.done(function( data ) {
 					alert("บันทึกเรียบร้อย");
@@ -39,6 +55,13 @@
 					alert("พบข้อผิดพลาด!!!");	
 				});
 			}
+			$(document).ready(function(){
+				$('#select_year').val("{{$year}}");
+			});
+			$('#select_year').change(function(){
+				var value = $(this).val();
+				window.location.href = "{{url('percent')}}/"+value;
+			});
 	</script>
 @stop
 
