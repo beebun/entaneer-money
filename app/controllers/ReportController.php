@@ -43,7 +43,7 @@ class ReportController extends BaseController {
 			$arr['income_types'] = IncomeType::all();
 			$arr['departments']  = Department::all();
 			$departments 		 = $arr['departments'] ;
-			$percents 			 = Percent::all();
+			$percents 			 = Percent::where('year',$year)->get();
 			$percent 			 = array();
 			foreach($percents as $each){
 				$percent[$each->input_type] = $each;
@@ -114,7 +114,7 @@ class ReportController extends BaseController {
 									  $temp[self::$JOINING_FEE_ID-1]+
 									  ($temp[self::$FEE_ID-1]*$percent[self::$FEE_ID]->faculty_percent/100)+
 									  $temp[self::$OPERATING_COST_ID-1]+
-									  $temp[self::$MATAINING_FEE_ID-1])*0.95,2);
+									  ($temp[self::$MATAINING_FEE_ID-1]*$percent[self::$MATAINING_FEE_ID]->faculty_percent/100))*0.95,2);
 					$eng_index = 12;
 					
 
@@ -124,8 +124,10 @@ class ReportController extends BaseController {
 					
 
 					//dept = sum of credit_price*percent,fee*percent then multiply by 0.95
-					$temp[14] = (($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->department_percent/100)+
-								   ($temp[self::$FEE_ID-1]*$percent[self::$FEE_ID]->department_percent/100))*0.95;
+					$temp[14] = round((($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->department_percent/100)+
+								 ($temp[self::$FEE_ID-1]*$percent[self::$FEE_ID]->department_percent/100)
+								 ($temp[self::$MATAINING_FEE_ID-1]*$percent[self::$MATAINING_FEE_ID]->department_percent/100)
+								 )*0.95,2);
 					$dept_index = 14;
 					
 
