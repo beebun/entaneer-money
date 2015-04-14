@@ -125,7 +125,7 @@ class ReportController extends BaseController {
 
 					//dept = sum of credit_price*percent,fee*percent then multiply by 0.95
 					$temp[14] = round((($temp[self::$CREDIT_FEE_ID-1]*$percent[self::$CREDIT_FEE_ID]->department_percent/100)+
-								 ($temp[self::$FEE_ID-1]*$percent[self::$FEE_ID]->department_percent/100)
+								 ($temp[self::$FEE_ID-1]*$percent[self::$FEE_ID]->department_percent/100)+
 								 ($temp[self::$MATAINING_FEE_ID-1]*$percent[self::$MATAINING_FEE_ID]->department_percent/100)
 								 )*0.95,2);
 					$dept_index = 14;
