@@ -61,15 +61,19 @@
 		@for($i=0;$i<count($departments);$i++)
 		<tr>
 			<td>{{$departments[$i]->name}}</td>
-			<td>{{$val1[$i]}}</td>
-			<td>{{$val2[$i]}}</td>
-			<td>{{$val3[$i]}}</td>
-			<td>{{$val4[$i]}}</td>
+			<td>{{number_format($val1[$i],2,'.',',')}}</td>
+			<td>{{number_format($val2[$i],2,'.',',')}}</td>
+			<td>{{number_format($val3[$i],2,'.',',')}}</td>
+			<td>{{number_format($val4[$i],2,'.',',')}}</td>
+			@if(is_numeric($val5[$i]))
+			<td>{{number_format($val5[$i],2,'.',',')}}</td>
+			@else
 			<td>{{$val5[$i]}}</td>
-			<td>{{$val6[$i]}}</td>
-			<td>{{$val7[$i]}}</td>
-			<td>{{$val8[$i]}}</td>
-			<td>{{$val9[$i]}}</td>
+			@endif
+			<td>{{number_format($val6[$i],2,'.',',')}}</td>
+			<td>{{number_format($val7[$i],2,'.',',')}}</td>
+			<td>{{number_format($val8[$i],2,'.',',')}}</td>
+			<td>{{number_format($val9[$i],2,'.',',')}}</td>
 		</tr>
 		<?php $total1 += $val1[$i];
 			  $total2 += $val2[$i];
@@ -83,15 +87,15 @@
 		@endfor
 		<tr>
 			<th>Total</th>
-			<td>{{$total1}}</td>
-			<td>{{$total2}}</td>
-			<td>{{$total3}}</td>
-			<td>{{$total4}}</td>
-			<td>{{$total5}}</td>
-			<td>{{$total6}}</td>
-			<td>{{$total7}}</td>
-			<td>{{$total8}}</td>
-			<td>{{$total9}}</td>
+			<td>{{number_format($total1,2,'.',',')}}</td>
+			<td>{{number_format($total2,2,'.',',')}}</td>
+			<td>{{number_format($total3,2,'.',',')}}</td>
+			<td>{{number_format($total4,2,'.',',')}}</td>
+			<td>{{number_format($total5,2,'.',',')}}</td>
+			<td>{{number_format($total6,2,'.',',')}}</td>
+			<td>{{number_format($total7,2,'.',',')}}</td>
+			<td>{{number_format($total8,2,'.',',')}}</td>
+			<td>{{number_format($total9,2,'.',',')}}</td>
 		</tr>
 		</table>
 	@else
@@ -112,15 +116,19 @@
 
 			<tr>
 				<td>{{$departments[$type-1]->name}}</td>
-				<td>{{$val1[$type-1]}}</td>
-				<td>{{$val2[$type-1]}}</td>
-				<td>{{$val3[$type-1]}}</td>
-				<td>{{$val4[$type-1]}}</td>
+				<td>{{number_format($val1[$type-1],2,'.',',')}}</td>
+				<td>{{number_format($val2[$type-1],2,'.',',')}}</td>
+				<td>{{number_format($val3[$type-1],2,'.',',')}}</td>
+				<td>{{number_format($val4[$type-1],2,'.',',')}}</td>
+				@if(is_numeric($val5[$type-1]))
+				<td>{{number_format($val5[$type-1],2,'.',',')}}</td>
+				@else
 				<td>{{$val5[$type-1]}}</td>
-				<td>{{$val6[$type-1]}}</td>
-				<td>{{$val7[$type-1]}}</td>
-				<td>{{$val8[$type-1]}}</td>
-				<td>{{$val9[$type-1]}}</td>
+				@endif
+				<td>{{number_format($val6[$type-1],2,'.',',')}}</td>
+				<td>{{number_format($val7[$type-1],2,'.',',')}}</td>
+				<td>{{number_format($val8[$type-1],2,'.',',')}}</td>
+				<td>{{number_format($val9[$type-1],2,'.',',')}}</td>
 			</tr>
 
 			</table>	

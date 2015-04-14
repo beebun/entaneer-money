@@ -101,7 +101,7 @@
 		<tr>
 			<th>Total</th>
 			@for($i=0;$i<count($total);$i++)
-				<td>{{$total[$i]}}</td>
+				<td>{{number_format($total[$i],2,'.',',')}}</td>
 			@endfor
 		</tr>
 	</table>
@@ -143,19 +143,19 @@
 				</td>
 				@for($j=0;$j<11;$j++)
 				@if($j<6 || $j>8)
-					<td>{{$table[$i][$j]}}</td>
+					<td>{{number_format($table[$i][$j],2,'.',',')}}</td>
 				@else
 					<td class="disabled"></td>
 				@endif
 				@endfor
 				@if($type==1)
 				<?php for($j=11;$j<count($table[$i]);$j++) :?>
-					<td><?php echo $table[$i][$j]; ?></td>
+					<td><?php echo number_format($table[$i][$j],2,'.',','); ?></td>
 				<?php endfor ?>
 				@else
-					<td><?php echo $table[$i][14+$type]; ?></td>
+					<td><?php echo number_format($table[$i][14+$type],2,'.',','); ?></td>
 				<?php for($j=24;$j<count($table[$i]);$j++) :?>
-					<td><?php echo $table[$i][$j]; ?></td>
+					<td><?php echo number_format($table[$i][$j],2,'.',','); ?></td>
 				<?php endfor ?>
 				@endif
 			</tr>
@@ -165,19 +165,19 @@
 		<td></td>
 		@for($i =0;$i<11;$i++)
 			@if($i<6 || $i>8)
-				<td>{{$total1[$i]}} </td>
+				<td>{{number_format($total1[$i],2,'.',',')}} </td>
 			@else
 				<td class="disabled"></td>
 			@endif
 		@endfor
 		@if($type==1)
 		@for($i=11;$i<count($total1);$i++)
-			<td>{{$total1[$i]}}</td>
+			<td>{{number_format($total1[$i],2,'.',',')}}</td>
 		@endfor
 		@else
-			<td>{{$total1[14+$type]}}</td>
+			<td>{{number_format($total1[14+$type],2,'.',',')}}</td>
 			@for($i=24;$i<count($total1);$i++)
-				<td>{{$total1[$i]}}</td>
+				<td>{{number_format($total1[$i],2,'.',',')}}</td>
 			@endfor
 		@endif
 		</tr>
@@ -220,19 +220,19 @@
 				</td>
 				@for($j=0;$j<11;$j++)
 					@if(($j>5&&$j<9)||$j==10)
-						<td>{{$table2[$i][$j]}}</td>
+						<td>{{number_format($table2[$i][$j],2,'.',',')}}</td>
 					@else
 						<td class="disabled"></td>
 					@endif
 				@endfor
 				@if($type==1)
 				<?php for($j=11;$j<count($table2[$i]);$j++) :?>
-					<td><?php echo $table2[$i][$j]; ?></td>
+					<td><?php echo number_format($table2[$i][$j],2,'.',','); ?></td>
 				<?php endfor ?>
 				@else
-					<td><?php echo $table2[$i][14+$type]; ?></td>
+					<td><?php echo number_format($table2[$i][14+$type],2,'.',','); ?></td>
 				<?php for($j=24;$j<count($table2[$i]);$j++) :?>
-					<td><?php echo $table2[$i][$j]; ?></td>
+					<td><?php echo number_format($table2[$i][$j],2,'.',','); ?></td>
 				<?php endfor ?>
 				@endif
 			</tr>
@@ -242,19 +242,19 @@
 			<td></td>		
 			@for($j=0;$j<11;$j++)
 				@if(($j>5&&$j<9)||$j==10)
-					<td>{{$total2[$j]}}</td>
+					<td>{{number_format($total2[$j],2,'.',',')}}</td>
 				@else
 					<td class="disabled"></td>
 				@endif
 			@endfor
 			@if($type==1)
 			@for($i=11;$i<count($total2);$i++)
-				<td>{{$total2[$i]}}</td>
+				<td>{{number_format($total2[$i],2,'.',',')}}</td>
 			@endfor
 			@else
-				<td>{{$total2[14+$type]}}</td>
+				<td>{{number_format($total2[14+$type],2,'.',',')}}</td>
 				@for($i=24;$i<count($total2);$i++)
-					<td>{{$total2[$i]}}</td>
+					<td>{{number_format($total2[$i],2,'.',',')}}</td>
 				@endfor
 			@endif
 		</tr>
@@ -299,19 +299,19 @@
 				</td>
 				@for($j=0;$j<11;$j++)
 					@if($j==0 || $j>8)
-						<td>{{$table3[$i][$j]}}</td>
+						<td>{{number_format($table3[$i][$j],2,'.',',')}}</td>
 					@else
 						<td class="disabled"></td>
 					@endif
 				@endfor
 				@if($type==1)
 				<?php for($j=11;$j<count($table3[$i]);$j++) :?>
-					<td><?php echo $table3[$i][$j]; ?></td>
+					<td><?php echo number_format($table3[$i][$j],2,'.',','); ?></td>
 				<?php endfor ?>
 				@else
-					<td><?php echo $table3[$i][14+$type]; ?></td>
+					<td><?php echo number_format($table3[$i][14+$type],2,'.',','); ?></td>
 				<?php for($j=24;$j<count($table3[$i]);$j++) :?>
-					<td><?php echo $table3[$i][$j]; ?></td>
+					<td><?php echo number_format($table3[$i][$j],2,'.',','); ?></td>
 				<?php endfor ?>
 				@endif
 			</tr>
@@ -321,19 +321,19 @@
 			<td></td>
 			@for($j=0;$j<11;$j++)
 				@if($j==0 || $j>8)
-					<td>{{$total3[$j]}}</td>
+					<td>{{number_format($total3[$j],2,'.',',')}}</td>
 				@else
 					<td class="disabled"></td>
 				@endif
 			@endfor
 			@if($type==1)
 				@for($i=11;$i<count($total3);$i++)
-					<td>{{$total3[$i]}}</td>
+					<td>{{number_format($total3[$i],2,'.',',')}}</td>
 				@endfor
 				@else
-				<td>{{$total3[14+$type]}}</td>
+				<td>{{number_format($total3[14+$type],2,'.',',')}}</td>
 				@for($i=24;$i<count($total3);$i++)
-					<td>{{$total3[$i]}}</td>
+					<td>{{number_format($total3[$i],2,'.',',')}}</td>
 				@endfor
 			@endif
 		</tr>

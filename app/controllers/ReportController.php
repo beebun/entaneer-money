@@ -129,7 +129,6 @@ class ReportController extends BaseController {
 								 ($temp[self::$MATAINING_FEE_ID-1]*$percent[self::$MATAINING_FEE_ID]->department_percent/100)
 								 )*0.95,2);
 					$dept_index = 14;
-					
 
 					//total fund+lib+eng+dept
 					$temp[15] = 0;
