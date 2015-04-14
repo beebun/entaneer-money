@@ -3,7 +3,7 @@
 class HomeController extends BaseController {
 
 	public function getIndex(){
-		$user_data = Auth::user();
+		/*user_data = Auth::user();
 		if($user_data->role == 'admin' || $user_data->role=='modulator'){
 
 			return Redirect::to('/admin');
@@ -11,7 +11,7 @@ class HomeController extends BaseController {
 
 		if($user_data->role=='user'||$user_data->role=='gopro'){
 			return Redirect::to('/user');
-		}
+		}*/
 	}
 
 	public function showLogin()
@@ -34,14 +34,16 @@ class HomeController extends BaseController {
         {
             // we are now logged in, go to admin
 			$type = Auth::user()->type;
-			if($type==1){
+			/*if($type==1){
 				return Redirect::to('usermanage');
 			}
 			else
 			{
 				return Redirect::to('userprofile');
-			}
+			}*/
 			//echo "ok";
+			$year = date('Y');
+			return Redirect::to('report/year/'.($year+543));
         }
         else
         {
