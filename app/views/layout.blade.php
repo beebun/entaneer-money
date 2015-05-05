@@ -60,7 +60,7 @@
 
   <div class="row">
   <div style="padding:10px" class="col-md-12">
-    <h4 style="float:left;margin-left:0px;margin-top:30px">ระบบเก็บข้อมูลการเงิน คณะวิศวกรรมศาสตร์ มหาวิทยาลัยเชียงใหม่</h4>
+    <h4 style="float:left;margin-left:0px;margin-top:30px">ระบบบันทึกเงินเหลือจ่าย คณะวิศวกรรมศาสตร์ มหาวิทยาลัยเชียงใหม่</h4>
 
     <div style="float:right;margin-top:25px">
 
