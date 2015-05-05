@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ระบบเก็บข้อมูลการเงิน คณะวิศวกรรมศาสตร์ มหาวิทยาลัยเชียงใหม่</title>
+    <title>ระบบบันทึกเงินเหลือจ่าย คณะวิศวกรรมศาสตร์ มหาวิทยาลัยเชียงใหม่</title>
 
     <!-- Bootstrap -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
@@ -84,7 +84,7 @@
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
         <li>{{ link_to('expenditure1','แก้ไขรายจ่ายประจำปี ตามภาควิชา') }}</li>
-        <li>{{ link_to('expenditure2','เพิ่มราย รับ(+) จ่าย(-) ประจำปี') }}</li> 
+        <li>{{ link_to('expenditure2','แก้ไข รับ(+) จ่าย(-) ประจำปี') }}</li> 
       </ul>
     </div>
 
