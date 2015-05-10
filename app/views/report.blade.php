@@ -142,15 +142,18 @@
 				{{ $departments[$course_name[$i][1]]->name }}
 				</td>
 				@for($j=0;$j<11;$j++)
-				@if($j<6 || $j>8)
+
+				@if($j == 10)
 					<td>{{number_format($table[$i][$j],2,'.',',')}}</td>
+				@elseif($j<6 || $j>8)
+					<td><a href="{{url('report/semester-detail').'/'.$semester.'/'.$year.'/'.($j+1).'/'.$course_name[$i][2].'/'.$course_name[$i][1]}}" />{{number_format($table[$i][$j],2,'.',',')}}</a></td>
 				@else
 					<td class="disabled"></td>
 				@endif
 				@endfor
 				@if($type==1)
 				<?php for($j=11;$j<count($table[$i]);$j++) :?>
-					<td><?php echo number_format($table[$i][$j],2,'.',','); ?></td>
+					<td><?php echo number_format($table[$i][$j],2,'.',',');?></td>
 				<?php endfor ?>
 				@else
 					<td><?php echo number_format($table[$i][14+$type],2,'.',','); ?></td>
@@ -219,8 +222,10 @@
 					{{ $departments[$course_name2[$i][1]]->name }}
 				</td>
 				@for($j=0;$j<11;$j++)
-					@if(($j>5&&$j<9)||$j==10)
+					@if($j==10)
 						<td>{{number_format($table2[$i][$j],2,'.',',')}}</td>
+					@elseif($j>5&&$j<9)
+						<td><a href="{{url('report/semester-detail').'/'.$semester.'/'.$year.'/'.($j+1).'/'.$course_name2[$i][2].'/'.$course_name2[$i][1]}}"/>{{number_format($table2[$i][$j],2,'.',',')}}</a></td>
 					@else
 						<td class="disabled"></td>
 					@endif
@@ -298,8 +303,10 @@
 					{{ $departments[$course_name3[$i][1]]->name }}
 				</td>
 				@for($j=0;$j<11;$j++)
-					@if($j==0 || $j>8)
+					@if($j == 10)
 						<td>{{number_format($table3[$i][$j],2,'.',',')}}</td>
+					@elseif($j==0 || $j>8)
+						<td><a href="{{url('report/semester-detail').'/'.$semester.'/'.$year.'/'.($j+1).'/'.$course_name3[$i][2].'/'.$course_name3[$i][1]}}"/>{{number_format($table3[$i][$j],2,'.',',')}}</a></td>
 					@else
 						<td class="disabled"></td>
 					@endif

@@ -67,19 +67,7 @@ class ReportController extends BaseController {
 					if($i==7){
 						$income_type = 10;
 					}
-					$query = "SELECT course, department, sum(amount) as result
-										FROM item  
-										WHERE income_type ='".$income_type."' 
-											and course='".$course->id."' 
-											and course != 61 
-											and course != 62
-											and semester='".$semester."'
-											and year='".$year."' ";
-
-					if($type!=1)
-						$query .= "and department='".($type-1)."'";
-					
-					$data = DB::select($query);
+					$data = Item::getTable1Row($income_type,$course->id,$semester,$year,$type);
 
 					if( !is_null($data[0]->result) ) {
 						$is_null    = false ;
@@ -100,7 +88,7 @@ class ReportController extends BaseController {
 				if( !$is_null ) {
 					$course_name[$k][0] = $course->name ;
 					$course_name[$k][1] = $department ;
-
+					$course_name[$k][2] = $course->id ;
 					//$i--;
 
 					$temp[10]  = $total;
@@ -220,7 +208,6 @@ class ReportController extends BaseController {
 					for($j=$start_index;$j<27;$j++){
 						$temp[27] += $temp[$j];
 					}
-
 					
 					$table[$k] = $temp ;
 					$k++;
@@ -281,6 +268,7 @@ class ReportController extends BaseController {
 					if( !$is_null ) {
 						$course_name2[$k][0] = $courses[$i]->name ;
 						$course_name2[$k][1] = $dep ;
+						$course_name2[$k][2] = $courses[$i]->id ;
 						//$j--;
 						$temp[10]  = $total;
 						//fund = total*0.05
@@ -405,6 +393,7 @@ class ReportController extends BaseController {
 					if( !$is_null ) {
 						$course_name3[$k][0] = $courses[$course_id-1]->name ;
 						$course_name3[$k][1] = $dep ;
+						$course_name3[$k][2] = $courses[$course_id-1]->id ;
 						$total = $temp[0]-$temp[9];
 						//$j--;
 
@@ -534,6 +523,53 @@ class ReportController extends BaseController {
 			//return View::make('report_major')->with('arr', $arr);
 		//}
 	}
+
+	public function getSemesterDetail($semester,$year,$income_type,$course_id,$department_id){
+		$params = array();
+		$type = Auth::user()->type;
+		$params['income_types'] = IncomeType::all();
+		$params['departments'] = Department::all();
+		$params['course'] = Course::find($course_id);
+
+		$query = "SELECT id,course, department,detail,amount
+					FROM item  
+					WHERE income_type ='".$income_type."' 
+						and course='".$course_id."' 
+						and semester='".$semester."'
+						and year='".$year."' ";
+		if($department_id != -1){
+			$query .= "and department='".$department_id."'";
+
+		}
+					
+		$data = DB::select($query);
+		$params['data'] = $data;
+		$params['semester'] = $semester;
+		$params['year'] = $year;
+		
+		return View::make('report_semester_detail',$params);
+	}
+
+	public function postSaveItem(){
+		$id = Input::get('id');
+		$value = Input::get('value');
+		$item = Item::find($id);
+		$item->amount = $value;
+		$item->save();
+
+	}
+
+	public function getDeleteItem($id){
+		$item = Item::find($id);
+		$item->delete();
+		$semester = $item->semester;
+		$year = $item->year;
+		$income_type = $item->income_type;
+		$course_id = $item->course;
+		$department_id = $item->department;
+		return Redirect::to(url('report/semester-detail').'/'.$semester.'/'.$year.'/'.$income_type.'/'.$course_id.'/'.$department_id);
+	}
+
 
 	public function getYear($year){
 		$type = Auth::user()->type;
