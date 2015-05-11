@@ -78,8 +78,8 @@
 	<hr>
 	@if($type ==1)
 	<div class="table-responsive">
-		<table class="table table-bordered scroll1">
-		<thead>
+		<table class="table table-bordered scroll1 ">
+		<thead class="text-nowrap">
 			<th>
 			@for($i=0;$i<count($income_types);$i++)
 				<th ><?php echo $income_types[$i]->name; ?></th>
@@ -98,7 +98,7 @@
 			<th class="success"> Lib</th>
 			<th class="success"> Total</th>
 		</thead>
-		<tr>
+		<tr class="text-nowrap">
 			<th>Total</th>
 			@for($i=0;$i<count($total);$i++)
 				<td>{{number_format($total[$i],2,'.',',')}}</td>
@@ -111,7 +111,7 @@
 	<div class="table-responsive">
 
 	<table class="table table-bordered scroll2">
-		<thead>
+		<thead class="text-nowrap">
 			<th style="width:120px">หลักสูตร</th>
 			<th >ภาควิชา</th>
 			<?php for($j=0;$j<count($income_types);$j++) :?>
@@ -136,8 +136,8 @@
 			<th class="success"> Total</th>
 		</thead>
 		<?php for($i=0;$i<count($table);$i++) :?>
-			<tr>
-				<td><?php echo $course_name[$i][0]; ?></td>
+			<tr class="text-nowrap">
+				<td ><?php echo $course_name[$i][0]; ?></td>
 				<td>
 				{{ $departments[$course_name[$i][1]]->name }}
 				</td>
@@ -191,7 +191,7 @@
 	<h5><strong>ตาม Sevice/OH/อื่น ๆ</strong></h5>
 	<div class="table-responsive">
 	<table class="table table-bordered scroll3">
-		<thead>
+		<thead class="text-nowrap">
 			<th style="width:50%">รายการ</th>
 			<th style="width:8%">ภาควิชา</th>
 			<?php for($j=0;$j<count($income_types);$j++) :?>
@@ -216,7 +216,7 @@
 			<th class="success"> Total</th>
 		</thead>
 		<?php for($i=0;$i<count($table2);$i++) :?>
-			<tr>
+			<tr class="text-nowrap">
 				<td><?php echo $course_name2[$i][0]; ?></td>
 				<td>
 					{{ $departments[$course_name2[$i][1]]->name }}
@@ -271,8 +271,8 @@
 	<br/>
 	<h5><strong>ค่าจัดสรรค่าธรรมเนียม จากคณะอื่น</strong></h5>
 	<div class="table-responsive">
-	<table class="table table-bordered table-responsive scroll4">
-		<thead>
+	<table class="table table-bordered scroll4">
+		<thead class="text-nowrap">
 			<th style="width:40%">รายการ</th>
 			<th style="width:8%">ภาควิชา</th>
 			<?php for($j=0;$j<count($income_types);$j++) :?>
@@ -297,7 +297,7 @@
 			<th class="success"> Total</th>
 		</thead>
 		<?php for($i=0;$i<count($table3);$i++) :?>
-			<tr>
+			<tr class="text-nowrap">
 				<td><?php echo $course_name3[$i][0]; ?></td>
 				<td>
 					{{ $departments[$course_name3[$i][1]]->name }}

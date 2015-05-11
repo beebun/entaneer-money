@@ -10,6 +10,22 @@
 	//var_dump($table);
 	//var_dump($table2);
 ?> 
+<style>
+.table-responsive>.fixed-column {
+    position: absolute;
+    display: inline-block;
+    width: auto;
+    border-right: 1px solid #ddd;
+    background-color: #fff;
+}
+@media(max-width:768px) {
+    .table-responsive>.fixed-column {
+        display: none;
+    }
+}
+
+
+</style>
 	<form class="form-inline">
 	  <div class="form-group">
 	    <label>ภาคการศึกษา</label>
@@ -41,8 +57,9 @@
 	<h4>ค่าคงที่ <?php $dcount=0; echo $semester."/".$year ; ?></h4>
 	<hr>
 	<h5><strong>ค่า SCCH</strong></h5>
-	<table class="table table-bordered" style="font-size:13px">
-		<thead>
+	<div class="table-responsive">
+	<table class="table table-bordered scroll1" style="font-size:13px">
+		<thead class="text-nowrap">
 			<th>หลักสูตร</th>
 			@foreach($departments as $department)
 				<th>{{ $department->name }}</th><?php $dcount++;?>
@@ -51,7 +68,7 @@
 			<th>Total</th><?php $dcount=$dcount+2;?>
 		</thead>
 		<?php for($i=54;$i<61;$i++): $total=0;$engtotal=0;?>
-			<tr>
+			<tr class="text-nowrap">
 				<td>{{ $courses[$i-1]->name }} {{ $courses[$i-1]->id }}</td>
 
 				<?php for($j=0;$j<$dcount-2;$j++) :?>
@@ -74,11 +91,12 @@
 		<?php endfor ?>
 		
 	</table>
-
+	</div>
 
 	<h5><strong>จำนวนนักศึกษา</strong></h5>
+	<div class="table-responsive">
 	<table class="table table-bordered">
-		<thead>
+		<thead class="text-nowrap">
 			<th>หลักสูตร</th>
 			@foreach($departments as $department)
 				<th>{{ $department->name }}</th>
@@ -87,7 +105,7 @@
 			<th>Total</th>
 		</thead>
 		<?php for($i=54;$i<61;$i++): $total=0;$engtotal=0;?>
-			<tr>
+			<tr class="text-nowrap">
 				<td>{{ $courses[$i-1]->name }}</td>
 
 				<?php for($j=0;$j<$dcount-2;$j++) :?>
@@ -111,6 +129,7 @@
 		
 
 	</table>
+	</div>
 	<br/>	
 
    	<!--
@@ -258,6 +277,34 @@
 
 			$(document).ready(function(){
 				$('#select_year').val("{{$semester.'/'.$year}}");
+				
+				var $table1 = $('.table.scroll1');
+				var w1  = $table1.find('th:first-child').width();
+				//alert($table1.find('th:first-child').width());
+
+				var $fixedColumn1 = $table1.clone().insertBefore($table1).addClass('fixed-column');
+				$fixedColumn1.find('th:not(:first-child),td:not(:first-child)').remove();
+
+				$fixedColumn1.find('tr').each(function (i, elem) {
+			    	$(this).height($table1.find('tr:eq(' + i + ')').height());
+				});
+				$fixedColumn1.find('th,td').each(function (i, elem) {
+			    	$(this).width(w1);
+				});
+
+				var $table2 = $('.table.scroll2');
+				var w2  = $table2.find('th:first-child').width();
+				//alert($table2.find('th:first-child').width());
+
+				var $fixedColumn2 = $table2.clone().insertBefore($table2).addClass('fixed-column');
+				$fixedColumn2.find('th:not(:first-child),td:not(:first-child)').remove();
+
+				$fixedColumn2.find('tr').each(function (i, elem) {
+			    	$(this).height($table2.find('tr:eq(' + i + ')').height());
+				});
+				$fixedColumn2.find('th,td').each(function (i, elem) {
+			    	$(this).width(w2);
+				});
 			});
 			$('#select_year').change(function(){
 				var value = $(this).val();
