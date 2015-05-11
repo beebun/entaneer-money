@@ -50,4 +50,20 @@ class Item extends Eloquent implements UserInterface, RemindableInterface {
 		
 	}
 
+	public static function getCourseItemList($semester,$year,$income_type,$course_id,$department_id){
+		$query = "SELECT id,course, department,detail,amount
+					FROM item  
+					WHERE income_type ='".$income_type."' 
+						and course='".$course_id."' 
+						and semester='".$semester."'
+						and year='".$year."' ";
+		if($department_id != -1){
+			$query .= "and department='".$department_id."'";
+
+		}
+					
+		$data = DB::select($query);
+		return $data;
+	}
+
 }

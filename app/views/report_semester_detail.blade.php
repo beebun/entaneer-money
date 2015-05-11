@@ -19,13 +19,15 @@
 		<td>{{$i}}</td>
 		<td>{{$departments[$each->department]->name}}</td>
 		<td>{{$each->detail}}</td>
-		<td><input type="text" value="{{$each->amount}}" class="form-control" onchange="save_item({{$each->id}},this.value);"></td>
+		<td><input type="text" style="text-align:right" value="{{$each->amount}}" class="form-control" onchange="save_item({{$each->id}},this.value);"></td>
 		<td><a id="del" href="{{url('report/delete-item').'/'.$each->id}}" class="btn btn-danger">ลบ</a></td>
 		<?php $i++;?>
 	</tr>
 	@endforeach
 	<tr>
-		<th colspan="5">รวม</th>
+		<th colspan="3">รวม</th>
+		<td style="text-align:right"><span id="total">{{$total}}</span></td>
+		<td></td>
 	</tr>
 </table>
 <script>
@@ -36,7 +38,9 @@
 				value:value,
 			})
 		.done(function( data ) {
+			console.log(data);
 			alert("บันทึกเรียบร้อย");
+			$('#total').text(data);
 		})
 		.error(function(data) {
 			alert("พบข้อผิดพลาด!!!");	

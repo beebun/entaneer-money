@@ -530,22 +530,16 @@ class ReportController extends BaseController {
 		$params['income_types'] = IncomeType::all();
 		$params['departments'] = Department::all();
 		$params['course'] = Course::find($course_id);
+		$total = 0;
 
-		$query = "SELECT id,course, department,detail,amount
-					FROM item  
-					WHERE income_type ='".$income_type."' 
-						and course='".$course_id."' 
-						and semester='".$semester."'
-						and year='".$year."' ";
-		if($department_id != -1){
-			$query .= "and department='".$department_id."'";
-
+		$data = Item::getCourseItemList($semester,$year,$income_type,$course_id,$department_id);
+		foreach($data as $each){
+			$total += $each->amount;
 		}
-					
-		$data = DB::select($query);
 		$params['data'] = $data;
 		$params['semester'] = $semester;
 		$params['year'] = $year;
+		$params['total'] = $total;
 		
 		return View::make('report_semester_detail',$params);
 	}
@@ -553,9 +547,18 @@ class ReportController extends BaseController {
 	public function postSaveItem(){
 		$id = Input::get('id');
 		$value = Input::get('value');
+		$total = 0;
+
 		$item = Item::find($id);
 		$item->amount = $value;
 		$item->save();
+
+		$data = Item::getCourseItemList($item->semester,$item->year,$item->income_type,$item->course,$item->department);
+		foreach($data as $each){
+			$total += $each->amount;
+		}
+
+		return $total;
 
 	}
 
