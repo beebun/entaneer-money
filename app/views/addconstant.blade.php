@@ -111,7 +111,7 @@
 				<?php for($j=0;$j<$dcount-2;$j++) :?>
 					<td>
 						<?php //echo $table2[$j][$i-54];?>
-						<input type="text" onchange="save_scch({{ $table[$j][$i-54]}}, this.value ,{{ $courses[$i-1]->id }}, {{$departments[$j]->id}}, {{$year}}, {{$semester}})" class="form-control" style="font-size:13px" value="{{ $table2[$j][$i-54] }}">
+						<input type="text"  onchange="save_scch({{ $table[$j][$i-54]}}, this.value ,{{ $courses[$i-1]->id }}, {{$departments[$j]->id}}, {{$year}}, {{$semester}})" class="form-control" style="font-size:13px" value="{{ $table2[$j][$i-54] }}">
 
 					</td>
 					<?php 
